@@ -15,46 +15,46 @@ use Krystal\Stdlib\VirtualEntity;
 
 final class Add extends AbstractForm
 {
-	/**
-	 * Shows adding form
-	 * 
-	 * @return string
-	 */
-	public function indexAction()
-	{
-		$this->loadSharedPlugins();
+    /**
+     * Shows adding form
+     * 
+     * @return string
+     */
+    public function indexAction()
+    {
+        $this->loadSharedPlugins();
 
-		$form = new VirtualEntity();
-		$form->setSeo(true)
-			 ->setMessageView('message');
+        $form = new VirtualEntity();
+        $form->setSeo(true)
+             ->setMessageView('message');
 
-		return $this->view->render('form', $this->getWithSharedVars(array(
-			'title' => 'Add a form',
-			'form' => $form
-		)));
-	}
+        return $this->view->render('form', $this->getWithSharedVars(array(
+            'title' => 'Add a form',
+            'form' => $form
+        )));
+    }
 
-	/**
-	 * Adds a form
-	 * 
-	 * @return string
-	 */
-	public function addAction()
-	{
-		$formValidator = $this->getValidator($this->request->getPost('form'));
+    /**
+     * Adds a form
+     * 
+     * @return string
+     */
+    public function addAction()
+    {
+        $formValidator = $this->getValidator($this->request->getPost('form'));
 
-		if ($formValidator->isValid()){
-			$formManager = $this->getFormManager();
+        if ($formValidator->isValid()){
+            $formManager = $this->getFormManager();
 
-			if ($formManager->add($this->request->getPost())) {
+            if ($formManager->add($this->request->getPost())) {
 
-				$this->flashBag->set('success', 'A form has been added successfully');
-				return $formManager->getLastId();
-			}
+                $this->flashBag->set('success', 'A form has been added successfully');
+                return $formManager->getLastId();
+            }
 
-		} else {
+        } else {
 
-			return $formValidator->getErrors();
-		}
-	}
+            return $formValidator->getErrors();
+        }
+    }
 }

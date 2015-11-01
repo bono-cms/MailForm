@@ -10,12 +10,12 @@
  */
 
 return array(
-	
-	'module' => array(
-		'url' => '/admin/module/mail-form',
-		'icon' => '/module/MailForm/Assets/mailform.png',
-		'name' => 'Mail forms',
-		'order' => 1,
-		'description' => 'Mail forms module allows you to manager forms that send data from your site to your email',
-	)
+    
+    'module' => array(
+        'url' => '/admin/module/mail-form',
+        'icon' => '/module/MailForm/Assets/mailform.png',
+        'name' => 'Mail forms',
+        'order' => 1,
+        'description' => 'Mail forms module allows you to manager forms that send data from your site to your email',
+    )
 );

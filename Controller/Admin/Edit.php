@@ -13,50 +13,50 @@ namespace MailForm\Controller\Admin;
 
 final class Edit extends AbstractForm
 {
-	/**
-	 * Shows edit form
-	 * 
-	 * @param string $id Form id
-	 * @return string
-	 */
-	public function indexAction($id)
-	{
-		$form = $this->getFormManager()->fetchById($id);
+    /**
+     * Shows edit form
+     * 
+     * @param string $id Form id
+     * @return string
+     */
+    public function indexAction($id)
+    {
+        $form = $this->getFormManager()->fetchById($id);
 
-		// if $form isn't false, then its must be entity object
-		if ($form !== false) {
-			$this->loadSharedPlugins();
+        // if $form isn't false, then its must be entity object
+        if ($form !== false) {
+            $this->loadSharedPlugins();
 
-			return $this->view->render('form', $this->getWithSharedVars(array(
-				'title' => 'Edit the form',
-				'form' => $form
-			)));
+            return $this->view->render('form', $this->getWithSharedVars(array(
+                'title' => 'Edit the form',
+                'form' => $form
+            )));
 
-		} else {
+        } else {
 
-			return false;
-		}
-	}
+            return false;
+        }
+    }
 
-	/**
-	 * Updates a form
-	 * 
-	 * @return string
-	 */
-	public function updateAction()
-	{
-		$formValidator = $this->getValidator($this->request->getPost('form'));
+    /**
+     * Updates a form
+     * 
+     * @return string
+     */
+    public function updateAction()
+    {
+        $formValidator = $this->getValidator($this->request->getPost('form'));
 
-		if ($formValidator->isValid()) {
+        if ($formValidator->isValid()) {
 
-			if ($this->getFormManager()->update($this->request->getPost())) {
-				$this->flashBag->set('success', 'The form has been updated successfully');
-				return '1';
-			}
+            if ($this->getFormManager()->update($this->request->getPost())) {
+                $this->flashBag->set('success', 'The form has been updated successfully');
+                return '1';
+            }
 
-		} else {
+        } else {
 
-			return $formValidator->getErrors();
-		}
-	}
+            return $formValidator->getErrors();
+        }
+    }
 }

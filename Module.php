@@ -16,15 +16,15 @@ use MailForm\Service\FormManager;
 
 final class Module extends AbstractCmsModule
 {
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getServiceProviders()
-	{
-		$formMapper = $this->getMapper('/MailForm/Storage/MySQL/FormMapper');
+    /**
+     * {@inheritDoc}
+     */
+    public function getServiceProviders()
+    {
+        $formMapper = $this->getMapper('/MailForm/Storage/MySQL/FormMapper');
 
-		return array(
-			'formManager' => new FormManager($formMapper, $this->getWebPageManager(), $this->getHistoryManager(), $this->getMenuWidget())
-		);
-	}
+        return array(
+            'formManager' => new FormManager($formMapper, $this->getWebPageManager(), $this->getHistoryManager(), $this->getMenuWidget())
+        );
+    }
 }
