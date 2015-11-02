@@ -78,7 +78,6 @@ final class Browser extends AbstractController
             $seo = $this->request->getPost('seo');
 
             if ($this->getFormManager()->updateSeo($seo)) {
-
                 $this->flashBag->set('success', 'Settings have been updated successfully');
                 return '1';
             }
@@ -92,15 +91,9 @@ final class Browser extends AbstractController
      */
     private function loadPlugins()
     {
-        $this->view->getBreadcrumbBag()->add(array(
-            array(
-                'name' => 'Mail forms',
-                'link' => '#'
-            )
-        ));
-        
+        $this->view->getBreadcrumbBag()->addOne('Mail forms');
         $this->view->getPluginBag()
-                   ->appendScript($this->getWithAssetPath('/admin/browser.js'));
+                   ->appendScript('@MailForm/admin/browser.js');
     }
 
     /**

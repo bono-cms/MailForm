@@ -73,9 +73,7 @@ final class Form extends AbstractController
             return $this->view->render($form->getTemplate(), array(
                 'page' => $form
             ));
-
         } else {
-
             // Returning false will trigger 404 error automatically
             return false;
         }
@@ -92,7 +90,6 @@ final class Form extends AbstractController
         $formValidator = $this->getValidator($id, $this->request->getPost());
 
         if ($formValidator->isValid()) {
-
             // It's time to send a message
             if ($this->sendMessage($id, $this->request->getPost())) {
                 $this->flashBag->set('success', 'Your message has been sent!');
@@ -101,9 +98,7 @@ final class Form extends AbstractController
             }
 
             return '1';
-
         } else {
-
             return $formValidator->getErrors();
         }
     }
@@ -146,12 +141,7 @@ final class Form extends AbstractController
     private function loadPlugins(VirtualEntity $form)
     {
         $this->loadSitePlugins();
-        $this->view->getBreadcrumbBag()->add(array(
-            array(
-                'link' => '#',
-                'name' => $form->getTitle()
-            )
-        ));
+        $this->view->getBreadcrumbBag()->addOne($form->getTitle());
     }
 
     /**

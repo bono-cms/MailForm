@@ -23,15 +23,16 @@ final class Add extends AbstractForm
     public function indexAction()
     {
         $this->loadSharedPlugins();
+        $this->loadBreadcrumbs('Add a form');
 
         $form = new VirtualEntity();
         $form->setSeo(true)
              ->setMessageView('message');
 
-        return $this->view->render('form', $this->getWithSharedVars(array(
+        return $this->view->render('form', array(
             'title' => 'Add a form',
             'form' => $form
-        )));
+        ));
     }
 
     /**
@@ -47,13 +48,11 @@ final class Add extends AbstractForm
             $formManager = $this->getFormManager();
 
             if ($formManager->add($this->request->getPost())) {
-
                 $this->flashBag->set('success', 'A form has been added successfully');
                 return $formManager->getLastId();
             }
 
         } else {
-
             return $formValidator->getErrors();
         }
     }

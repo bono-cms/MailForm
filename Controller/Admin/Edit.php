@@ -26,14 +26,14 @@ final class Edit extends AbstractForm
         // if $form isn't false, then its must be entity object
         if ($form !== false) {
             $this->loadSharedPlugins();
+            $this->loadBreadcrumbs('Edit the form');
 
-            return $this->view->render('form', $this->getWithSharedVars(array(
+            return $this->view->render('form', array(
                 'title' => 'Edit the form',
                 'form' => $form
-            )));
+            ));
 
         } else {
-
             return false;
         }
     }
@@ -48,14 +48,12 @@ final class Edit extends AbstractForm
         $formValidator = $this->getValidator($this->request->getPost('form'));
 
         if ($formValidator->isValid()) {
-
             if ($this->getFormManager()->update($this->request->getPost())) {
                 $this->flashBag->set('success', 'The form has been updated successfully');
                 return '1';
             }
 
         } else {
-
             return $formValidator->getErrors();
         }
     }

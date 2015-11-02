@@ -43,7 +43,7 @@ abstract class AbstractForm extends AbstractController
     {
         $this->loadMenuWidget();
         $this->view->getPluginBag()->load($this->getWysiwygPluginName())
-                    ->appendScript($this->getWithAssetPath('/admin/form.js'));
+                    ->appendScript('@MailForm/admin/form.js');
     }
 
     /**
@@ -57,25 +57,14 @@ abstract class AbstractForm extends AbstractController
     }
 
     /**
-     * Loads shared plugins
+     * Loads breadcrumbs
      * 
-     * @param array $overrides
+     * @param string $title
      * @return void
      */
-    final protected function getWithSharedVars(array $overrides)
+    final protected function loadBreadcrumbs($title)
     {
-        $this->view->getBreadcrumbBag()->add(array(
-            array(
-                'name' => 'Mail forms',
-                'link' => 'MailForm:Admin:Browser@indexAction'
-            ),
-            array(
-                'name' => $overrides['title'],
-                'link' => '#'
-            )
-        ));
-        
-        $vars = array();
-        return array_replace_recursive($vars, $overrides);
+        $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Browser@indexAction')
+                                       ->addOne($title);
     }
 }
