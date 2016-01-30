@@ -102,18 +102,18 @@ use Krystal\Form\Element;
 			
 			<?php if (!$form->getId()): ?>
 			
-			<button data-button="add" data-back-url="<?php echo $this->url('MailForm:Admin:Edit@indexAction', null); ?>" data-url="<?php echo $this->url('MailForm:Admin:Add@addAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
-			<button data-button="add-create" data-url="<?php echo $this->url('MailForm:Admin:Add@addAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
+			<button data-button="add" data-back-url="<?php echo $this->url('MailForm:Admin:Form@editAction', null); ?>" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
+			<button data-button="add-create" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
 			
 			<?php else: ?>
 			
-			<button data-button="save" data-url="<?php echo $this->url('MailForm:Admin:Edit@updateAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
-			<button data-button="save-create" data-back-url="<?php echo $this->url('MailForm:Admin:Add@indexAction'); ?>" data-url="<?php echo $this->url('MailForm:Admin:Edit@updateAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
+			<button data-button="save" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
+			<button data-button="save-create" data-back-url="<?php echo $this->url('MailForm:Admin:Form@addAction'); ?>" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
 			
 			<?php endif; ?>
 			
 			<button data-button="options" class="btn btn-primary"><i class="glyphicon glyphicon-open"></i> <?php $this->show('More options'); ?></button>
-			<button data-button="cancel" data-url="<?php echo $this->url('MailForm:Admin:Browser@indexAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
+			<button data-button="cancel" data-url="<?php echo $this->url('MailForm:Admin:Form@gridAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
 			
 		</div>
 		

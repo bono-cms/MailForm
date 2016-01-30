@@ -10,45 +10,34 @@
  */
 
 return array(
-    
     '/module/mail-form/(:var)' => array(
         'controller' => 'Form@indexAction'
     ),
 
     '/admin/module/mail-form' => array(
-        'controller' => 'Admin:Browser@indexAction'
+        'controller' => 'Admin:Form@gridAction'
     ),
     
     '/admin/module/mail-form/add' => array(
-        'controller' => 'Admin:Add@indexAction'
-    ),
-    
-    '/admin/module/mail-form/add.ajax' => array(
-        'controller' => 'Admin:Add@addAction',
-        'disallow' => array('guest')
+        'controller' => 'Admin:Form@addAction'
     ),
     
     '/admin/module/mail-form/edit/(:var)' => array(
-        'controller' => 'Admin:Edit@indexAction'
+        'controller' => 'Admin:Form@editAction'
     ),
     
-    '/admin/module/mail-form/edit.ajax' => array(
-        'controller' => 'Admin:Edit@updateAction',
+    '/admin/module/mail-form/save' => array(
+        'controller' => 'Admin:Form@saveAction',
         'disallow' => array('guest')
     ),
     
-    '/admin/module/mail-form/delete.ajax' => array(
-        'controller' => 'Admin:Browser@deleteAction',
+    '/admin/module/mail-form/delete' => array(
+        'controller' => 'Admin:Form@deleteAction',
         'disallow' => array('guest')
     ),
     
-    '/admin/module/mail-form/delete-selected.ajax' => array(
-        'controller' => 'Admin:Browser@deleteSelectedAction',
-        'disallow' => array('guest')
-    ),
-    
-    '/admin/module/mail-form/save-changes.ajax' => array(
-        'controller' => 'Admin:Browser@saveChangesAction',
+    '/admin/module/mail-form/tweak' => array(
+        'controller' => 'Admin:Form@tweakAction',
         'disallow' => array('guest')
     )
 );
