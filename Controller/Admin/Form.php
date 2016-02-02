@@ -38,8 +38,8 @@ final class Form extends AbstractController
     {
         // Load view plugins
         $this->loadMenuWidget();
-        $this->view->getPluginBag()->load($this->getWysiwygPluginName())
-                    ->appendScript('@MailForm/admin/form.js');
+        $this->view->getPluginBag()
+                   ->load($this->getWysiwygPluginName());
 
         // Append breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
@@ -89,27 +89,7 @@ final class Form extends AbstractController
      */
     public function deleteAction()
     {
-        // Batch removal
-        if ($this->request->hasPost('toDelete')) {
-            $ids = array_keys($this->request->getPost('toDelete'));
-
-            $this->getFormManager()->deleteByIds($ids);
-            $this->flashBag->set('success', 'Selected forms have been removed successfully');
-
-        } else {
-            $this->flashBag->set('warning', 'You should select at least one form to remove');
-        }
-
-        // Single removal
-        if ($this->request->hasPost('id')) {
-            $id = $this->request->getPost('id');
-
-            if ($this->getFormManager()->deleteById($id)) {
-                $this->flashBag->set('success', 'Selected form has been removed successfully');
-            }
-        }
-
-        return '1';
+        return $this->invokeRemoval('formManager');
     }
 
     /**
@@ -158,7 +138,7 @@ final class Form extends AbstractController
     {
         $input = $this->request->getPost('form');
 
-        $formValidator = $this->validatorFactory->build(array(
+        return $this->invokeSave('formManager', $input['id'], $this->request->getPost(), array(
             'input' => array(
                 'source' => $input,
                 'definition' => array(
@@ -166,25 +146,5 @@ final class Form extends AbstractController
                 )
             )
         ));
-
-        if ($formValidator->isValid()) {
-            $formManager = $this->getFormManager();
-
-            if ($input['id']) {
-                if ($formManager->update($this->request->getPost())) {
-                    $this->flashBag->set('success', 'The form has been updated successfully');
-                    return '1';
-                }
-
-            } else {
-                if ($formManager->add($this->request->getPost())) {
-                    $this->flashBag->set('success', 'A form has been added successfully');
-                    return $formManager->getLastId();
-                }
-            }
-
-        } else {
-            return $formValidator->getErrors();
-        }
     }
 }
