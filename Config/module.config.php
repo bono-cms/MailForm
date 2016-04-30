@@ -10,9 +10,8 @@
  */
 
 return array(
-    
     'module' => array(
-        'url' => '/admin/module/mail-form',
+        'route'=> 'MailForm:Admin:Form@gridAction',
         'icon' => 'fa fa-envelope fa-5x',
         'name' => 'Mail forms',
         'order' => 1,
