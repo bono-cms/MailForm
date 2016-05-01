@@ -85,11 +85,12 @@ final class Form extends AbstractController
     /**
      * Deletes a form by its associated id
      * 
+     * @param string $id
      * @return string
      */
-    public function deleteAction()
+    public function deleteAction($id)
     {
-        return $this->invokeRemoval('formManager');
+        return $this->invokeRemoval('formManager', $id);
     }
 
     /**
@@ -99,10 +100,6 @@ final class Form extends AbstractController
      */
     public function gridAction()
     {
-        // Load view plugins
-        $this->view->getPluginBag()
-                   ->appendScript('@MailForm/admin/browser.js');
-
         // Append breadcrumbs
         $this->view->getBreadcrumbBag()
                    ->addOne('Mail forms');

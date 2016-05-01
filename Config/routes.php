@@ -31,7 +31,7 @@ return array(
         'disallow' => array('guest')
     ),
     
-    '/admin/module/mail-form/delete' => array(
+    '/admin/module/mail-form/delete/(:var)' => array(
         'controller' => 'Admin:Form@deleteAction',
         'disallow' => array('guest')
     ),
