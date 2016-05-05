@@ -14,29 +14,29 @@ return array(
         'controller' => 'Form@indexAction'
     ),
 
-    '/admin/module/mail-form' => array(
+    '/%s/module/mail-form' => array(
         'controller' => 'Admin:Form@gridAction'
     ),
     
-    '/admin/module/mail-form/add' => array(
+    '/%s/module/mail-form/add' => array(
         'controller' => 'Admin:Form@addAction'
     ),
     
-    '/admin/module/mail-form/edit/(:var)' => array(
+    '/%s/module/mail-form/edit/(:var)' => array(
         'controller' => 'Admin:Form@editAction'
     ),
     
-    '/admin/module/mail-form/save' => array(
+    '/%s/module/mail-form/save' => array(
         'controller' => 'Admin:Form@saveAction',
         'disallow' => array('guest')
     ),
     
-    '/admin/module/mail-form/delete/(:var)' => array(
+    '/%s/module/mail-form/delete/(:var)' => array(
         'controller' => 'Admin:Form@deleteAction',
         'disallow' => array('guest')
     ),
     
-    '/admin/module/mail-form/tweak' => array(
+    '/%s/module/mail-form/tweak' => array(
         'controller' => 'Admin:Form@tweakAction',
         'disallow' => array('guest')
     )
