@@ -114,6 +114,7 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
                 ->setLangId((int) $form['lang_id'])
                 ->setWebPageId((int) $form['web_page_id'])
                 ->setTitle(Filter::escape($form['title']))
+                ->setName(Filter::escape($form['name']))
                 ->setDescription(Filter::escapeContent($form['description']))
                 ->setSeo((bool) $form['seo'])
                 ->setSlug(Filter::escape($this->webPageManager->fetchSlugByWebPageId($form['web_page_id'])))
@@ -218,9 +219,13 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
     {
         $form =& $input['form'];
 
+        // Empty slug is taken from name
         if (empty($form['slug'])) {
-            // Empty slug is taken from a title
-            $form['slug'] = $form['title'];
+            $form['slug'] = $form['name'];
+        }
+
+        if (empty($form['title'])) {
+            $form['title'] = $form['name'];
         }
 
         // Normalize a slug now
@@ -243,16 +248,14 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
         $form['web_page_id'] = '';
 
         if ($this->formMapper->insert(ArrayUtils::arrayWithout($form, array('slug', 'menu')))) {
-
             // Add a web page now
             if ($this->webPageManager->add($this->getLastId(), $form['slug'], 'Mail forms', 'MailForm:Form@indexAction', $this->formMapper)) {
-
                 if ($this->hasMenuWidget()) {
-                    $this->addMenuItem($this->webPageManager->getLastId(), $form['title'], $input);
+                    $this->addMenuItem($this->webPageManager->getLastId(), $form['name'], $input);
                 }
             }
 
-            $this->track('Mail form "%s" has been created', $form['title']);
+            $this->track('Mail form "%s" has been created', $form['name']);
             return true;
 
         } else {
@@ -278,10 +281,10 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
             $this->webPageManager->update($form['web_page_id'], $form['slug']);
 
             if ($this->hasMenuWidget() && isset($input['menu'])) {
-                $this->updateMenuItem($form['web_page_id'], $form['title'], $input['menu']);
+                $this->updateMenuItem($form['web_page_id'], $form['name'], $input['menu']);
             }
 
-            $this->track('Mail form "%s" has been updated', $form['title']);
+            $this->track('Mail form "%s" has been updated', $form['name']);
             return true;
 
         } else {

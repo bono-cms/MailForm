@@ -7,6 +7,7 @@ CREATE TABLE `bono_module_mailform` (
 	`web_page_id` INT NOT NULL,
 	`template` varchar(255) NOT NULL COMMENT 'Framework-compliant template view file',
 	`message_view` varchar(255) NOT NULL COMMENT 'Framework-compliant message view',
+	`name` varchar(255) NOT NULL,
 	`title` varchar(255) NOT NULL,
 	`description` TEXT NOT NULL,
 	`seo` varchar(1) NOT NULL,
