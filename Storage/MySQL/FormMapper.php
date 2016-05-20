@@ -25,14 +25,14 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
     }
 
     /**
-     * Fetches form title by its associated id
+     * Fetches form name by its associated id
      * 
      * @param string $id Form id
      * @return string
      */
-    public function fetchTitleById($id)
+    public function fetchNameById($id)
     {
-        return $this->findColumnByPk($id, 'title');
+        return $this->findColumnByPk($id, 'name');
     }
 
     /**

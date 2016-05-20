@@ -177,10 +177,10 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
      */
     public function deleteById($id)
     {
-        $title = $this->formMapper->fetchTitleById($id);
+        $name = $this->formMapper->fetchNameById($id);
 
         if ($this->delete($id)) {
-            $this->track('Mail form "%s" has been removed', $title);
+            $this->track('Mail form "%s" has been removed', $name);
             return true;
 
         } else {
