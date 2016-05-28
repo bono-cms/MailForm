@@ -30,14 +30,6 @@ interface FormManagerInterface
     public function updateSeo(array $pair);
 
     /**
-     * Fetches web page title by its associated id
-     * 
-     * @param string $webPageId
-     * @return string Web page title
-     */
-    public function fetchTitleByWebPageId($webPageId);
-
-    /**
      * Returns last id
      * 
      * @return integer

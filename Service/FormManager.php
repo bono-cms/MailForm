@@ -94,14 +94,11 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
     }
 
     /**
-     * Fetches web page title by its associated id
-     * 
-     * @param string $webPageId
-     * @return string Web page title
+     * {@inheritDoc}
      */
-    public function fetchTitleByWebPageId($webPageId)
+    public function fetchNameByWebPageId($webPageId)
     {
-        return $this->formMapper->fetchTitleByWebPageId($webPageId);
+        return $this->formMapper->fetchNameByWebPageId($webPageId);
     }
 
     /**
