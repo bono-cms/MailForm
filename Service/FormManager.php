@@ -107,20 +107,20 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
     protected function toEntity(array $form)
     {
         $entity = new VirtualEntity();
-        $entity->setId((int) $form['id'])
-                ->setLangId((int) $form['lang_id'])
-                ->setWebPageId((int) $form['web_page_id'])
-                ->setTitle(Filter::escape($form['title']))
-                ->setName(Filter::escape($form['name']))
-                ->setDescription(Filter::escapeContent($form['description']))
-                ->setSeo((bool) $form['seo'])
+        $entity->setId($form['id'], VirtualEntity::FILTER_INT)
+                ->setLangId($form['lang_id'], VirtualEntity::FILTER_INT)
+                ->setWebPageId($form['web_page_id'], VirtualEntity::FILTER_INT)
+                ->setTitle($form['title'], VirtualEntity::FILTER_TAGS)
+                ->setName($form['name'], VirtualEntity::FILTER_TAGS)
+                ->setDescription($form['description'], VirtualEntity::FILTER_SAFE_TAGS)
+                ->setSeo($form['seo'], VirtualEntity::FILTER_BOOL)
                 ->setSlug(Filter::escape($this->webPageManager->fetchSlugByWebPageId($form['web_page_id'])))
                 ->setUrl($this->webPageManager->surround($entity->getSlug(), $entity->getLangId()))
                 ->setPermanentUrl('/module/mail-form/'.$entity->getId())
-                ->setTemplate(Filter::escape($form['template']))
-                ->setMessageView(Filter::escape($form['message_view']))
-                ->setKeywords(Filter::escape($form['keywords']))
-                ->setMetaDescription(Filter::escape($form['meta_description']));
+                ->setTemplate($form['template'], VirtualEntity::FILTER_TAGS)
+                ->setMessageView($form['message_view'], VirtualEntity::FILTER_TAGS)
+                ->setKeywords($form['keywords'], VirtualEntity::FILTER_TAGS)
+                ->setMetaDescription($form['meta_description']. VirtualEntity::FILTER_TAGS);
 
         return $entity;
     }
