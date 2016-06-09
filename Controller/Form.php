@@ -68,7 +68,10 @@ final class Form extends AbstractController
         $form = $this->getFormManager()->fetchById($id);
 
         if ($form !== false) {
-            $this->loadPlugins($form);
+            // Configure view
+            $this->loadSitePlugins();
+            $this->view->getBreadcrumbBag()
+                       ->addOne($form->getTitle());
 
             return $this->view->render($form->getTemplate(), array(
                 'page' => $form
@@ -130,18 +133,6 @@ final class Form extends AbstractController
         // Grab mailer service
         $mailer = $this->getService('Cms', 'mailer');
         return $mailer->send($subject, $body);
-    }
-
-    /**
-     * Loads all required plugins for the template
-     * 
-     * @param \Krystal\Stdlib\VirtualEntity $form
-     * @return void
-     */
-    private function loadPlugins(VirtualEntity $form)
-    {
-        $this->loadSitePlugins();
-        $this->view->getBreadcrumbBag()->addOne($form->getTitle());
     }
 
     /**
