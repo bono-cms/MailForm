@@ -10,6 +10,10 @@
  */
 
 return array(
+    '/module/mail-form/partial/(:var)' => array(
+        'controller' => 'Form@partialAction'
+    ),
+
     '/module/mail-form/(:var)' => array(
         'controller' => 'Form@indexAction'
     ),

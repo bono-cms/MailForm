@@ -13,6 +13,7 @@ namespace MailForm;
 
 use Cms\AbstractCmsModule;
 use MailForm\Service\FormManager;
+use MailForm\Service\SiteService;
 
 final class Module extends AbstractCmsModule
 {
@@ -22,9 +23,11 @@ final class Module extends AbstractCmsModule
     public function getServiceProviders()
     {
         $formMapper = $this->getMapper('/MailForm/Storage/MySQL/FormMapper');
+        $formManager = new FormManager($formMapper, $this->getWebPageManager(), $this->getHistoryManager(), $this->getMenuWidget());
 
         return array(
-            'formManager' => new FormManager($formMapper, $this->getWebPageManager(), $this->getHistoryManager(), $this->getMenuWidget())
+            'formManager' => $formManager,
+            'siteService' => new SiteService($formManager)
         );
     }
 }

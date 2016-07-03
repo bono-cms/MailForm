@@ -51,9 +51,23 @@ final class Form extends AbstractController
     {
         if ($this->request->isPost()) {
             return $this->submitAction($id);
-
         } else {
             return $this->showAction($id);
+        }
+    }
+
+    /**
+     * Shows a partial form (without layout)
+     * 
+     * @param string $id Form id
+     * @return string
+     */
+    public function partialAction($id)
+    {
+        if ($this->request->isPost()) {
+            return $this->submitAction($id);
+        } else {
+            return 'Invalid request';
         }
     }
 
@@ -74,8 +88,10 @@ final class Form extends AbstractController
                        ->addOne($form->getTitle());
 
             return $this->view->render($form->getTemplate(), array(
-                'page' => $form
+                'page' => $form,
+                'action' => $this->request->getCurrentUrl()
             ));
+
         } else {
             // Returning false will trigger 404 error automatically
             return false;
