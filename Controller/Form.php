@@ -169,7 +169,7 @@ final class Form extends AbstractController
             $options = $rules[$id];
         }
 
-        return $this->validatorFactory->build($options);
+        return $this->createValidator($options);
     }
 
     /**
