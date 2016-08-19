@@ -43,7 +43,7 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
      */
     public function fetchMessageViewById($id)
     {
-        return $this->findColumnByPk($id, 'message_view');
+        return $this->findColumnByPk($id, 'message');
     }
 
     /**

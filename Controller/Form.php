@@ -132,14 +132,7 @@ final class Form extends AbstractController
      */
     private function sendMessage($id, array $input)
     {
-        $template = $this->getFormManager()->fetchMessageViewById($id);
-
-        if (!$template) {
-            throw new RuntimeException(sprintf('Can not fetch message view by associated page id "%s"', $id));
-        }
-
-        // Render the body firstly
-        $body = $this->view->renderRaw($this->moduleName, 'messages', $template, array(
+        $message = $this->getFormManager()->fetchMessageViewById($id, array(
             'input' => $input
         ));
 
@@ -148,7 +141,7 @@ final class Form extends AbstractController
 
         // Grab mailer service
         $mailer = $this->getService('Cms', 'mailer');
-        return $mailer->send($subject, $body);
+        return $mailer->send($subject, $message);
     }
 
     /**

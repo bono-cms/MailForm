@@ -20,6 +20,7 @@ use MailForm\Storage\FormMapperInterface;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Stdlib\ArrayUtils;
 use Krystal\Security\Filter;
+use Krystal\Templating\PhpEngine;
 
 final class FormManager extends AbstractManager implements FormManagerInterface, MenuAwareManager
 {
@@ -69,11 +70,13 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
      * Fetches message view by associated form id
      * 
      * @param string $id Form id
+     * @param array $vars Message variables
      * @return string
      */
-    public function fetchMessageViewById($id)
+    public function fetchMessageViewById($id, array $vars = array())
     {
-        return $this->formMapper->fetchMessageViewById($id);
+        $code = $this->formMapper->fetchMessageViewById($id);
+        return PhpEngine::execute($code, $vars);
     }
 
     /**
@@ -120,7 +123,8 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
                 ->setTemplate($form['template'], VirtualEntity::FILTER_TAGS)
                 ->setMessageView($form['message_view'], VirtualEntity::FILTER_TAGS)
                 ->setKeywords($form['keywords'], VirtualEntity::FILTER_TAGS)
-                ->setMetaDescription($form['meta_description']. VirtualEntity::FILTER_TAGS);
+                ->setMetaDescription($form['meta_description']. VirtualEntity::FILTER_TAGS)
+                ->setMessage($form['message']);
 
         return $entity;
     }

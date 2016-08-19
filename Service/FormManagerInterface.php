@@ -17,9 +17,10 @@ interface FormManagerInterface
      * Fetches message view by associated form id
      * 
      * @param string $id Form id
+     * @param array $vars Message variables
      * @return string
      */
-    public function fetchMessageViewById($id);
+    public function fetchMessageViewById($id, array $vars = array());
 
     /**
      * Updates SEO states by associated form ids
