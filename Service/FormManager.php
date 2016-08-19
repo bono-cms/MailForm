@@ -121,7 +121,6 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
                 ->setUrl($this->webPageManager->surround($entity->getSlug(), $entity->getLangId()))
                 ->setPermanentUrl('/module/mail-form/'.$entity->getId())
                 ->setTemplate($form['template'], VirtualEntity::FILTER_TAGS)
-                ->setMessageView($form['message_view'], VirtualEntity::FILTER_TAGS)
                 ->setKeywords($form['keywords'], VirtualEntity::FILTER_TAGS)
                 ->setMetaDescription($form['meta_description']. VirtualEntity::FILTER_TAGS)
                 ->setMessage($form['message']);

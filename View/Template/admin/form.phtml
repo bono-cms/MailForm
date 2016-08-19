@@ -44,16 +44,6 @@ use Krystal\Form\Element;
 					</div>
 				</div>
 				
-				<div class="form-group <?php HtmlHelper::addOnDemand(!$extendedMode, 'hidden'); ?>">
-					<label class="col-lg-2 control-label"><?php $this->show('Message view'); ?></label>
-					<div class="col-lg-10">
-						<div class="input-group">
-                            <?php echo Element::text('form[message_view]', $form->getMessageView(), array('class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file for the email message to be sent'))); ?>
-							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-						</div>
-					</div>
-				</div>
-				
 				<div class="form-group">
 					<label class="col-lg-2 control-label"><?php $this->show('Description'); ?></label>
 					<div class="col-lg-10">
