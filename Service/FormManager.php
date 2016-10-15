@@ -113,16 +113,16 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
         $entity->setId($form['id'], VirtualEntity::FILTER_INT)
                 ->setLangId($form['lang_id'], VirtualEntity::FILTER_INT)
                 ->setWebPageId($form['web_page_id'], VirtualEntity::FILTER_INT)
-                ->setTitle($form['title'], VirtualEntity::FILTER_TAGS)
-                ->setName($form['name'], VirtualEntity::FILTER_TAGS)
+                ->setTitle($form['title'], VirtualEntity::FILTER_HTML)
+                ->setName($form['name'], VirtualEntity::FILTER_HTML)
                 ->setDescription($form['description'], VirtualEntity::FILTER_SAFE_TAGS)
                 ->setSeo($form['seo'], VirtualEntity::FILTER_BOOL)
                 ->setSlug(Filter::escape($this->webPageManager->fetchSlugByWebPageId($form['web_page_id'])))
                 ->setUrl($this->webPageManager->surround($entity->getSlug(), $entity->getLangId()))
                 ->setPermanentUrl('/module/mail-form/'.$entity->getId())
-                ->setTemplate($form['template'], VirtualEntity::FILTER_TAGS)
-                ->setKeywords($form['keywords'], VirtualEntity::FILTER_TAGS)
-                ->setMetaDescription($form['meta_description']. VirtualEntity::FILTER_TAGS)
+                ->setTemplate($form['template'], VirtualEntity::FILTER_HTML)
+                ->setKeywords($form['keywords'], VirtualEntity::FILTER_HTML)
+                ->setMetaDescription($form['meta_description']. VirtualEntity::FILTER_HTML)
                 ->setMessage($form['message']);
 
         return $entity;
