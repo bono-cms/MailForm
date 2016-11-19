@@ -85,7 +85,7 @@ final class Form extends AbstractController
             // Configure view
             $this->loadSitePlugins();
             $this->view->getBreadcrumbBag()
-                       ->addOne($form->getTitle());
+                       ->addOne($form->getName());
 
             return $this->view->render($form->getTemplate(), array(
                 'page' => $form,
