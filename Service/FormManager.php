@@ -231,6 +231,9 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
         // Normalize a slug now
         $form['slug'] = $this->webPageManager->sluggify($form['slug']);
 
+        // Safe type-casting
+        $form['web_page_id'] = (int) $form['web_page_id'];
+
         return $input;
     }
 
@@ -244,8 +247,6 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
     {
         $input = $this->prepareInput($input);
         $form =& $input['form'];
-
-        $form['web_page_id'] = '';
 
         if ($this->formMapper->insert(ArrayUtils::arrayWithout($form, array('slug', 'menu')))) {
             // Add a web page now
