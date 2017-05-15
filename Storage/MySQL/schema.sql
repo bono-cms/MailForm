@@ -8,10 +8,10 @@ CREATE TABLE `bono_module_mailform` (
 	`template` varchar(255) NOT NULL COMMENT 'Framework-compliant template view file',
     `name` varchar(255) NOT NULL,
 	`title` varchar(255) NOT NULL,
-	`description` TEXT NOT NULL,
+	`description` LONGTEXT NOT NULL,
 	`seo` varchar(1) NOT NULL,
 	`keywords` text NOT NULL,
 	`meta_description` TEXT NOT NULL,
-    `message` TEXT COMMENT 'Message template'
+    `message` LONGTEXT COMMENT 'Message template'
 	
 ) DEFAULT CHARSET = UTF8;
