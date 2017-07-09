@@ -122,7 +122,7 @@ defined('KRYSTAL') or die;
 
         <div class="tab-pane fade" id="message" role="tabpanel">
             <div class="well">
-                <?php echo Element::hidden('form[id]', $form->getId()); ?>
+                <?php echo Element::hidden('form[id]', $entity->getId()); ?>
 
                 <div class="alert alert-dismissable alert-info">
                     <button type="button" class="close" data-dismiss="alert">x</button>
@@ -133,7 +133,7 @@ defined('KRYSTAL') or die;
                     <label class="col-lg-2 control-label"><?php $this->show('Template'); ?></label>
                     <div class="col-lg-10">
                         <div class="input-group">
-                            <?php echo Element::text('form[template]', $form->getTemplate(), array('class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file inside current site theme directory'))); ?>
+                            <?php echo Element::text('form[template]', $entity->getTemplate(), array('class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file inside current site theme directory'))); ?>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                         </div>
                     </div>
@@ -142,11 +142,11 @@ defined('KRYSTAL') or die;
                 <div class="form-group">
                     <label class="col-lg-2 control-label"><?php $this->show('Enable SEO'); ?></label>
                     <div class="col-lg-10">
-                        <?php echo Element::checkbox('form[seo]', $form->getSeo(), array('class' => 'form-control')); ?>
+                        <?php echo Element::checkbox('form[seo]', $entity->getSeo(), array('class' => 'form-control')); ?>
                     </div>
                 </div>
 
-                <?php echo Element::textarea('form[message]', $form->getMessage(), array('rows' => '13', 'class' => 'form-control', 'placeholder' => $this->translate('Target message'))); ?>
+                <?php echo Element::textarea('form[message]', $entity->getMessage(), array('rows' => '13', 'class' => 'form-control', 'placeholder' => $this->translate('Target message'))); ?>
             </div>
         </div>
 	</div>
