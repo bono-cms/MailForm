@@ -30,11 +30,11 @@ final class Form extends AbstractController
     /**
      * Creates a form
      * 
-     * @param \Krystal\Stdlib\VirtualEntity $form
+     * @param \Krystal\Stdlib\VirtualEntity|array $form
      * @param string $title
      * @return string
      */
-    private function createForm(VirtualEntity $form, $title)
+    private function createForm($form, $title)
     {
         // Load view plugins
         $this->loadMenuWidget();
@@ -46,7 +46,8 @@ final class Form extends AbstractController
                                        ->addOne($title);
 
         return $this->view->render('form', array(
-            'form' => $form
+            'form' => $form,
+            'new' => is_object($form)
         ));
     }
 
@@ -163,7 +164,7 @@ final class Form extends AbstractController
             )
         ));
 
-        if ($formValidator->isValid()) {
+        if (1) {
             $service = $this->getModuleService('formManager');
 
             if (!empty($input['id'])) {

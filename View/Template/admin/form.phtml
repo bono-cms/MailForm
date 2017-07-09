@@ -1,136 +1,153 @@
-<?php defined('KRYSTAL') or die; ?>
 <?php
 
 use Krystal\Form\HtmlHelper;
 use Krystal\Form\Element;
+use Cms\Service\LanguageManager;
+
+defined('KRYSTAL') or die;
 
 ?>
 
 <form data-group="form">
-	
 	<ul class="nav nav-tabs" role="tablist">
 		<li role="presentation" class="active"><a href="#page" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-file"></i> <?php $this->show('Form'); ?></a></li>
-        <?php if ($extendedMode): ?>
 		<li role="presentation"><a href="#message" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-file"></i> <?php $this->show('Message'); ?></a></li>
-        <?php endif; ?>
-		<li role="presentation"><a href="#menu" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-list"></i> <?php $this->show('Item in menu'); ?></a></li>
+        <li role="presentation"><a href="#menu" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-list"></i> <?php $this->show('Item in menu'); ?></a></li>
 	</ul>
-	
-	<div class="tab-content">
-		<div class="tab-pane fade in active" id="page" role="tabpanel">
-			<div class="well">
-				
-                <?php echo Element::hidden('form[id]', $form->getId()); ?>
-                <?php echo Element::hidden('form[web_page_id]', $form->getWebPageId()); ?>
-                <?php echo Element::hidden('web_page_id', $form->getWebPageId()); ?>
-                
-				<div class="form-group">
-					<label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
-					<div class="col-lg-10">
-						<div class="input-group">
-                            <?php echo Element::text('form[name]', $form->getName(), array('class' => 'form-control', 'placeholder' => $this->translate('Page name'))); ?>
-							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-						</div>
-					</div>
-				</div>
 
-				<div class="form-group <?php HtmlHelper::addOnDemand(!$extendedMode, 'hidden'); ?>">
-					<label class="col-lg-2 control-label"><?php $this->show('Template'); ?></label>
-					<div class="col-lg-10">
-						<div class="input-group">
-                            <?php echo Element::text('form[template]', $form->getTemplate(), array('class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file inside current site theme directory'))); ?>
-							<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-						</div>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<label class="col-lg-2 control-label"><?php $this->show('Description'); ?></label>
-					<div class="col-lg-10">
-						<?php echo Element::textarea('form[description]', $form->getDescription(), array('data-wysiwyg' => 'true')); ?>
-					</div>
-				</div>
-				
-				<div class="options">
-					
-					<div class="form-group">
-						<label class="col-lg-2 control-label"><?php $this->show('Enable SEO'); ?></label>
-						<div class="col-lg-10">
-                            <?php echo Element::checkbox('form[seo]', $form->getSeo(), array('class' => 'form-control')); ?>
-						</div>
-					</div>
-					
-					<div class="form-group">
-						<label class="col-lg-2 control-label"><?php $this->show('Slug'); ?></label>
-						<div class="col-lg-10">
-							<div class="input-group">
-                                <?php echo Element::text('form[slug]', $form->getSlug(), array('class' => 'form-control', 'data-input' => 'slug', 'placeholder' => $this->translate('URL slug for this page. By default is taken from the name'))); ?>
-								<span class="input-group-addon">
-									<a href="#" data-button="slug">
-										<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" title="<?php $this->show('Refresh the slug'); ?>"></i>
-									</a>
-								</span>
-							</div>
-						</div>
-					</div>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="page" role="tabpanel">
+            <div class="well">
 
-                    <div class="form-group">
-                        <label class="col-lg-2 control-label"><?php $this->show('Title'); ?></label>
-                        <div class="col-lg-10">
-                            <div class="input-group">
-                                <?php echo Element::text('form[title]', $form->getTitle(), array('class' => 'form-control', 'data-input' => 'title', 'placeholder' => $this->translate('Page title'))); ?>
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                <?php if (count($languages) > 1): ?>
+                <ul class="nav nav-tabs" role="tablist">
+                    <?php foreach ($languages as $index => $language): ?>
+                    <li role="presentation" class="<?php echo $index == 0 ? 'active' : null; ?>"><a href="<?php printf('#language-%s', $language->getId()); ?>" role="tab" data-toggle="tab"><i class="<?php printf('famfamfam-flag-%s', $language->getFlag()); ?>"></i> <?php echo $language->getName(); ?></a></li>
+                    <?php endforeach; ?>
+                </ul>
+                <?php endif; ?>
+
+                <div class="tab-content">
+                    <?php foreach ($languages as $index => $language): ?>
+                    <?php $entity = LanguageManager::findByLangId($language->getId(), $form); ?>
+
+                    <div class="tab-pane fade in <?php echo $index == 0 ? 'active' : null; ?>" id="<?php printf('language-%s', $language->getId()); ?>" role="tabpanel">
+                        <?php echo Element::hidden(sprintf('translation[%s][id]', $language->getId()), $entity->getId()); ?>
+                        <?php echo Element::hidden(sprintf('translation[%s][web_page_id]', $language->getId()), $entity->getWebPageId()); ?>
+                        <?php echo Element::hidden(sprintf('translation[%s][lang_id]', $language->getId()), $language->getId()); ?>
+
+                        <h2 class="text-muted"><?php echo $language->getName(); ?></h2>
+                        <br />
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <?php echo Element::text(sprintf('translation[%s][name]', $language->getId()), $entity->getName(), array('class' => 'form-control', 'placeholder' => $this->translate('Page name'))); ?>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Description'); ?></label>
+                            <div class="col-lg-10">
+                                <?php echo Element::textarea(sprintf('translation[%s][description]', $language->getId()), $entity->getDescription(), array('data-wysiwyg' => 'true')); ?>
+                            </div>
+                        </div>
+
+                        <div class="options">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label"><?php $this->show('Slug'); ?></label>
+                                <div class="col-lg-10">
+                                    <div class="input-group">
+                                        <?php echo Element::text(sprintf('translation[%s][slug]', $language->getId()), $entity->getSlug(), array('class' => 'form-control', 'data-input' => 'slug', 'placeholder' => $this->translate('URL slug for this page. By default is taken from the name'))); ?>
+                                        <span class="input-group-addon">
+                                            <a href="#" data-button="slug">
+                                                <i class="glyphicon glyphicon-refresh" data-toggle="tooltip" title="<?php $this->show('Refresh the slug'); ?>"></i>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label"><?php $this->show('Title'); ?></label>
+                                <div class="col-lg-10">
+                                    <div class="input-group">
+                                        <?php echo Element::text(sprintf('translation[%s][title]', $language->getId()), $entity->getTitle(), array('class' => 'form-control', 'data-input' => 'title', 'placeholder' => $this->translate('Page title'))); ?>
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label"><?php $this->show('Keywords'); ?></label>
+                                <div class="col-lg-10">
+                                    <?php echo Element::textarea(sprintf('translation[%s][keywords]', $language->getId()), $entity->getKeywords(), array('class' => 'form-control', 'placeholder' => $this->translate('Keywords used for search engines'))); ?>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label"><?php $this->show('Description'); ?></label>
+                                <div class="col-lg-10">
+                                    <?php echo Element::textarea(sprintf('translation[%s][meta_description]', $language->getId()), $entity->getMetaDescription(), array('class' => 'form-control', 'placeholder' => $this->translate('Meta description for search engines'))); ?>
+                                </div>
                             </div>
                         </div>
                     </div>
-					
-					<div class="form-group">
-						<label class="col-lg-2 control-label"><?php $this->show('Keywords'); ?></label>
-						<div class="col-lg-10">
-                            <?php echo Element::textarea('form[keywords]', $form->getKeywords(), array('class' => 'form-control', 'placeholder' => $this->translate('Keywords used for search engines'))); ?>
-						</div>
-					</div>
-					
-					<div class="form-group">
-                        <label class="col-lg-2 control-label"><?php $this->show('Description'); ?></label>
-						<div class="col-lg-10">
-                            <?php echo Element::textarea('form[meta_description]', $form->getMetaDescription(), array('class' => 'form-control', 'placeholder' => $this->translate('Meta description for search engines'))); ?>
-						</div>
-					</div>
-				</div>
+                    <?php endforeach; ?>
+                </div>
 			</div>
-			
-			<?php if (!$form->getId()): ?>
-			
-			<button data-button="add" data-back-url="<?php echo $this->url('MailForm:Admin:Form@editAction', null); ?>" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
-			<button data-button="add-create" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
-			
-			<?php else: ?>
-			
-			<button data-button="save" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
-			<button data-button="save-create" data-back-url="<?php echo $this->url('MailForm:Admin:Form@addAction'); ?>" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
-			
-			<?php endif; ?>
-			
-			<button data-button="options" class="btn btn-primary"><i class="glyphicon glyphicon-open"></i> <?php $this->show('More options'); ?></button>
-			<button data-button="cancel" data-url="<?php echo $this->url('MailForm:Admin:Form@gridAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
-			
+
+            <?php if ($new): ?>
+
+            <button data-button="add" data-back-url="<?php echo $this->url('MailForm:Admin:Form@editAction', null); ?>" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
+            <button data-button="add-create" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
+
+            <?php else: ?>
+
+            <button data-button="save" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
+            <button data-button="save-create" data-back-url="<?php echo $this->url('MailForm:Admin:Form@addAction'); ?>" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
+
+            <?php endif; ?>
+
+            <button data-button="options" class="btn btn-primary"><i class="glyphicon glyphicon-open"></i> <?php $this->show('More options'); ?></button>
+            <button data-button="cancel" data-url="<?php echo $this->url('MailForm:Admin:Form@gridAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
 		</div>
-		
-		<div class="tab-pane fade" id="menu" role="tabpanel">
-			<?php $this->loadPartial('menu-widget'); ?>
+
+        <div class="tab-pane fade" id="menu" role="tabpanel">
+            <?php $this->loadPartial('menu-widget'); ?>
 		</div>
-        
-		<div class="tab-pane fade" id="message" role="tabpanel">
+
+        <div class="tab-pane fade" id="message" role="tabpanel">
             <div class="well">
+                <?php echo Element::hidden('form[id]', $form->getId()); ?>
+
                 <div class="alert alert-dismissable alert-info">
                     <button type="button" class="close" data-dismiss="alert">x</button>
                     <strong><span class="glyphicon glyphicon-ok"></span> <?php $this->show('You can edit the message that you would receive from the form. PHP code is supported'); ?></strong>
                 </div>
-                
+
+                <div class="form-group <?php HtmlHelper::addOnDemand(!$extendedMode, 'hidden'); ?>">
+                    <label class="col-lg-2 control-label"><?php $this->show('Template'); ?></label>
+                    <div class="col-lg-10">
+                        <div class="input-group">
+                            <?php echo Element::text('form[template]', $form->getTemplate(), array('class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file inside current site theme directory'))); ?>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Enable SEO'); ?></label>
+                    <div class="col-lg-10">
+                        <?php echo Element::checkbox('form[seo]', $form->getSeo(), array('class' => 'form-control')); ?>
+                    </div>
+                </div>
+
                 <?php echo Element::textarea('form[message]', $form->getMessage(), array('rows' => '13', 'class' => 'form-control', 'placeholder' => $this->translate('Target message'))); ?>
             </div>
-		</div>
-        
+        </div>
 	</div>
 </form>
