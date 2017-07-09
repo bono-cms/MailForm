@@ -37,7 +37,6 @@ final class Form extends AbstractController
     private function createForm($form, $title)
     {
         // Load view plugins
-        $this->loadMenuWidget();
         $this->view->getPluginBag()
                    ->load($this->getWysiwygPluginName());
 

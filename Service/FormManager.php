@@ -14,15 +14,13 @@ namespace MailForm\Service;
 use Cms\Service\HistoryManagerInterface;
 use Cms\Service\AbstractManager;
 use Cms\Service\WebPageManagerInterface;
-use Menu\Service\MenuWidgetInterface;
-use Menu\Contract\MenuAwareManager;
 use MailForm\Storage\FormMapperInterface;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Stdlib\ArrayUtils;
 use Krystal\Security\Filter;
 use Krystal\Templating\PhpEngine;
 
-final class FormManager extends AbstractManager implements FormManagerInterface, MenuAwareManager
+final class FormManager extends AbstractManager implements FormManagerInterface
 {
     /**
      * Any compliant form mapper
@@ -51,19 +49,16 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
      * @param \MailForm\Storage\FormMapperInterface $formMapper
      * @param \Cms\Service\WebPageManagerInterface $webPageManager
      * @param \Cms\Service\HistoryManagerInterface $historyManager
-     * @param \Menu\Service\MenuWidgetInterface $menuWidget
      * @return void
      */
     public function __construct(
         FormMapperInterface $formMapper,
         WebPageManagerInterface $webPageManager,
-        HistoryManagerInterface $historyManager,
-        MenuWidgetInterface $menuWidget = null
+        HistoryManagerInterface $historyManager
     ){
         $this->formMapper = $formMapper;
         $this->webPageManager = $webPageManager;
         $this->historyManager = $historyManager;
-        $this->setMenuWidget($menuWidget);
     }
 
     /**
@@ -94,14 +89,6 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
         }
 
         return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function fetchNameByWebPageId($webPageId)
-    {
-        return $this->formMapper->fetchNameByWebPageId($webPageId);
     }
 
     /**
