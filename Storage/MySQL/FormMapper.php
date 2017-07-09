@@ -25,6 +25,14 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public static function getTranslationTable()
+    {
+        return self::getWithPrefix('bono_module_mailform_translations');
+    }
+
+    /**
      * Fetches form name by its associated id
      * 
      * @param string $id Form id
