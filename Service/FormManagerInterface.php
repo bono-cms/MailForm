@@ -64,9 +64,10 @@ interface FormManagerInterface
      * Fetches form entity by its associated id
      * 
      * @param string $id
+     * @param boolean $withTranslations Whether to fetch translations
      * @return array
      */
-    public function fetchById($id);
+    public function fetchById($id, $withTranslations);
 
     /**
      * Adds a form

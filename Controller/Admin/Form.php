@@ -73,7 +73,7 @@ final class Form extends AbstractController
      */
     public function editAction($id)
     {
-        $form = $this->getFormManager()->fetchById($id);
+        $form = $this->getFormManager()->fetchById($id, true);
 
         // if $form isn't false, then its must be entity object
         if ($form !== false) {

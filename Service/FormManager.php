@@ -117,7 +117,7 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
                 ->setName($form['name'], VirtualEntity::FILTER_HTML)
                 ->setDescription($form['description'], VirtualEntity::FILTER_SAFE_TAGS)
                 ->setSeo($form['seo'], VirtualEntity::FILTER_BOOL)
-                ->setSlug(Filter::escape($this->webPageManager->fetchSlugByWebPageId($form['web_page_id'])))
+                ->setSlug($form['slug'])
                 ->setUrl($this->webPageManager->surround($entity->getSlug(), $entity->getLangId()))
                 ->setPermanentUrl('/module/mail-form/'.$entity->getId())
                 ->setTemplate($form['template'], VirtualEntity::FILTER_HTML)
@@ -139,21 +139,6 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
     }
 
     /**
-     * Deletes a page
-     * 
-     * @param string $id Form id
-     * @return boolean
-     */
-    private function delete($id)
-    {
-        $webPageId = $this->formMapper->fetchWebPageIdById($id);
-        $this->webPageManager->deleteById($webPageId);
-        $this->formMapper->deleteById($id);
-
-        return true;
-    }
-
-    /**
      * Delete by collection of ids
      * 
      * @param array $ids
@@ -161,11 +146,9 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
      */
     public function deleteByIds(array $ids)
     {
-        foreach ($ids as $id) {
-            $this->delete($id);
-        }
-
+        $this->formMapper->deletePage($ids);
         $this->track('Batch removal of %s mail forms', count($ids));
+
         return true;
     }
 
@@ -177,12 +160,11 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
      */
     public function deleteById($id)
     {
-        $name = $this->formMapper->fetchNameById($id);
+        #$name = $this->formMapper->fetchNameById($id);
 
-        if ($this->delete($id)) {
-            $this->track('Mail form "%s" has been removed', $name);
+        if ($this->formMapper->deletePage($id)) {
+            #$this->track('Mail form "%s" has been removed', $name);
             return true;
-
         } else {
             return false;
         }
@@ -202,39 +184,28 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
      * Fetches form entity by its associated id
      * 
      * @param string $id
+     * @param boolean $withTranslations Whether to fetch translations
      * @return array
      */
-    public function fetchById($id)
+    public function fetchById($id, $withTranslations)
     {
-        return $this->prepareResult($this->formMapper->fetchById($id));
+        if ($withTranslations === true) {
+            return $this->prepareResults($this->formMapper->fetchById($id, true));
+        } else {
+            return $this->prepareResult($this->formMapper->fetchById($id, false));
+        }
     }
 
     /**
-     * Prepares an input before sending to the form mapper
+     * Save a page
      * 
-     * @param array $input Raw input data
-     * @return array Prepared input
+     * @param array $input
+     * @return boolean
      */
-    private function prepareInput(array $input)
+    private function savePage(array $input)
     {
-        $form =& $input['form'];
-
-        // Empty slug is taken from name
-        if (empty($form['slug'])) {
-            $form['slug'] = $form['name'];
-        }
-
-        if (empty($form['title'])) {
-            $form['title'] = $form['name'];
-        }
-
-        // Normalize a slug now
-        $form['slug'] = $this->webPageManager->sluggify($form['slug']);
-
-        // Safe type-casting
-        $form['web_page_id'] = (int) $form['web_page_id'];
-
-        return $input;
+        $data = ArrayUtils::arrayWithout($input['form'], array('slug'));
+        return $this->formMapper->savePage('Mail forms', 'MailForm:Form@indexAction', $data, $input['translation']);
     }
 
     /**
@@ -245,25 +216,8 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
      */
     public function add(array $input)
     {
-        $input = $this->prepareInput($input);
-        $form =& $input['form'];
-
-        if ($this->formMapper->insert(ArrayUtils::arrayWithout($form, array('slug', 'menu')))) {
-            // Add a web page now
-            if ($this->webPageManager->add($this->getLastId(), $form['slug'], 'Mail forms', 'MailForm:Form@indexAction', $this->formMapper)) {
-                if ($this->hasMenuWidget()) {
-                    $this->addMenuItem($this->webPageManager->getLastId(), $form['name'], $input);
-                }
-            }
-
-            $this->track('Mail form "%s" has been created', $form['name']);
-            return true;
-
-        } else {
-            return false;
-        }
-
-        return true;
+        #$this->track('Mail form "%s" has been created', $form['name']);
+        return $this->savePage($input);
     }
 
     /**
@@ -274,23 +228,8 @@ final class FormManager extends AbstractManager implements FormManagerInterface,
      */
     public function update(array $input)
     {
-        $input = $this->prepareInput($input);
-        $form = $input['form'];
-
-        if ($this->formMapper->update(ArrayUtils::arrayWithout($form, array('slug', 'menu')))) {
-
-            $this->webPageManager->update($form['web_page_id'], $form['slug']);
-
-            if ($this->hasMenuWidget() && isset($input['menu'])) {
-                $this->updateMenuItem($form['web_page_id'], $form['name'], $input['menu']);
-            }
-
-            $this->track('Mail form "%s" has been updated', $form['name']);
-            return true;
-
-        } else {
-            return false;
-        }
+        #$this->track('Mail form "%s" has been updated', $form['name']);
+        return $this->savePage($input);
     }
 
     /**

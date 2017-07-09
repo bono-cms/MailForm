@@ -12,6 +12,7 @@
 namespace MailForm\Storage\MySQL;
 
 use Cms\Storage\MySQL\AbstractMapper;
+use Cms\Storage\MySQL\WebPageMapper;
 use MailForm\Storage\FormMapperInterface;
 
 final class FormMapper extends AbstractMapper implements FormMapperInterface
@@ -30,6 +31,31 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
     public static function getTranslationTable()
     {
         return self::getWithPrefix('bono_module_mailform_translations');
+    }
+
+    /**
+     * Return shared columns to be selected
+     * 
+     * @return array
+     */
+    private function getColumns()
+    {
+        return array(
+            self::getFullColumnName('id'),
+            self::getFullColumnName('lang_id', self::getTranslationTable()),
+            self::getFullColumnName('web_page_id', self::getTranslationTable()),
+            self::getFullColumnName('description', self::getTranslationTable()),
+            self::getFullColumnName('template'),
+            self::getFullColumnName('message'),
+            self::getFullColumnName('seo'),
+            self::getFullColumnName('title', self::getTranslationTable()),
+            self::getFullColumnName('name', self::getTranslationTable()),
+            self::getFullColumnName('meta_description', self::getTranslationTable()),
+            self::getFullColumnName('keywords', self::getTranslationTable()),
+
+            // Web page meta columns
+            WebPageMapper::getFullColumnName('slug')
+        );
     }
 
     /**
@@ -92,11 +118,12 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
      * Fetches form data by its associated id
      * 
      * @param string $id Form's id
+     * @param boolean $withTranslations Whether to fetch translations
      * @return array
      */
-    public function fetchById($id)
+    public function fetchById($id, $withTranslations)
     {
-        return $this->findByPk($id);
+        return $this->findWebPage($this->getColumns(), $id, $withTranslations);
     }
 
     /**
@@ -106,12 +133,12 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
      */
     public function fetchAll()
     {
-        return $this->db->select('*')
-                        ->from(static::getTableName())
-                        ->whereEquals('lang_id', $this->getLangId())
-                        ->orderBy('id')
-                        ->desc()
-                        ->queryAll();
+        return $this->createWebPageSelect($this->getColumns())
+                    // Optional attribute filters
+                    ->whereEquals(self::getFullColumnName('lang_id', self::getTranslationTable()), $this->getLangId())
+                    ->orderBy(self::getFullColumnName('id'))
+                    ->desc()
+                    ->queryAll();
     }
 
     /**

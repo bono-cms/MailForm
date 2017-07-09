@@ -57,9 +57,10 @@ interface FormMapperInterface
      * Fetches form data by its associated id
      * 
      * @param string $id Form's id
+     * @param boolean $withTranslations Whether to fetch translations
      * @return array
      */
-    public function fetchById($id);
+    public function fetchById($id, $withTranslations);
 
     /**
      * Fetches all forms

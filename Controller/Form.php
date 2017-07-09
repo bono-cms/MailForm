@@ -79,7 +79,7 @@ final class Form extends AbstractController
      */
     private function showAction($id)
     {
-        $form = $this->getFormManager()->fetchById($id);
+        $form = $this->getFormManager()->fetchById($id, false);
 
         if ($form !== false) {
             // Configure view
