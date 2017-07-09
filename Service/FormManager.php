@@ -192,7 +192,7 @@ final class FormManager extends AbstractManager implements FormManagerInterface
     private function savePage(array $input)
     {
         $data = ArrayUtils::arrayWithout($input['form'], array('slug'));
-        return $this->formMapper->savePage('Mail forms', 'MailForm:Form@indexAction', $data, $input['translation']);
+        return $this->formMapper->savePage('MailForm', 'MailForm:Form@indexAction', $data, $input['translation']);
     }
 
     /**
