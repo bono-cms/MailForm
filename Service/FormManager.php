@@ -62,6 +62,17 @@ final class FormManager extends AbstractManager implements FormManagerInterface
     }
 
     /**
+     * Returns a collection of switching URLs
+     * 
+     * @param string $id Form ID
+     * @return array
+     */
+    public function getSwitchUrls($id)
+    {
+        return $this->formMapper->createSwitchUrls($id, 'MailForm', 'MailForm:Form@indexAction');
+    }
+
+    /**
      * Fetches message view by associated form id
      * 
      * @param string $id Form id

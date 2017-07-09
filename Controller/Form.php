@@ -89,7 +89,8 @@ final class Form extends AbstractController
 
             return $this->view->render($form->getTemplate(), array(
                 'page' => $form,
-                'action' => $this->request->getCurrentUrl()
+                'action' => $this->request->getCurrentUrl(),
+                'languages' => $this->getFormManager()->getSwitchUrls($id)
             ));
 
         } else {
