@@ -45,8 +45,7 @@ final class Form extends AbstractController
                                        ->addOne($title);
 
         return $this->view->render('form', array(
-            'form' => $form,
-            'new' => is_object($form)
+            'form' => $form
         ));
     }
 
