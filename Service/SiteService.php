@@ -60,7 +60,7 @@ final class SiteService implements SiteServiceInterface
      */
     public function render($id)
     {
-        $page = $this->formManager->fetchById($id);
+        $page = $this->formManager->fetchById($id, false);
 
         if ($page !== false) {
             $this->view->disableLayout();
