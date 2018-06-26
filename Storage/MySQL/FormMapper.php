@@ -41,20 +41,20 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
     private function getColumns()
     {
         return array(
-            self::getFullColumnName('id'),
-            self::getFullColumnName('lang_id', self::getTranslationTable()),
-            self::getFullColumnName('web_page_id', self::getTranslationTable()),
-            self::getFullColumnName('description', self::getTranslationTable()),
-            self::getFullColumnName('template'),
-            self::getFullColumnName('message'),
-            self::getFullColumnName('seo'),
-            self::getFullColumnName('title', self::getTranslationTable()),
-            self::getFullColumnName('name', self::getTranslationTable()),
-            self::getFullColumnName('meta_description', self::getTranslationTable()),
-            self::getFullColumnName('keywords', self::getTranslationTable()),
+            self::column('id'),
+            self::column('lang_id', self::getTranslationTable()),
+            self::column('web_page_id', self::getTranslationTable()),
+            self::column('description', self::getTranslationTable()),
+            self::column('template'),
+            self::column('message'),
+            self::column('seo'),
+            self::column('title', self::getTranslationTable()),
+            self::column('name', self::getTranslationTable()),
+            self::column('meta_description', self::getTranslationTable()),
+            self::column('keywords', self::getTranslationTable()),
 
             // Web page meta columns
-            WebPageMapper::getFullColumnName('slug')
+            WebPageMapper::column('slug')
         );
     }
 
@@ -135,8 +135,8 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
     {
         return $this->createWebPageSelect($this->getColumns())
                     // Optional attribute filters
-                    ->whereEquals(self::getFullColumnName('lang_id', self::getTranslationTable()), $this->getLangId())
-                    ->orderBy(self::getFullColumnName('id'))
+                    ->whereEquals(self::column('lang_id', self::getTranslationTable()), $this->getLangId())
+                    ->orderBy(self::column('id'))
                     ->desc()
                     ->queryAll();
     }
