@@ -11,18 +11,15 @@
 
 namespace MailForm\Storage\MySQL;
 
-use Cms\Storage\MySQL\AbstractStorageDropper;
+use Cms\Storage\MySQL\AbstractMapper;
 
-final class Dropper extends AbstractStorageDropper
+final class FormTranslationMapper extends AbstractMapper
 {
     /**
      * {@inheritDoc}
      */
-    protected function getTables()
+    public static function getTableName()
     {
-        return array(
-            FormMapper::getTableName(),
-            FormTranslationMapper::getTableName()
-        );
+        return self::getWithPrefix('bono_module_mailform_translations');
     }
 }

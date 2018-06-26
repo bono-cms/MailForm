@@ -30,7 +30,7 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
      */
     public static function getTranslationTable()
     {
-        return self::getWithPrefix('bono_module_mailform_translations');
+        return FormTranslationMapper::getTableName();
     }
 
     /**
@@ -42,16 +42,16 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
     {
         return array(
             self::column('id'),
-            self::column('lang_id', self::getTranslationTable()),
-            self::column('web_page_id', self::getTranslationTable()),
-            self::column('description', self::getTranslationTable()),
+            FormTranslationMapper::column('lang_id'),
+            FormTranslationMapper::column('web_page_id'),
+            FormTranslationMapper::column('description'),
             self::column('template'),
             self::column('message'),
             self::column('seo'),
-            self::column('title', self::getTranslationTable()),
-            self::column('name', self::getTranslationTable()),
-            self::column('meta_description', self::getTranslationTable()),
-            self::column('keywords', self::getTranslationTable()),
+            FormTranslationMapper::column('title'),
+            FormTranslationMapper::column('name'),
+            FormTranslationMapper::column('meta_description'),
+            FormTranslationMapper::column('keywords'),
 
             // Web page meta columns
             WebPageMapper::column('slug')
@@ -135,7 +135,7 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
     {
         return $this->createWebPageSelect($this->getColumns())
                     // Optional attribute filters
-                    ->whereEquals(self::column('lang_id', self::getTranslationTable()), $this->getLangId())
+                    ->whereEquals(FormTranslationMapper::column('lang_id'), $this->getLangId())
                     ->orderBy(self::column('id'))
                     ->desc()
                     ->queryAll();
