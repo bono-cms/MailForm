@@ -43,5 +43,24 @@ return array(
     '/%s/module/mail-form/tweak' => array(
         'controller' => 'Admin:Form@tweakAction',
         'disallow' => array('guest')
+    ),
+    
+    // Dynamic fields
+    '/%s/module/mail-form/field/add/(:var)' => array(
+        'controller' => 'Admin:Field@addAction'
+    ),
+
+    '/%s/module/mail-form/field/edit/(:var)' => array(
+        'controller' => 'Admin:Field@editAction'
+    ),
+
+    '/%s/module/mail-form/field/save' => array(
+        'controller' => 'Admin:Field@saveAction',
+        'disallow' => array('guest')
+    ),
+
+    '/%s/module/mail-form/field/delete/(:var)' => array(
+        'controller' => 'Admin:Field@deleteAction',
+        'disallow' => array('guest')
     )
 );
