@@ -13,5 +13,20 @@ namespace MailForm\Storage;
 
 interface FieldMapperInterface
 {
-    
+    /**
+     * Fetch field by its ID
+     * 
+     * @param int $id Field ID
+     * @param boolean $withTranslations Whether to fetch translations or not
+     * @return array
+     */
+    public function fetchById($id, $withTranslations);
+
+    /**
+     * Fetch all fields by form ID
+     * 
+     * @param int $formId
+     * @return array
+     */
+    public function fetchAll($formId);
 }

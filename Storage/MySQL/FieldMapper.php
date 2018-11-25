@@ -31,4 +31,49 @@ final class FieldMapper extends AbstractMapper implements FieldMapperInterface
     {
         return FieldTranslationMapper::getTableName();
     }
+
+    /**
+     * Returns shared columns to be selected
+     * 
+     * @return array
+     */
+    private function getColumns()
+    {
+        return array(
+            self::column('id'),
+            self::column('form_id'),
+            self::column('type'),
+            FieldTranslationMapper::column('lang_id'),
+            FieldTranslationMapper::column('name')
+        );
+    }
+
+    /**
+     * Fetch field by its ID
+     * 
+     * @param int $id Field ID
+     * @param boolean $withTranslations Whether to fetch translations or not
+     * @return array
+     */
+    public function fetchById($id, $withTranslations)
+    {
+        return $this->findEntity($this->getColumns(), $id, $withTranslations);
+    }
+
+    /**
+     * Fetch all fields by form ID
+     * 
+     * @param int $formId
+     * @return array
+     */
+    public function fetchAll($formId)
+    {
+        $db = $this->createEntitySelect($this->getColumns())
+                   ->whereEquals(self::column('form_id'), $formId)
+                   ->andWhereEquals(FieldTranslationMapper::column('lang_id'), $this->getLangId())
+                   ->orderBy(self::column('id'))
+                   ->desc();
+
+        return $db->queryAll();
+    }
 }
