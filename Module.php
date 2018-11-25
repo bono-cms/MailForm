@@ -15,6 +15,7 @@ use Cms\AbstractCmsModule;
 use MailForm\Service\FormManager;
 use MailForm\Service\SiteService;
 use MailForm\Service\FieldService;
+use MailForm\Service\FieldValueService;
 
 final class Module extends AbstractCmsModule
 {
@@ -27,6 +28,7 @@ final class Module extends AbstractCmsModule
         $formManager = new FormManager($formMapper, $this->getWebPageManager(), $this->getHistoryManager(), $this->getMenuWidget());
 
         return array(
+            'fieldValueService' => new FieldValueService($this->getMapper('/MailForm/Storage/MySQL/FieldValueMapper')),
             'fieldService' => new FieldService($this->getMapper('/MailForm/Storage/MySQL/FieldMapper')),
             'formManager' => $formManager,
             'siteService' => new SiteService($formManager)
