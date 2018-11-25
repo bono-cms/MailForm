@@ -35,6 +35,7 @@ CREATE TABLE `bono_module_mailform_fields` (
 DROP TABLE IF EXISTS `bono_module_mailform_fields_translations`;
 CREATE TABLE `bono_module_mailform_fields_translations` (
     `id` INT NOT NULL COMMENT 'Field ID',
+	`lang_id` INT NOT NULL COMMENT 'Attached lang ID',
     `name` varchar(255) COMMENT 'Field name',
 
     FOREIGN KEY (id) REFERENCES bono_module_mailform_fields(id) ON DELETE CASCADE
