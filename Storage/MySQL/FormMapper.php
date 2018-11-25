@@ -118,15 +118,4 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
                     ->desc()
                     ->queryAll();
     }
-
-    /**
-     * Deletes a form by its associated id
-     * 
-     * @param string $id
-     * @return boolean
-     */
-    public function deleteById($id)
-    {
-        return $this->deleteByPk($id);
-    }
 }

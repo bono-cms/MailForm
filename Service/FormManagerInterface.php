@@ -54,14 +54,6 @@ interface FormManagerInterface
     public function deleteByIds(array $ids);
 
     /**
-     * Deletes a form by its associated id
-     * 
-     * @param string $id Form id
-     * @return boolean
-     */
-    public function deleteById($id);
-
-    /**
      * Fetches all form entities
      * 
      * @return array
