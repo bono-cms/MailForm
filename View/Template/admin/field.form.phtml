@@ -51,7 +51,7 @@ defined('KRYSTAL') or die;
                 <div class="form-group">
                     <label class="col-lg-2 control-label"><?php $this->show('Type'); ?></label>
                     <div class="col-lg-10">
-                        <?php echo Element::text('field[type]', $entity->getType(), array('class' => 'form-control')); ?>
+                        <?php echo Element::select('field[type]', $this->translateArray($types), $entity->getType(), array('class' => 'form-control')); ?>
                     </div>
                 </div>
             </div>

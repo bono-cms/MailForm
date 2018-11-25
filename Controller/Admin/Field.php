@@ -13,6 +13,7 @@ namespace MailForm\Controller\Admin;
 
 use Cms\Controller\Admin\AbstractController;
 use Krystal\Stdlib\VirtualEntity;
+use MailForm\Collection\FieldTypeCollection;
 
 final class Field extends AbstractController
 {
@@ -38,9 +39,12 @@ final class Field extends AbstractController
                                        ->addOne('Edit the form', $this->createUrl('MailForm:Admin:Form@editAction', array($formId)))
                                        ->addOne($new ? 'Add new field' : 'Edit the field');
 
+        $fTypeCol = new FieldTypeCollection;
+
         return $this->view->render('field.form', array(
             'field' => $field,
-            'new' => $new
+            'new' => $new,
+            'types' => $fTypeCol->getAll()
         ));
     }
 
@@ -97,11 +101,12 @@ final class Field extends AbstractController
     public function saveAction()
     {
         $input = $this->request->getPost();
+        $new = (bool) !$input['field']['id'];
 
         $fieldService = $this->getModuleService('fieldService');
         $fieldService->save($input);
 
-        if ($this->request->getPost('id')) {
+        if (!$new) {
             $this->flashBag->set('success', 'The element has been updated successfully');
             return 1;
         } else {
