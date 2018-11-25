@@ -93,28 +93,6 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
     }
 
     /**
-     * Adds new form
-     * 
-     * @param array $input
-     * @return boolean
-     */
-    public function insert(array $input)
-    {
-        return $this->persist($this->getWithLang($input));
-    }
-
-    /**
-     * Updates a form
-     * 
-     * @param array $input
-     * @return boolean
-     */
-    public function update(array $input)
-    {
-        return $this->persist($input);
-    }
-
-    /**
      * Fetches form data by its associated id
      * 
      * @param string $id Form's id

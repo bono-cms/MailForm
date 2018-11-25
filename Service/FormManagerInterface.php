@@ -75,22 +75,5 @@ interface FormManagerInterface
      * @param boolean $withTranslations Whether to fetch translations
      * @return array
      */
-    public function fetchById($id, $withTranslations);
-
-    /**
-     * Adds a form
-     * 
-     * @param array $input Raw input data
-     * @return boolean
-     */
-    public function add(array $input);
-
-    /**
-     * Updates a form
-     * 
-     * @param array $input Raw input data
-     * @return boolean
-     */
-    public function update(array $input);
-    
+    public function fetchById($id, $withTranslations);    
 }
