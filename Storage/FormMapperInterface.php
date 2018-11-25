@@ -38,21 +38,6 @@ interface FormMapperInterface
      */
     public function updateSeoById($id, $seo);
 
-    /** Adds new form
-     * 
-     * @param array $data
-     * @return boolean
-     */
-    public function insert(array $data);
-
-    /**
-     * Updates a form
-     * 
-     * @param array $data
-     * @return boolean
-     */
-    public function update(array $data);
-
     /**
      * Fetches form data by its associated id
      * 
@@ -68,12 +53,4 @@ interface FormMapperInterface
      * @return array
      */
     public function fetchAll();
-
-    /**
-     * Deletes a form by its associated id
-     * 
-     * @param string $id
-     * @return boolean
-     */
-    public function deleteById($id);
 }
