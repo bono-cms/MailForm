@@ -36,6 +36,14 @@ final class Form extends AbstractController
      */
     private function createForm($form, $title)
     {
+        $new = is_object($form);
+
+        if ($new) {
+            $id = $form->getId();
+        } else {
+            $id = $form[0]->getId();
+        }
+
         // Load view plugins
         $this->view->getPluginBag()
                    ->load($this->getWysiwygPluginName());
@@ -45,7 +53,8 @@ final class Form extends AbstractController
                                        ->addOne($title);
 
         return $this->view->render('form', array(
-            'form' => $form
+            'form' => $form,
+            'fields' => $this->getModuleService('fieldService')->fetchAll($id)
         ));
     }
 
