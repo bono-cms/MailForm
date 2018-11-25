@@ -20,3 +20,22 @@ CREATE TABLE `bono_module_mailform_translations` (
     `meta_description` TEXT NOT NULL
 
 ) DEFAULT CHARSET = UTF8;
+
+/* Dynamic fields */
+DROP TABLE IF EXISTS `bono_module_mailform_fields`;
+CREATE TABLE `bono_module_mailform_fields` (
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Field ID',
+    `form_id` INT NOT NULL COMMENT 'Attached form ID',
+    `type` SMALLINT NOT NULL COMMENT 'Type constant',
+
+    FOREIGN KEY (form_id) REFERENCES bono_module_mailform(id) ON DELETE CASCADE
+
+) DEFAULT CHARSET = UTF8;
+
+DROP TABLE IF EXISTS `bono_module_mailform_fields_translations`;
+CREATE TABLE `bono_module_mailform_fields_translations` (
+    `id` INT NOT NULL COMMENT 'Field ID',
+    `name` varchar(255) COMMENT 'Field name',
+
+    FOREIGN KEY (id) REFERENCES bono_module_mailform_fields(id) ON DELETE CASCADE
+) DEFAULT CHARSET = UTF8;
