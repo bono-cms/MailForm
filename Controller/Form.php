@@ -11,6 +11,7 @@
 
 namespace MailForm\Controller;
 
+use MailForm\Service\FormManager;
 use Site\Controller\AbstractController;
 use Krystal\Validate\Pattern;
 use Krystal\Stdlib\VirtualEntity;
@@ -82,6 +83,9 @@ final class Form extends AbstractController
         $form = $this->getFormManager()->fetchById($id, false);
 
         if ($form !== false) {
+            // Append dynamic fields
+            FormManager::addFields($form, $this->getModuleService('fieldService'), $this->getModuleService('fieldValueService'));
+
             // Configure view
             $this->loadSitePlugins();
             $this->view->getBreadcrumbBag()
