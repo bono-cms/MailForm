@@ -22,6 +22,12 @@ final class FieldTypeCollection extends ArrayCollection
     const TYPE_DATE = 4;
     const TYPE_DATETIME = 5;
     const TYPE_TEXTAREA = 6;
+    const TYPE_SELECT = 7;
+    const TYPE_CHECKBOX_LIST = 8;
+    const TYPE_RADIO_LIST = 9;
+    const TYPE_BOOLEAN = 10;
+    const TYPE_SUBMIT = 11;
+    const TYPE_RESET = 12;
 
     /**
      * {@inheritDoc}
@@ -33,5 +39,11 @@ final class FieldTypeCollection extends ArrayCollection
         self::TYPE_DATE => 'Date',
         self::TYPE_DATETIME => 'Date and time',
         self::TYPE_TEXTAREA => 'Text Area',
+        self::TYPE_SELECT => 'Dropdown',
+        self::TYPE_CHECKBOX_LIST => 'Checkbox list',
+        self::TYPE_RADIO_LIST => 'Radio list',
+        self::TYPE_BOOLEAN => 'Boolean',
+        self::TYPE_SUBMIT => 'Submit',
+        self::TYPE_RESET => 'Reset'
     );
 }
