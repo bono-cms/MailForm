@@ -11,9 +11,9 @@
 
 namespace MailForm\Collection;
 
-use Krystal\Stdlib\ArrayCollection;
+use Krystal\Stdlib\ArrayGroupCollection;
 
-final class FieldTypeCollection extends ArrayCollection
+final class FieldTypeCollection extends ArrayGroupCollection
 {
     /* Common field types used in mail forms */
     const TYPE_TEXT = 1;
@@ -33,17 +33,28 @@ final class FieldTypeCollection extends ArrayCollection
      * {@inheritDoc}
      */
     protected $collection = array(
-        self::TYPE_TEXT => 'Text',
-        self::TYPE_NUMBER => 'Number',
-        self::TYPE_EMAIL => 'Email',
-        self::TYPE_DATE => 'Date',
-        self::TYPE_DATETIME => 'Date and time',
-        self::TYPE_TEXTAREA => 'Text Area',
-        self::TYPE_SELECT => 'Dropdown',
-        self::TYPE_CHECKBOX_LIST => 'Checkbox list',
-        self::TYPE_RADIO_LIST => 'Radio list',
-        self::TYPE_BOOLEAN => 'Boolean',
-        self::TYPE_SUBMIT => 'Submit',
-        self::TYPE_RESET => 'Reset'
+        'Select' => array(
+            self::TYPE_SELECT => 'Dropdown',
+            self::TYPE_CHECKBOX_LIST => 'Checkbox list',
+            self::TYPE_RADIO_LIST => 'Radio list',
+            self::TYPE_BOOLEAN => 'Boolean',
+        ),
+
+        'Date' => array(
+            self::TYPE_DATE => 'Date',
+            self::TYPE_DATETIME => 'Date and time',
+        ),
+
+        'Text' => array(
+            self::TYPE_TEXT => 'Text',
+            self::TYPE_NUMBER => 'Number',
+            self::TYPE_EMAIL => 'Email',
+            self::TYPE_TEXTAREA => 'Text Area',
+        ),
+
+        'Buttons' => array(
+            self::TYPE_SUBMIT => 'Submit',
+            self::TYPE_RESET => 'Reset'
+        )
     );
 }
