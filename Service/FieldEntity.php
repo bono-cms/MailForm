@@ -28,6 +28,18 @@ final class FieldEntity extends VirtualEntity
     }
 
     /**
+     * Checks whether current field represents multi value
+     * 
+     * @return boolean
+     */
+    public function isMultiValue()
+    {
+        return $this->inType(array(
+            FieldTypeCollection::TYPE_CHECKBOX_LIST
+        ));
+    }
+
+    /**
      * Checks whether current field can have a value (or many values)
      * 
      * @return boolean
