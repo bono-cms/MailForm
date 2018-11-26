@@ -1,5 +1,6 @@
 <?php
 
+use Krystal\Grid\Grid;
 use Krystal\Form\Element;
 use Cms\Service\LanguageManager;
 
@@ -10,6 +11,7 @@ defined('KRYSTAL') or die;
 <form data-group="field">
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a href="#field" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-file"></i> <?php $this->show('Field'); ?></a></li>
+        <li role="presentation"><a href="#values" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-file"></i> <?php $this->show('Values'); ?></a></li>
         <li role="presentation"><a href="#configuration" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Configuration'); ?></a></li>
 	</ul>
 
@@ -40,6 +42,45 @@ defined('KRYSTAL') or die;
                     </div>
                     <?php endforeach; ?>
                 </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="values" role="tabpanel">
+            <div class="well">
+                <p>
+                    <a class="btn btn-primary" href="<?= $this->createQueryUrl('MailForm:Admin:FieldValue@addAction', array('form_id' => $entity->getFormId(), 'field_id' => $entity->getId())); ?>"><?php $this->show('Add new value'); ?></a>
+                </p>
+
+                <?= Grid::render($values, array(
+                    // A column to be considered as a primary key
+                    'pk' => 'id',
+                    'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
+                    'columns' => array(
+                        array(
+                            'column' => 'id',
+                            'label' => '#'
+                        ),
+
+                        array(
+                            'column' => 'value',
+                        ),
+
+                        array(
+                            'column' => 'order',
+                        )
+                    ),
+
+                    'actions' => array(
+                        'edit' => function($row){
+                            return Element::icon('glyphicon glyphicon-pencil', $this->url('MailForm:Admin:FieldValue@editAction', $row['id']), array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Edit this value'), 'data-button' => 'edit'));
+                        },
+
+                        'remove' => function($row){
+                            return Element::icon('glyphicon glyphicon-remove', '#', array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Remove this value'), 'data-button' => 'delete', 'data-url' => $this->url('MailForm:Admin:FieldValue@deleteAction', $row['id'])));
+                        }
+                    )
+
+                ), $this->translator); ?>                
             </div>
         </div>
 

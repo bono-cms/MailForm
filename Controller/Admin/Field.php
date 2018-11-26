@@ -32,6 +32,7 @@ final class Field extends AbstractController
             $formId = $field->getFormId();
         } else {
             $formId = $field[0]->getFormId();
+            $fieldId = $field[0]->getFieldId();
         }
 
         // Append breadcrumbs
@@ -44,7 +45,8 @@ final class Field extends AbstractController
         return $this->view->render('field.form', array(
             'field' => $field,
             'new' => $new,
-            'types' => $fTypeCol->getAll()
+            'types' => $fTypeCol->getAll(),
+            'values' => isset($fieldId) ? $this->getModuleService('fieldValueService')->fetchAll($fieldId) : array()
         ));
     }
 
