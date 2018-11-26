@@ -17,6 +17,22 @@ use MailForm\Collection\FieldTypeCollection;
 final class FieldEntity extends VirtualEntity
 {
     /**
+     * Checks whether current field can have a value (or many values)
+     * 
+     * @return boolean
+     */
+    public function canHaveValue()
+    {
+        $supported = array(
+            FieldTypeCollection::TYPE_SELECT,
+            FieldTypeCollection::TYPE_CHECKBOX_LIST,
+            FieldTypeCollection::TYPE_RADIO_LIST
+        );
+
+        return in_array($this->getType(), $supported);
+    }
+
+    /**
      * Checks whether current entity has values
      * 
      * @return boolean
