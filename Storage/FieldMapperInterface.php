@@ -26,7 +26,8 @@ interface FieldMapperInterface
      * Fetch all fields by form ID
      * 
      * @param int $formId
+     * @param boolean $sort Whether to sort fields
      * @return array
      */
-    public function fetchAll($formId);
+    public function fetchAll($formId, $sort);
 }

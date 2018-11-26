@@ -70,11 +70,12 @@ final class FieldService extends AbstractManager
      * Fetch all fields by associated form ID
      * 
      * @param int $formId
+     * @param boolean $sort Whether to sort fields
      * @return array
      */
-    public function fetchAll($formId)
+    public function fetchAll($formId, $sort)
     {
-        return $this->prepareResults($this->fieldMapper->fetchAll($formId));
+        return $this->prepareResults($this->fieldMapper->fetchAll($formId, $sort));
     }
 
     /**

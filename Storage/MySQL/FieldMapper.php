@@ -13,6 +13,7 @@ namespace MailForm\Storage\MySQL;
 
 use Cms\Storage\MySQL\AbstractMapper;
 use MailForm\Storage\FieldMapperInterface;
+use Krystal\Db\Sql\RawSqlFragment;
 
 final class FieldMapper extends AbstractMapper implements FieldMapperInterface
 {
@@ -65,15 +66,24 @@ final class FieldMapper extends AbstractMapper implements FieldMapperInterface
      * Fetch all fields by form ID
      * 
      * @param int $formId
+     * @param boolean $sort Whether to sort fields
      * @return array
      */
-    public function fetchAll($formId)
+    public function fetchAll($formId, $sort)
     {
         $db = $this->createEntitySelect($this->getColumns())
                    ->whereEquals(self::column('form_id'), $formId)
-                   ->andWhereEquals(FieldTranslationMapper::column('lang_id'), $this->getLangId())
-                   ->orderBy(self::column('id'))
-                   ->desc();
+                   ->andWhereEquals(FieldTranslationMapper::column('lang_id'), $this->getLangId());
+
+        if ($sort === false) {
+            $db->orderBy(self::column('id'))
+               ->desc();
+        } else {
+            $db->orderBy(array(
+                self::column('order'),
+                new RawSqlFragment(sprintf('CASE WHEN %s = 0 THEN %s END DESC', self::column('order'), self::column('id')))
+            ));
+        }
 
         return $db->queryAll();
     }
