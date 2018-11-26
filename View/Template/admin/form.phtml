@@ -167,6 +167,10 @@ defined('KRYSTAL') or die;
                                 $typeCol = new FieldTypeCollection();
                                 return $typeCol->findByKey($row['type']);
                             }
+                        ),
+
+                        array(
+                            'column' => 'order',
                         )
                     ),
 
