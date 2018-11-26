@@ -72,7 +72,7 @@ final class FormManager extends AbstractManager implements FormManagerInterface
     public static function addFields(VirtualEntity $form, FieldService $fieldService, FieldValueService $fieldValueService)
     {
         // Fetch all fields by form ID
-        $fields = $fieldService->fetchAll($form->getId());
+        $fields = $fieldService->fetchAll($form->getId(), true);
 
         foreach ($fields as $field) {
             $values = $fieldValueService->fetchList($field->getId());

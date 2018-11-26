@@ -54,7 +54,7 @@ final class Form extends AbstractController
 
         return $this->view->render('form', array(
             'form' => $form,
-            'fields' => $this->getModuleService('fieldService')->fetchAll($id)
+            'fields' => $this->getModuleService('fieldService')->fetchAll($id, false)
         ));
     }
 
