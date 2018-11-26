@@ -48,6 +48,7 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
             self::column('template'),
             self::column('message'),
             self::column('seo'),
+            self::column('captcha'),
             FormTranslationMapper::column('title'),
             FormTranslationMapper::column('name'),
             FormTranslationMapper::column('meta_description'),

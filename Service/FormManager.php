@@ -144,7 +144,8 @@ final class FormManager extends AbstractManager implements FormManagerInterface
                 ->setTemplate($form['template'], VirtualEntity::FILTER_HTML)
                 ->setKeywords($form['keywords'], VirtualEntity::FILTER_HTML)
                 ->setMetaDescription($form['meta_description'], VirtualEntity::FILTER_HTML)
-                ->setMessage($form['message']);
+                ->setMessage($form['message'])
+                ->setCaptcha($form['captcha'], VirtualEntity::FILTER_BOOL);
 
         return $entity;
     }
