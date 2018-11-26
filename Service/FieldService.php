@@ -44,6 +44,7 @@ final class FieldService extends AbstractManager
                ->setLangId($row['lang_id'])
                ->setFormId($row['form_id'])
                ->setType($row['type'])
+               ->setOrder($row['order'])
                ->setName($row['name']);
 
         return $entity;
