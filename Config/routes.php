@@ -62,5 +62,24 @@ return array(
     '/%s/module/mail-form/field/delete/(:var)' => array(
         'controller' => 'Admin:Field@deleteAction',
         'disallow' => array('guest')
+    ),
+
+    // Field values
+    '/%s/module/mail-form/field-value/add/(:var)' => array(
+        'controller' => 'Admin:FieldValue@addAction'
+    ),
+
+    '/%s/module/mail-form/field-value/edit/(:var)' => array(
+        'controller' => 'Admin:FieldValue@editAction'
+    ),
+
+    '/%s/module/mail-form/field-value/save' => array(
+        'controller' => 'Admin:FieldValue@saveAction',
+        'disallow' => array('guest')
+    ),
+
+    '/%s/module/mail-form/field-value/delete/(:var)' => array(
+        'controller' => 'Admin:FieldValue@deleteAction',
+        'disallow' => array('guest')
     )
 );
