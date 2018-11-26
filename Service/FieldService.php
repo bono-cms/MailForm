@@ -11,7 +11,6 @@
 
 namespace MailForm\Service;
 
-use Krystal\Stdlib\VirtualEntity;
 use Cms\Service\AbstractManager;
 use MailForm\Storage\FieldMapperInterface;
 
@@ -40,7 +39,7 @@ final class FieldService extends AbstractManager
      */
     protected function toEntity(array $row)
     {
-        $entity = new VirtualEntity();
+        $entity = new FieldEntity();
         $entity->setId($row['id'])
                ->setLangId($row['lang_id'])
                ->setFormId($row['form_id'])
