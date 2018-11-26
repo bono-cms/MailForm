@@ -70,7 +70,8 @@ final class FieldService extends AbstractManager
                ->setFormId($row['form_id'])
                ->setType($row['type'])
                ->setOrder($row['order'])
-               ->setName($row['name']);
+               ->setName($row['name'])
+               ->setHint($row['hint']);
 
         return $entity;
     }

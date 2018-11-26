@@ -38,6 +38,7 @@ CREATE TABLE `bono_module_mailform_fields_translations` (
     `id` INT NOT NULL COMMENT 'Field ID',
 	`lang_id` INT NOT NULL COMMENT 'Attached lang ID',
     `name` varchar(255) COMMENT 'Field name',
+    `hint` TEXT COMMENT 'Hint or placeholder',
 
     FOREIGN KEY (id) REFERENCES bono_module_mailform_fields(id) ON DELETE CASCADE
 ) DEFAULT CHARSET = UTF8;
