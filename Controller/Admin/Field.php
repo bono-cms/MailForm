@@ -38,6 +38,7 @@ final class Field extends AbstractController
         $fTypeCol = new FieldTypeCollection;
 
         return $this->view->render('field.form', array(
+            'canHaveValue' => $entity->canHaveValue(),
             'field' => $field,
             'new' => $new,
             'types' => $fTypeCol->getAll(),
