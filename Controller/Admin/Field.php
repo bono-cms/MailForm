@@ -32,7 +32,7 @@ final class Field extends AbstractController
             $formId = $field->getFormId();
         } else {
             $formId = $field[0]->getFormId();
-            $fieldId = $field[0]->getFieldId();
+            $fieldId = $field[0]->getId();
         }
 
         // Append breadcrumbs
