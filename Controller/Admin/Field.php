@@ -27,17 +27,12 @@ final class Field extends AbstractController
     {
         $new = is_object($field);
 
-        // Grab ID
-        if ($new) {
-            $formId = $field->getFormId();
-        } else {
-            $formId = $field[0]->getFormId();
-            $fieldId = $field[0]->getId();
-        }
+        // Grab entity
+        $entity = $new ? $field : $field[0];
 
         // Append breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
-                                       ->addOne('Edit the form', $this->createUrl('MailForm:Admin:Form@editAction', array($formId)))
+                                       ->addOne('Edit the form', $this->createUrl('MailForm:Admin:Form@editAction', array($entity->getFormId())))
                                        ->addOne($new ? 'Add new field' : 'Edit the field');
 
         $fTypeCol = new FieldTypeCollection;
@@ -46,7 +41,7 @@ final class Field extends AbstractController
             'field' => $field,
             'new' => $new,
             'types' => $fTypeCol->getAll(),
-            'values' => isset($fieldId) ? $this->getModuleService('fieldValueService')->fetchAll($fieldId) : array()
+            'values' => $entity->getId() ? $this->getModuleService('fieldValueService')->fetchAll($entity->getId()) : array()
         ));
     }
 
