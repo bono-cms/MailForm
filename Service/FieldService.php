@@ -35,6 +35,31 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Create message parameters from input fields
+     * Later on, these ones expected to be rendered in email message template
+     * 
+     * @param array $fields Raw input data
+     * @return array
+     */
+    public function createParams(array $fields)
+    {
+        $ids = array_keys($fields);
+        $entities = $this->fetchByIds($ids);
+
+        // To be returned
+        $output = array();
+
+        foreach ($entities as $entity) {
+            $output[] = array(
+                'name' => $entity->getName(),
+                'value' => $fields[$entity->getId()]
+            );
+        }
+
+        return $output;
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function toEntity(array $row)
