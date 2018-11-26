@@ -51,6 +51,17 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Fetches form entities by their associated IDs
+     * 
+     * @param string $ids
+     * @return array
+     */
+    public function fetchByIds(array $ids)
+    {
+        return $this->prepareResults($this->fieldMapper->fetchByIds($ids));
+    }
+
+    /**
      * Fetch field by ID
      * 
      * @param int $id Field ID

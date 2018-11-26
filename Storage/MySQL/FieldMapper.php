@@ -51,6 +51,22 @@ final class FieldMapper extends AbstractMapper implements FieldMapperInterface
     }
 
     /**
+     * Fetch fields by their IDs
+     * 
+     * @param array $ids Field IDs
+     * @return array
+     */
+    public function fetchByIds(array $ids)
+    {
+        $db = $this->createEntitySelect($this->getColumns())
+                   // Constraints
+                   ->whereIn(self::column(self::PARAM_COLUMN_ID), $ids)
+                   ->andWhereEquals(FieldTranslationMapper::column('lang_id'), $this->getLangId());
+
+        return $db->queryAll();
+    }
+
+    /**
      * Fetch field by its ID
      * 
      * @param int $id Field ID
