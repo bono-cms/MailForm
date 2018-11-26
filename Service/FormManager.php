@@ -75,7 +75,7 @@ final class FormManager extends AbstractManager implements FormManagerInterface
         $fields = $fieldService->fetchAll($form->getId());
 
         foreach ($fields as $field) {
-            $values = $fieldValueService->fetchAll($field->getId());
+            $values = $fieldValueService->fetchList($field->getId());
             // Append values
             $field->setValues($values);
         }

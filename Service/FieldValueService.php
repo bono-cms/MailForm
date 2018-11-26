@@ -12,6 +12,7 @@
 namespace MailForm\Service;
 
 use Krystal\Stdlib\VirtualEntity;
+use Krystal\Stdlib\ArrayUtils;
 use Cms\Service\AbstractManager;
 use MailForm\Storage\FieldValueMapperInterface;
 
@@ -64,6 +65,17 @@ final class FieldValueService extends AbstractManager
         } else {
             return $this->prepareResult($this->fieldValueMapper->fetchById($id, false));
         }
+    }
+
+    /**
+     * Fetch values as a list
+     * 
+     * @param int $fieldId
+     * @return array
+     */
+    public function fetchList($fieldId)
+    {
+        return ArrayUtils::arrayList($this->fieldValueMapper->fetchAll($fieldId), 'id', 'value');
     }
 
     /**
