@@ -17,19 +17,28 @@ use MailForm\Collection\FieldTypeCollection;
 final class FieldEntity extends VirtualEntity
 {
     /**
+     * Checks whether current type belongs to at least one constant in collection
+     * 
+     * @param array $consts
+     * @return boolean
+     */
+    private function inType(array $consts)
+    {
+        return in_array($this->getType(), $consts);
+    }
+
+    /**
      * Checks whether current field can have a value (or many values)
      * 
      * @return boolean
      */
     public function canHaveValue()
     {
-        $supported = array(
+        return $this->inType(array(
             FieldTypeCollection::TYPE_SELECT,
             FieldTypeCollection::TYPE_CHECKBOX_LIST,
             FieldTypeCollection::TYPE_RADIO_LIST
-        );
-
-        return in_array($this->getType(), $supported);
+        ));
     }
 
     /**
@@ -71,11 +80,9 @@ final class FieldEntity extends VirtualEntity
      */
     public function isButton()
     {
-        $types = array(
+        return $this->inType(array(
             FieldTypeCollection::TYPE_SUBMIT,
-            FieldTypeCollection::TYPE_RESET,
-        );
-
-        return in_array($this->getType(), $types);
+            FieldTypeCollection::TYPE_RESET
+        ));
     }
 }
