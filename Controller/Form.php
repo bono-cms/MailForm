@@ -30,16 +30,7 @@ final class Form extends AbstractController
 
         if ($form !== false) {
             if ($this->request->isPost()) {
-                $params = $this->getModuleService('fieldService')->createParams($this->request->getPost('field'));
-
-                // Generate rules depending on CAPTCHA requirement
-                if ($form->getCaptcha()) {
-                    $rules = ValidationParser::createProtected($params, $this->request, $this->captcha);
-                } else {
-                    $rules = ValidationParser::createStandart($params);
-                }
-
-                return $this->submitAction($id, $rules);
+                return $this->submitAction($form);
             } else {
                 return $this->showAction($form);
             }
@@ -51,15 +42,17 @@ final class Form extends AbstractController
     }
 
     /**
-     * Shows a partial form (without layout)
+     * Handles a partial form (without layout)
      * 
      * @param string $id Form id
      * @return string
      */
     public function partialAction($id)
     {
-        if ($this->request->isPost()) {
-            return $this->submitAction($id);
+        $form = $this->getFormManager()->fetchById($id, false);
+
+        if ($form && $this->request->isPost()) {
+            return $this->submitAction($form);
         } else {
             return 'Invalid request';
         }
@@ -91,17 +84,25 @@ final class Form extends AbstractController
     /**
      * Submits a form
      *  
-     * @param string $id Form id
-     * @param array $rules Validation rules
+     * @param \Krystal\Stdlib\VirtualEntity $form
      * @return string
      */
-    private function submitAction($id, array $rules)
+    private function submitAction(VirtualEntity $form)
     {
+        $params = $this->getModuleService('fieldService')->createParams($this->request->getPost('field'));
+
+        // Generate rules depending on CAPTCHA requirement
+        if ($form->getCaptcha()) {
+            $rules = ValidationParser::createProtected($params, $this->request, $this->captcha);
+        } else {
+            $rules = ValidationParser::createStandart($params);
+        }
+
         $formValidator = $this->createValidator($rules);
 
         if ($formValidator->isValid()) {
             // It's time to send a message
-            if ($this->sendMessage($id, $this->request->getPost())) {
+            if ($this->sendMessage($form->getId(), $this->request->getPost())) {
                 $this->flashBag->set('success', 'Your message has been sent!');
             } else {
                 $this->flashBag->set('warning', 'Could not send your message. Please again try later');
