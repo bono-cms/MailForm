@@ -35,6 +35,26 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Normalize error messages
+     * 
+     * @param $string Error JSON string
+     * @return array
+     */
+    public static function normalizeErrors($string)
+    {
+        $errors = json_decode($string, true);
+
+        foreach ($errors as $key => $message) {
+            if (is_numeric($key)) {
+                $errors[sprintf('field[%s]', $key)] = $message;
+                unset($errors[$key]);
+            }
+        }
+
+        return json_encode($errors);
+    }
+
+    /**
      * Create message parameters from input fields
      * Later on, these ones expected to be rendered in email message template
      * 
@@ -51,8 +71,11 @@ final class FieldService extends AbstractManager
 
         foreach ($entities as $entity) {
             $output[] = array(
-                'name' => $entity->getName(),
-                'value' => $fields[$entity->getId()]
+                'name' => $entity->getName(), // Field name
+                'value' => $fields[$entity->getId()], // Input value
+                'id' => $entity->getId(), // Field ID
+                'required' => $entity->getRequired(), // Whether this field is a must
+                'error' => $entity->getError() // Error message, not error itself
             );
         }
 
