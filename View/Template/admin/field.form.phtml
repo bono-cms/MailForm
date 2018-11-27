@@ -61,6 +61,17 @@ defined('KRYSTAL') or die;
                                 </div>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('On error'); ?></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <?php echo Element::textarea(sprintf('translation[%s][error]', $language->getId()), $entity->getError(), array('class' => 'form-control', 'placeholder' => $this->translate('Error message'))); ?>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                     <?php endforeach; ?>
                 </div>
