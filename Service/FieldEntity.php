@@ -148,6 +148,16 @@ final class FieldEntity extends VirtualEntity
     }
 
     /**
+     * Checks whether current field is simple (i.e input text like)
+     * 
+     * @return boolean
+     */
+    public function isSimple()
+    {
+        return $this->inType(FieldTypeCollection::getSimpleTypes());
+    }
+
+    /**
      * Checks whether current field represents multi value
      * 
      * @return boolean
