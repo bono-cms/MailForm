@@ -130,6 +130,13 @@ defined('KRYSTAL') or die;
                 </div>
 
                 <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Enable CAPTCHA'); ?></label>
+                    <div class="col-lg-10">
+                        <?php echo Element::checkbox('form[captcha]', $entity->getCaptcha(), array('class' => 'form-control')); ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="col-lg-2 control-label"><?php $this->show('Enable SEO'); ?></label>
                     <div class="col-lg-10">
                         <?php echo Element::checkbox('form[seo]', $entity->getSeo(), array('class' => 'form-control')); ?>
