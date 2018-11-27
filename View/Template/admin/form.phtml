@@ -178,6 +178,20 @@ defined('KRYSTAL') or die;
 
                         array(
                             'column' => 'order',
+                        ),
+
+                        array(
+                            'column' => 'required',
+                            'label' => 'Required to be filled in',
+                            'translateable' => true,
+                            'value' => function($entity) {
+                                if ($entity->isButton()) {
+                                    // Buttons can't be required by definition
+                                    return ' - ';
+                                } else {
+                                    return $entity->getRequired() ? 'Yes' : 'No';
+                                }
+                            }
                         )
                     ),
 

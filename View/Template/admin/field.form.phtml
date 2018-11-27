@@ -102,6 +102,13 @@ defined('KRYSTAL') or die;
                 <?php echo Element::hidden('field[form_id]', $entity->getFormId()); ?>
 
                 <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Required to be filled in'); ?></label>
+                    <div class="col-lg-10">
+                        <?php echo Element::checkbox('field[required]', $entity->getRequired(), array('class' => 'form-control', 'disabled' => $entity->isButton())); ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
                     <div class="col-lg-10">
                         <?php echo Element::number('field[order]', $entity->getOrder(), array('class' => 'form-control', 'min' => 0)); ?>
