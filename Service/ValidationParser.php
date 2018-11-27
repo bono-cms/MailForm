@@ -19,6 +19,26 @@ use Krystal\Validate\Pattern\Captcha as CaptchaPattern;
 final class ValidationParser
 {
     /**
+     * Normalize error messages
+     * 
+     * @param $string Error JSON string
+     * @return array
+     */
+    public static function normalizeErrors($string)
+    {
+        $errors = json_decode($string, true);
+
+        foreach ($errors as $key => $message) {
+            if (is_numeric($key)) {
+                $errors[sprintf('field[%s]', $key)] = $message;
+                unset($errors[$key]);
+            }
+        }
+
+        return json_encode($errors);
+    }
+
+    /**
      * Create validation rules depending on columns
      * 
      * @param array $fields
