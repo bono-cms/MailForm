@@ -45,6 +45,7 @@ final class FieldMapper extends AbstractMapper implements FieldMapperInterface
             self::column('form_id'),
             self::column('type'),
             self::column('order'),
+            self::column('required'),
             FieldTranslationMapper::column('lang_id'),
             FieldTranslationMapper::column('name'),
             FieldTranslationMapper::column('hint')

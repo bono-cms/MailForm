@@ -70,6 +70,7 @@ final class FieldService extends AbstractManager
                ->setFormId($row['form_id'])
                ->setType($row['type'])
                ->setOrder($row['order'])
+               ->setRequired($row['required'], FieldEntity::FILTER_BOOL)
                ->setName($row['name'])
                ->setHint($row['hint']);
 
