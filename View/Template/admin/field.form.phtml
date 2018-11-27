@@ -142,6 +142,13 @@ defined('KRYSTAL') or die;
                         <?php echo Element::select('field[type]', $this->translateArray($types), $entity->getType(), array('class' => 'form-control')); ?>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Column'); ?></label>
+                    <div class="col-lg-10">
+                        <?php echo Element::number('field[column]', $entity->getColumn(), array('class' => 'form-control', 'min' => 0, 'placeholder' => $this->translate('Optional column to handle rendering'))); ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
