@@ -62,29 +62,6 @@ final class FormManager extends AbstractManager implements FormManagerInterface
     }
 
     /**
-     * Append dynamic fields on form entity
-     * 
-     * @param \Krystal\Stdlib\VirtualEntity $form
-     * @param \MailForm\Service\FieldService $fieldService
-     * @param \MailForm\Service\FieldValueService $fieldValueService
-     * @return void
-     */
-    public static function addFields(VirtualEntity $form, FieldService $fieldService, FieldValueService $fieldValueService)
-    {
-        // Fetch all fields by form ID
-        $fields = $fieldService->fetchAll($form->getId(), true);
-
-        foreach ($fields as $field) {
-            $values = $fieldValueService->fetchList($field->getId());
-            // Append values
-            $field->setValues($values);
-        }
-
-        // Finally, append prepared fields with their values
-        $form->setFields($fields);
-    }
-
-    /**
      * Returns a collection of switching URLs
      * 
      * @param string $id Form ID

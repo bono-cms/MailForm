@@ -13,7 +13,6 @@ namespace MailForm\Controller;
 
 use Krystal\Stdlib\VirtualEntity;
 use Site\Controller\AbstractController;
-use MailForm\Service\FormManager;
 use MailForm\Service\ValidationParser;
 
 final class Form extends AbstractController
@@ -75,7 +74,7 @@ final class Form extends AbstractController
     private function showAction(VirtualEntity $form)
     {
         // Append dynamic fields
-        FormManager::addFields($form, $this->getModuleService('fieldService'), $this->getModuleService('fieldValueService'));
+        $this->getModuleService('fieldService')->addFields($form, $this->getModuleService('fieldValueService'));
 
         // Configure view
         $this->loadSitePlugins();

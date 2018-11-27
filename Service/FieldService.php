@@ -11,6 +11,7 @@
 
 namespace MailForm\Service;
 
+use Krystal\Stdlib\VirtualEntity;
 use Cms\Service\AbstractManager;
 use MailForm\Storage\FieldMapperInterface;
 
@@ -32,6 +33,28 @@ final class FieldService extends AbstractManager
     public function __construct(FieldMapperInterface $fieldMapper)
     {
         $this->fieldMapper = $fieldMapper;
+    }
+
+    /**
+     * Append dynamic fields on form entity
+     * 
+     * @param \Krystal\Stdlib\VirtualEntity $form
+     * @param \MailForm\Service\FieldValueService $fieldValueService
+     * @return void
+     */
+    public function addFields(VirtualEntity $form, FieldValueService $fieldValueService)
+    {
+        // Fetch all fields by form ID
+        $fields = $this->fetchAll($form->getId(), true);
+
+        foreach ($fields as $field) {
+            $values = $fieldValueService->fetchList($field->getId());
+            // Append values
+            $field->setValues($values);
+        }
+
+        // Finally, append prepared fields with their values
+        $form->setFields($fields);
     }
 
     /**
