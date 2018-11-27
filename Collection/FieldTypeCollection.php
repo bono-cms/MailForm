@@ -57,4 +57,20 @@ final class FieldTypeCollection extends ArrayGroupCollection
             self::TYPE_RESET => 'Reset'
         )
     );
+
+    /**
+     * Returns simple types
+     * 
+     * @return array
+     */
+    public static function getSimpleTypes()
+    {
+        return array(
+            self::TYPE_TEXT,
+            self::TYPE_NUMBER,
+            self::TYPE_EMAIL,
+            self::TYPE_DATE,
+            self::TYPE_DATETIME
+        );
+    }
 }
