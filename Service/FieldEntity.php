@@ -80,7 +80,7 @@ final class FieldEntity extends VirtualEntity
      * 
      * @return boolean
      */
-    public function isInput()
+    public function isInputType()
     {
         return !$this->isButton();
     }
@@ -90,7 +90,7 @@ final class FieldEntity extends VirtualEntity
      * 
      * @return boolean
      */
-    public function isButton()
+    public function isButtonType()
     {
         return $this->inType(array(
             FieldTypeCollection::TYPE_SUBMIT,
