@@ -5,7 +5,8 @@ CREATE TABLE `bono_module_mailform` (
     `template` varchar(255) NOT NULL COMMENT 'Framework-compliant template view file',
     `seo` varchar(1) NOT NULL,
     `message` LONGTEXT COMMENT 'Message template',
-    `captcha` BOOLEAN NOT NULL COMMENT 'Whether this form is protected by CAPTCHA'
+    `captcha` BOOLEAN NOT NULL COMMENT 'Whether this form is protected by CAPTCHA',
+    `subject` varchar(255) NOT NULL COMMENT 'Subject with opt.variables'
 ) DEFAULT CHARSET = UTF8;
 
 DROP TABLE IF EXISTS `bono_module_mailform_translations`;
