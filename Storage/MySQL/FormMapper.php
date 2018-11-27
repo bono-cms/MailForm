@@ -11,6 +11,7 @@
 
 namespace MailForm\Storage\MySQL;
 
+use Krystal\Db\Sql\RawSqlFragment;
 use Cms\Storage\MySQL\AbstractMapper;
 use Cms\Storage\MySQL\WebPageMapper;
 use MailForm\Storage\FormMapperInterface;
@@ -112,11 +113,20 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
      */
     public function fetchAll()
     {
-        return $this->createWebPageSelect($this->getColumns())
-                    // Optional attribute filters
+        $columns = $this->getColumns();
+        $columns[] = new RawSqlFragment(sprintf('COUNT(%s) AS field_count', FieldMapper::column('id')));
+
+        $db = $this->createWebPageSelect($columns)
+                    // Field relation
+                    ->leftJoin(FieldMapper::getTableName(), array(
+                        FieldMapper::column('form_id') => self::getRawColumn('id')
+                    ))
+                    // Constraints
                     ->whereEquals(FormTranslationMapper::column('lang_id'), $this->getLangId())
+                    ->groupBy($this->getColumns())
                     ->orderBy(self::column('id'))
-                    ->desc()
-                    ->queryAll();
+                    ->desc();
+
+        return $db->queryAll();
     }
 }
