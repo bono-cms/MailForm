@@ -73,7 +73,8 @@ final class FieldService extends AbstractManager
                ->setRequired($row['required'], FieldEntity::FILTER_BOOL)
                ->setName($row['name'])
                ->setHint($row['hint'])
-               ->setDefault($row['default']);
+               ->setDefault($row['default'])
+               ->setError($row['error']);
 
         return $entity;
     }
