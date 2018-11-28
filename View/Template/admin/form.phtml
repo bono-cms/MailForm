@@ -143,6 +143,7 @@ defined('KRYSTAL') or die;
 
                     <div class="col-lg-5">
                         <div class="alert alert-danger">
+                            <?php if (!empty($subjectVars)): ?>
                             <p><?php $this->show('You can use the following subject variables'); ?>: </p>
                             <br />
 
@@ -151,6 +152,10 @@ defined('KRYSTAL') or die;
                                 <li><?= $subjectVar; ?> - <?= $varName; ?></li>
                                 <?php endforeach; ?>
                             </ul>
+                            <?php else: ?>
+
+                            <p><?php $this->show('There must be at lease one text field created to make use of variables in the subject'); ?></p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
