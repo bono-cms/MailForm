@@ -14,6 +14,7 @@ namespace MailForm\Controller;
 use Krystal\Stdlib\VirtualEntity;
 use Site\Controller\AbstractController;
 use MailForm\Service\ValidationParser;
+use MailForm\Service\FieldService;
 
 final class Form extends AbstractController
 {
@@ -101,8 +102,11 @@ final class Form extends AbstractController
         $formValidator = $this->createValidator($rules);
 
         if ($formValidator->isValid()) {
+            // Prepare subject
+            $subject = FieldService::createSubject($params, $form->getSubject());
+
             // It's time to send a message
-            if ($this->sendMessage($form->getId(), $this->request->getPost())) {
+            if ($this->sendMessage($form->getId(), $subject, $this->request->getPost())) {
                 $this->flashBag->set('success', 'Your message has been sent!');
             } else {
                 $this->flashBag->set('warning', 'Could not send your message. Please again try later');
@@ -118,22 +122,19 @@ final class Form extends AbstractController
      * Sends a message from the input
      * 
      * @param string $id Form id
+     * @param string $subject Message subject
      * @param array $input
      * @throws \RuntimeException If can't fetch message view by associated page id
      * @return boolean
      */
-    private function sendMessage($id, array $input)
+    private function sendMessage($id, $subject, array $input)
     {
-        $message = $this->getFormManager()->fetchMessageViewById($id, array(
+        $body = $this->getFormManager()->fetchMessageViewById($id, array(
             'input' => $input
         ));
 
-        // Prepare a subject
-        $subject = $this->translator->translate('You received a new message');
-
         // Grab mailer service
-        $mailer = $this->getService('Cms', 'mailer');
-        return $mailer->send($subject, $message);
+        return $this->getService('Cms', 'mailer')->send($subject, $body);
     }
 
     /**
