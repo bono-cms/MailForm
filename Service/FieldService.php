@@ -160,9 +160,12 @@ final class FieldService extends AbstractManager
         $output = array();
 
         foreach ($entities as $entity) {
+            // Current input value
+            $value = $fields[$entity->getId()];
+
             $output[] = array(
                 'name' => $entity->getName(), // Field name
-                'value' => $fields[$entity->getId()], // Input value
+                'value' => is_array($value) ? implode(', ', $value) : $value, // Always convert to readable string
                 'id' => $entity->getId(), // Field ID
                 'type' => $entity->getType(), // Type constant
                 'required' => $entity->getRequired(), // Whether this field is a must
