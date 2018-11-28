@@ -12,8 +12,10 @@
 namespace MailForm\Service;
 
 use Krystal\Stdlib\VirtualEntity;
+use Krystal\Templating\StringTemplate;
 use Cms\Service\AbstractManager;
 use MailForm\Storage\FieldMapperInterface;
+use MailForm\Collection\FieldTypeCollection;
 
 final class FieldService extends AbstractManager
 {
@@ -58,6 +60,27 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Prepares message subject substituting variables with their corresponding values
+     * 
+     * @param array $params
+     * @param string $rawSubject Subject with variables
+     * @return array
+     */
+    public static function createSubject(array $params, $rawSubject)
+    {
+        $vars = array(); // Variables to be used
+
+        foreach ($params as $field) {
+            // Filter by simple types
+            if (in_array($field['type'], FieldTypeCollection::getSimpleTypes())) {
+                $vars[$field['id']] = $field['value'];
+            }
+        }
+
+        return StringTemplate::template($rawSubject, $vars);
+    }
+
+    /**
      * Create message parameters from input fields
      * Later on, these ones expected to be rendered in email message template
      * 
@@ -77,6 +100,7 @@ final class FieldService extends AbstractManager
                 'name' => $entity->getName(), // Field name
                 'value' => $fields[$entity->getId()], // Input value
                 'id' => $entity->getId(), // Field ID
+                'type' => $entity->getType(), // Type constant
                 'required' => $entity->getRequired(), // Whether this field is a must
                 'error' => $entity->getError() // Error message, not error itself
             );
