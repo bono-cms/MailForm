@@ -13,6 +13,7 @@ namespace MailForm\Service;
 
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Templating\StringTemplate;
+use Krystal\Stdlib\ArrayUtils;
 use Cms\Service\AbstractManager;
 use MailForm\Storage\FieldMapperInterface;
 use MailForm\Collection\FieldTypeCollection;
@@ -35,6 +36,17 @@ final class FieldService extends AbstractManager
     public function __construct(FieldMapperInterface $fieldMapper)
     {
         $this->fieldMapper = $fieldMapper;
+    }
+
+    /**
+     * Group fields entities by their column values
+     * 
+     * @param array $fields Field entities
+     * @return array
+     */
+    public static function groupFields(array $fields)
+    {
+        return ArrayUtils::arrayPartition($fields, 'column');
     }
 
     /**
