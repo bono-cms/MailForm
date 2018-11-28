@@ -18,7 +18,6 @@ use MailForm\Storage\FormMapperInterface;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Stdlib\ArrayUtils;
 use Krystal\Security\Filter;
-use Krystal\Templating\PhpEngine;
 
 final class FormManager extends AbstractManager implements FormManagerInterface
 {
@@ -70,19 +69,6 @@ final class FormManager extends AbstractManager implements FormManagerInterface
     public function getSwitchUrls($id)
     {
         return $this->formMapper->createSwitchUrls($id, 'MailForm', 'MailForm:Form@indexAction');
-    }
-
-    /**
-     * Fetches message view by associated form id
-     * 
-     * @param string $id Form id
-     * @param array $vars Message variables
-     * @return string
-     */
-    public function fetchMessageViewById($id, array $vars = array())
-    {
-        $code = $this->formMapper->fetchMessageViewById($id);
-        return PhpEngine::execute($code, $vars);
     }
 
     /**
