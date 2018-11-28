@@ -42,7 +42,17 @@ defined('KRYSTAL') or die;
                                 </div>
                             </div>
                         </div>
-                        
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Flash message'); ?></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <?php echo Element::text(sprintf('translation[%s][flash]', $language->getId()), $entity->getFlash(), array('class' => 'form-control', 'placeholder' => $this->translate('Flash message after form submission. If empty, default is used'))); ?>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label class="col-lg-2 control-label"><?php $this->show('Description'); ?></label>
                             <div class="col-lg-10">
