@@ -60,6 +60,26 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Create subject variables
+     * 
+     * @param array $field Field entities
+     * @return array
+     */
+    public static function createSubjectVars(array $fields)
+    {
+        $output = array();
+
+        foreach ($fields as $field) {
+            if ($field->isSimple()) {
+                $key = StringTemplate::wrap($field->getId());
+                $output[$key] = $field->getName();
+            }
+        }
+
+        return $output;
+    }
+
+    /**
      * Prepares message subject substituting variables with their corresponding values
      * 
      * @param array $params
