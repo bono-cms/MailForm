@@ -110,7 +110,8 @@ final class Form extends AbstractController
 
             // It's time to send a message
             if ($this->getService('Cms', 'mailer')->send($subject, $body)) {
-                $this->flashBag->set('success', 'Your message has been sent!');
+                // Use explicit flash message if provided, otherwise fallback to default one
+                $this->flashBag->set('success', $form->getFlash() ? $form->getFlash() : 'Your message has been sent!');
             } else {
                 $this->flashBag->set('warning', 'Could not send your message. Please again try later');
             }
