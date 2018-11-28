@@ -27,7 +27,7 @@ final class Form extends AbstractController
     public function indexAction($id)
     {
         // Grab form entity by its ID
-        $form = $this->getFormManager()->fetchById($id, false);
+        $form = $this->getModuleService('formManager')->fetchById($id, false);
 
         if ($form !== false) {
             if ($this->request->isPost()) {
@@ -50,7 +50,7 @@ final class Form extends AbstractController
      */
     public function partialAction($id)
     {
-        $form = $this->getFormManager()->fetchById($id, false);
+        $form = $this->getModuleService('formManager')->fetchById($id, false);
 
         if ($form && $this->request->isPost()) {
             return $this->submitAction($form);
@@ -78,7 +78,7 @@ final class Form extends AbstractController
         return $this->view->render($form->getTemplate(), array(
             'page' => $form,
             'action' => $this->request->getCurrentUrl(),
-            'languages' => $this->getFormManager()->getSwitchUrls($form->getId())
+            'languages' => $this->getModuleService('formManager')->getSwitchUrls($form->getId())
         ));
     }
 
@@ -119,15 +119,5 @@ final class Form extends AbstractController
         } else {
             return ValidationParser::normalizeErrors($formValidator->getErrors());
         }
-    }
-
-    /**
-     * Returns form manager
-     * 
-     * @return \MailForm\Service\FormManager
-     */
-    private function getFormManager()
-    {
-        return $this->getModuleService('formManager');
     }
 }
