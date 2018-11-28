@@ -38,6 +38,38 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Extract column numbers from field entities
+     * 
+     * @param array $fields Field entities
+     * @return array
+     */
+    private static function extractColumns(array $fields)
+    {
+        $columns = array();
+
+        foreach ($fields as $field) {
+            // Don't append duplicate values
+            if (!in_array($field->getColumn(), $columns)) {
+                $columns[] = $field->getColumn();
+            }
+        }
+
+        return $columns;
+    }
+
+    /**
+     * Checks whether fields have at lease two distinct columns
+     * 
+     * @param array $fields Field entities
+     * @return boolean
+     */
+    public static function hasColumns(array $fields)
+    {
+        $columns = self::extractColumns($fields);
+        return count($columns) > 1;
+    }
+
+    /**
      * Append dynamic fields on form entity
      * 
      * @param \Krystal\Stdlib\VirtualEntity $form
