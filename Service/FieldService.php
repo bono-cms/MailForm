@@ -39,6 +39,31 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Create message template
+     * 
+     * @param int $formId
+     * @param string $before Text to be inserted before
+     * @param string $after Text to be inserted after
+     * @return string
+     */
+    public function createMessageTemplate($formId, $before = null, $after = null)
+    {
+        $fields = $this->fetchList($formId);
+
+        // Target message
+        $message = null;
+        $message .= $before;
+
+        foreach ($fields as $id => $name) {
+            $message .= sprintf('%s : %s', $name, StringTemplate::wrap($id)) . PHP_EOL;
+        }
+
+        $message .= $after;
+
+        return $message;
+    }
+
+    /**
      * Group fields entities by their column values
      * 
      * @param array $fields Field entities
