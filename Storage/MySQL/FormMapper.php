@@ -55,6 +55,7 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
             FormTranslationMapper::column('name'),
             FormTranslationMapper::column('meta_description'),
             FormTranslationMapper::column('keywords'),
+            FormTranslationMapper::column('flash'),
 
             // Web page meta columns
             WebPageMapper::column('slug')
