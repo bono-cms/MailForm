@@ -71,7 +71,8 @@ final class Form extends AbstractController
     {
         $form = new VirtualEntity();
         $form->setSeo(true)
-             ->setMessageView('message');
+             ->setMessageView('message')
+             ->setSubject($this->translator->translate('You have received a new message'));
 
         return $this->createForm($form, 'Add a form');
     }
