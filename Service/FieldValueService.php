@@ -45,6 +45,7 @@ final class FieldValueService extends AbstractManager
         $entity->setId($row['id'])
                ->setLangId($row['lang_id'])
                ->setFieldId($row['field_id'])
+               ->setFormId($row['form_id'])
                ->setOrder($row['order'])
                ->setValue($row['value']);
 

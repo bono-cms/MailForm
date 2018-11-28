@@ -33,19 +33,29 @@ final class FieldValueMapper extends AbstractMapper implements FieldValueMapperI
     }
 
     /**
-     * Returns shared columns to be selected
+     * Creates shared select object
      * 
-     * @return array
+     * @return \Krystal\Db\Sql\Db
      */
-    private function getColumns()
+    private function createSelect()
     {
-        return array(
+        // To be selected
+        $columns = array(
             self::column('id'),
             self::column('field_id'),
             self::column('order'),
+            FieldMapper::column('form_id'),
             FieldValueTranslationMapper::column('lang_id'),
             FieldValueTranslationMapper::column('value')
         );
+
+        $db = $this->createEntitySelect($columns)
+                   // Field relation
+                   ->leftJoin(FieldMapper::getTableName(), array(
+                        FieldMapper::column('id') => self::getRawColumn('field_id')
+                   ));
+
+        return $db;
     }
 
     /**
@@ -57,7 +67,15 @@ final class FieldValueMapper extends AbstractMapper implements FieldValueMapperI
      */
     public function fetchById($id, $withTranslations)
     {
-        return $this->findEntity($this->getColumns(), $id, $withTranslations);
+        $db = $this->createSelect()
+                   ->whereEquals(self::column('id'), $id);
+
+        if ($withTranslations === true) {
+            return $db->queryAll();
+        } else {
+            return $db->andWhereEquals(FieldValueTranslationMapper::column('lang_id'), $this->getLangId())
+                      ->query();
+        }
     }
 
     /**
@@ -68,7 +86,7 @@ final class FieldValueMapper extends AbstractMapper implements FieldValueMapperI
      */
     public function fetchAll($fieldId)
     {
-        $db = $this->createEntitySelect($this->getColumns())
+        $db = $this->createSelect()
                    ->whereEquals(self::column('field_id'), $fieldId)
                    ->andWhereEquals(FieldValueTranslationMapper::column('lang_id'), $this->getLangId())
                    ->orderBy(self::column('id'))
