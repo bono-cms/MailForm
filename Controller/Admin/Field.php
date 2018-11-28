@@ -55,7 +55,8 @@ final class Field extends AbstractController
     public function addAction($formId)
     {
         $form = new VirtualEntity();
-        $form->setFormId($formId);
+        $form->setFormId($formId)
+             ->setType(FieldTypeCollection::TYPE_TEXT); // Set text type by default
 
         return $this->createForm($form);
     }
