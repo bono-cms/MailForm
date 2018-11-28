@@ -39,6 +39,36 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Creates message from parameters
+     * 
+     * @param string $rawMessage Raw form message
+     * @param array $params
+     * @return string
+     */
+    public function createMessage($rawMessage, array $params)
+    {
+        $vars = self::extractValues($params);
+        return StringTemplate::template($rawMessage, $vars);
+    }
+
+    /**
+     * Extract field IDs and their corresponding values from parameters
+     * 
+     * @param array $params
+     * @return array
+     */
+    private static function extractValues($params)
+    {
+        $output = array();
+
+        foreach ($params as $param) {
+            $output[$param['id']] = $param['value'];
+        }
+
+        return $output;
+    }
+    
+    /**
      * Create message template
      * 
      * @param int $formId
