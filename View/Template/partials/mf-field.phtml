@@ -6,6 +6,7 @@
  */
 
 use Krystal\Form\Element;
+use Krystal\Stdlib\ArrayUtils;
 
 // Defaults
 $name = sprintf('field[%s]', $field->getId());
@@ -42,7 +43,7 @@ $value = null;
         <?php endif; ?>
 
         <?php if ($field->isSelect()): ?>
-        <?= Element::select($name, $field->getValues(), null, $attrs); ?>
+        <?= Element::select($name, ArrayUtils::valuefy($field->getValues()), null, $attrs); ?>
         <?php endif; ?>
 
         <?php if ($field->isBoolean()): ?>
