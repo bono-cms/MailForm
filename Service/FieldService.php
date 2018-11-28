@@ -237,6 +237,17 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Fetch field Ids and their names by form ID
+     * 
+     * @param int $formId
+     * @return array
+     */
+    public function fetchList($formId)
+    {
+        return ArrayUtils::arrayList($this->fieldMapper->fetchAll($formId, true), 'id', 'name');
+    }
+
+    /**
      * Returns last ID
      * 
      * @return int
