@@ -51,7 +51,7 @@ defined('KRYSTAL') or die;
                 <div class="form-group">
                     <label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
                     <div class="col-lg-10">
-                        <?php echo Element::number('field[order]', $entity->getOrder(), array('class' => 'form-control')); ?>
+                        <?php echo Element::number('value[order]', $entity->getOrder(), array('class' => 'form-control')); ?>
                     </div>
                 </div>
             </div>
