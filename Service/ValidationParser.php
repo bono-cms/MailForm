@@ -73,6 +73,12 @@ final class ValidationParser
         foreach ($fields as $field) {
             // If rule needs to be appended
             if ($field['required']) {
+                // If no explicit error message provided, then use default one
+                if (empty($field['error'])) {
+                    // If found in corresponding messages.php file, then messaged is translated
+                    $field['error'] = 'This field is required';
+                }
+
                 // Append rule for current field
                 $definition[$field['id']] = array(
                     'required' => true,
@@ -91,7 +97,7 @@ final class ValidationParser
         }
 
         // Prepared and populated validation rules to be passed to validator component
-        return $rules;        
+        return $rules;
     }
 
     /**
