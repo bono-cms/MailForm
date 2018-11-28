@@ -24,5 +24,9 @@ final class SiteBootstrapper extends AbstractSiteBootstrapper
         $siteService->setView($this->view);
         
         $this->view->addVariable('form', $siteService);
+
+        // Append path to mf-* files
+        $this->view->getPartialBag()
+                   ->addPartialDir($this->view->createThemePath('MailForm', 'partials'));
     }
 }
