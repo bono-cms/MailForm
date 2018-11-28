@@ -22,6 +22,10 @@ return array(
         'controller' => 'Admin:Form@gridAction'
     ),
     
+    '/%s/module/mail-form/generate-message/(:var)' => array(
+        'controller' => 'Admin:Form@messageAction'
+    ),
+
     '/%s/module/mail-form/add' => array(
         'controller' => 'Admin:Form@addAction'
     ),

@@ -29,6 +29,17 @@ final class Form extends AbstractController
     }
 
     /**
+     * Generates a message
+     * 
+     * @param int $id Form Id
+     * @return string
+     */
+    public function messageAction($id)
+    {
+        return $this->getModuleService('fieldService')->createMessageTemplate($id);
+    }
+
+    /**
      * Creates a form
      * 
      * @param \Krystal\Stdlib\VirtualEntity|array $form
