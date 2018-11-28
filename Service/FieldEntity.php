@@ -117,26 +117,6 @@ final class FieldEntity extends VirtualEntity
     }
 
     /**
-     * Checks whether field type is submit button
-     * 
-     * @return boolean
-     */
-    public function isSubmit()
-    {
-        return $this->is(FieldTypeCollection::TYPE_SUBMIT);
-    }
-
-    /**
-     * Checks whether field type is reset button
-     * 
-     * @return boolean
-     */
-    public function isReset()
-    {
-        return $this->is(FieldTypeCollection::TYPE_RESET);
-    }
-
-    /**
      * Checks whether current type belongs to at least one constant in collection
      * 
      * @param array $consts
@@ -203,28 +183,5 @@ final class FieldEntity extends VirtualEntity
     public function is($const)
     {
         return $this->getType() == $const;
-    }
-
-    /**
-     * Checks whether current type is input
-     * 
-     * @return boolean
-     */
-    public function isInputType()
-    {
-        return !$this->isButtonType();
-    }
-
-    /**
-     * Checks whether current type is button
-     * 
-     * @return boolean
-     */
-    public function isButtonType()
-    {
-        return $this->inType(array(
-            FieldTypeCollection::TYPE_SUBMIT,
-            FieldTypeCollection::TYPE_RESET
-        ));
     }
 }

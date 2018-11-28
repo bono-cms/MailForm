@@ -222,12 +222,7 @@ defined('KRYSTAL') or die;
                             'label' => 'Required to be filled in',
                             'translateable' => true,
                             'value' => function($entity) {
-                                if ($entity->isButtonType()) {
-                                    // Buttons can't be required by definition
-                                    return ' - ';
-                                } else {
-                                    return $entity->getRequired() ? 'Yes' : 'No';
-                                }
+                                return $entity->getRequired() ? 'Yes' : 'No';
                             }
                         )
                     ),

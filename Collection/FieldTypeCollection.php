@@ -26,8 +26,6 @@ final class FieldTypeCollection extends ArrayGroupCollection
     const TYPE_CHECKBOX_LIST = 8;
     const TYPE_RADIO_LIST = 9;
     const TYPE_BOOLEAN = 10;
-    const TYPE_SUBMIT = 11;
-    const TYPE_RESET = 12;
 
     /**
      * {@inheritDoc}
@@ -50,11 +48,6 @@ final class FieldTypeCollection extends ArrayGroupCollection
             self::TYPE_NUMBER => 'Number',
             self::TYPE_EMAIL => 'Email',
             self::TYPE_TEXTAREA => 'Text Area',
-        ),
-
-        'Buttons' => array(
-            self::TYPE_SUBMIT => 'Submit',
-            self::TYPE_RESET => 'Reset'
         )
     );
 
