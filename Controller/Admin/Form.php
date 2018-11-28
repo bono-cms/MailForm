@@ -11,9 +11,10 @@
 
 namespace MailForm\Controller\Admin;
 
-use Cms\Controller\Admin\AbstractController;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Validate\Pattern;
+use Cms\Controller\Admin\AbstractController;
+use MailForm\Service\FieldService;
 
 final class Form extends AbstractController
 {
@@ -52,9 +53,12 @@ final class Form extends AbstractController
         $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
                                        ->addOne($title);
 
+        $fields = $this->getModuleService('fieldService')->fetchAll($id, false);
+        
         return $this->view->render('form', array(
             'form' => $form,
-            'fields' => $this->getModuleService('fieldService')->fetchAll($id, false)
+            'fields' => $fields,
+            'subjectVars' => FieldService::createSubjectVars($fields)
         ));
     }
 

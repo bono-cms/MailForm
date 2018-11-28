@@ -129,6 +129,32 @@ defined('KRYSTAL') or die;
                     </div>
                 </div>
 
+                <!--Subject-->
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="form-group">
+                            <label class="control-label"><?php $this->show('Subject'); ?></label>
+                            <div class="input-group">
+                                <?php echo Element::text('form[subject]', $entity->getSubject(), array('class' => 'form-control', 'placeholder' => $this->translate('Message subject. It may contain variables as well'))); ?>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="alert alert-danger">
+                            <p><?php $this->show('You can use the following subject variables'); ?>: </p>
+                            <br />
+
+                            <ul>
+                                <?php foreach ($subjectVars as $subjectVar => $varName): ?>
+                                <li><?= $subjectVar; ?> - <?= $varName; ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="col-lg-2 control-label"><?php $this->show('Enable CAPTCHA'); ?></label>
                     <div class="col-lg-10">
@@ -191,7 +217,7 @@ defined('KRYSTAL') or die;
                             'label' => 'Required to be filled in',
                             'translateable' => true,
                             'value' => function($entity) {
-                                if ($entity->isButton()) {
+                                if ($entity->isButtonType()) {
                                     // Buttons can't be required by definition
                                     return ' - ';
                                 } else {
