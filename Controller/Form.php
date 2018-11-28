@@ -90,7 +90,8 @@ final class Form extends AbstractController
      */
     private function submitAction(VirtualEntity $form)
     {
-        $params = $this->getModuleService('fieldService')->createParams($this->request->getPost('field'));
+        $fieldService = $this->getModuleService('fieldService');
+        $params = $fieldService->createParams($this->request->getPost('field'));
 
         // Generate rules depending on CAPTCHA requirement
         if ($form->getCaptcha()) {
@@ -104,9 +105,11 @@ final class Form extends AbstractController
         if ($formValidator->isValid()) {
             // Prepare subject
             $subject = FieldService::createSubject($params, $form->getSubject());
+            // Create prepared subject
+            $body = $fieldService->createMessage($form->getMessage(), $params);
 
             // It's time to send a message
-            if ($this->sendMessage($form->getId(), $subject, $this->request->getPost())) {
+            if ($this->getService('Cms', 'mailer')->send($subject, $body)) {
                 $this->flashBag->set('success', 'Your message has been sent!');
             } else {
                 $this->flashBag->set('warning', 'Could not send your message. Please again try later');
@@ -116,25 +119,6 @@ final class Form extends AbstractController
         } else {
             return ValidationParser::normalizeErrors($formValidator->getErrors());
         }
-    }
-
-    /**
-     * Sends a message from the input
-     * 
-     * @param string $id Form id
-     * @param string $subject Message subject
-     * @param array $input
-     * @throws \RuntimeException If can't fetch message view by associated page id
-     * @return boolean
-     */
-    private function sendMessage($id, $subject, array $input)
-    {
-        $body = $this->getFormManager()->fetchMessageViewById($id, array(
-            'input' => $input
-        ));
-
-        // Grab mailer service
-        return $this->getService('Cms', 'mailer')->send($subject, $body);
     }
 
     /**
