@@ -4,6 +4,10 @@ CHANGELOG
 1.2
 ---
 
+ * Added shared form partial template. As of now, there's no need to write boilerplate code in site templates
+ * Ability to set custom subjects
+ * Added option to enable or disable CAPTCHA
+ * Added dynamic field functionality. Dropped previous way of handling static fields.
  * Support complete internalization
  * Removed menu widget
  * Fixed issue with quote escaping

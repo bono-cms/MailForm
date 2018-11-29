@@ -11,6 +11,7 @@
 
 namespace MailForm\Storage\MySQL;
 
+use Krystal\Db\Sql\RawSqlFragment;
 use Cms\Storage\MySQL\AbstractMapper;
 use Cms\Storage\MySQL\WebPageMapper;
 use MailForm\Storage\FormMapperInterface;
@@ -48,10 +49,13 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
             self::column('template'),
             self::column('message'),
             self::column('seo'),
+            self::column('captcha'),
+            self::column('subject'),
             FormTranslationMapper::column('title'),
             FormTranslationMapper::column('name'),
             FormTranslationMapper::column('meta_description'),
             FormTranslationMapper::column('keywords'),
+            FormTranslationMapper::column('flash'),
 
             // Web page meta columns
             WebPageMapper::column('slug')
@@ -67,17 +71,6 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
     public function fetchNameById($id)
     {
         return $this->findColumnByPk($id, 'name');
-    }
-
-    /**
-     * Fetches message view by associated form id
-     * 
-     * @param string $id Form id
-     * @return string
-     */
-    public function fetchMessageViewById($id)
-    {
-        return $this->findColumnByPk($id, 'message');
     }
 
     /**
@@ -111,11 +104,20 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
      */
     public function fetchAll()
     {
-        return $this->createWebPageSelect($this->getColumns())
-                    // Optional attribute filters
+        $columns = $this->getColumns();
+        $columns[] = new RawSqlFragment(sprintf('COUNT(%s) AS field_count', FieldMapper::column('id')));
+
+        $db = $this->createWebPageSelect($columns)
+                    // Field relation
+                    ->leftJoin(FieldMapper::getTableName(), array(
+                        FieldMapper::column('form_id') => self::getRawColumn('id')
+                    ))
+                    // Constraints
                     ->whereEquals(FormTranslationMapper::column('lang_id'), $this->getLangId())
+                    ->groupBy($this->getColumns())
                     ->orderBy(self::column('id'))
-                    ->desc()
-                    ->queryAll();
+                    ->desc();
+
+        return $db->queryAll();
     }
 }

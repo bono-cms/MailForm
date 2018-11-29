@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * The form itself to be included in site templates
+ */
+
+use Krystal\Form\Element;
+use MailForm\Service\FieldService;
+
+$fields = $page->getFields();
+
+?>
+
+<form class="form-horizontal" action="<?= $action; ?>">
+    <fieldset>
+    <?php if (FieldService::hasColumns($fields)): ?>
+    <div class="row">
+        <?php foreach (FieldService::groupFields($fields) as $column => $collection): ?>
+
+        <div data-column="<?= $column; ?>">
+            <?php $this->loadPartial('mf-fields', array(
+                'fields' => $collection
+            )); ?>
+        </div>
+
+        <?php endforeach; ?>
+    </div>
+
+    <?php else: ?>
+
+    <?php $this->loadPartial('mf-fields', array(
+        'fields' => $fields
+    )); ?>
+
+    <?php endif; ?>
+
+    <!-- CAPTCHA here -->
+    <?php if ($page->getCaptcha()): ?>
+    <div class="form-group">
+     <label for="inputCaptcha" class="col-lg-2"></label>
+     <div class="col-lg-9">
+       <a href="#" title="<?php $this->show('Click to refresh'); ?>" data-captcha="button-refresh">
+        <img data-captcha="image" src="<?php echo $this->url('Site:Main@captchaAction', null); ?>" />
+       </a>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputCaptcha" class="col-lg-2 control-label"></label>
+      <div class="col-lg-10">
+        <?= Element::text('captcha', null, array('autocomplete' => 'off', 'class' => 'form-control', 'placeholder' => $this->translate('Enter what you see on image'))); ?>
+      </div>
+    </div>
+    <?php endif; ?>
+
+    <?php if (!empty($fields)): ?>
+    <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2">
+            <button type="submit" data-button="submit" class="btn btn-primary"><? $this->show('Submit'); ?></button>
+            <button type="reset" class="btn btn-default"><? $this->show('Reset'); ?></button>
+        </div>
+    </div>
+    <?php endif; ?>
+    </fieldset>
+</form>

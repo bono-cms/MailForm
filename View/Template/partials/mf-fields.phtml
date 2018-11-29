@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * This renders all fields accepting a collection of $fields (i.e field entities)
+ */
+
+?>
+
+<?php foreach ($fields as $field): ?>
+
+<?php $this->loadPartial('mf-field', array(
+    'field' => $field
+)); ?>
+
+<?php endforeach; ?>

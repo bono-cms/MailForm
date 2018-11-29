@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * This partial template field defines how a single field 
+ * is being rendered. This file gets included inside foreach on each iteration
+ */
+
+use Krystal\Form\Element;
+use Krystal\Stdlib\ArrayUtils;
+
+// Defaults
+$name = sprintf('field[%s]', $field->getId());
+$attrs = array('class' => 'form-control', 'id' => $field->getId(), 'placeholder' => $field->getHint());
+$value = $field->getDefault();
+
+?>
+
+<div class="form-group">
+    <label for="<?php echo $field->getId(); ?>" class="col-lg-2 control-label"><?= $field->getName(); ?></label>
+    <div class="col-lg-10">
+        <?php if ($field->isText()): ?>
+        <?= Element::text($name, $value, $attrs); ?>
+        <?php endif; ?>
+
+        <?php if ($field->isNumber()): ?>
+        <?= Element::number($name, $value, $attrs); ?>
+        <?php endif; ?>
+
+        <?php if ($field->isEmail()): ?>
+        <?= Element::email($name, $value, $attrs); ?>
+        <?php endif; ?>
+
+        <?php if ($field->isDate()): ?>
+        <?= Element::date($name, $value, $attrs); ?>
+        <?php endif; ?>
+
+        <?php if ($field->isDatetime()): ?>
+        <?= Element::date($name, $value, $attrs); ?>
+        <?php endif; ?>
+
+        <?php if ($field->isTextarea()): ?>
+        <?= Element::textarea($name, $value, $attrs); ?>
+        <?php endif; ?>
+
+        <?php if ($field->isSelect()): ?>
+        <?= Element::select($name, ArrayUtils::valuefy($field->getValues()), null, $attrs); ?>
+        <?php endif; ?>
+
+        <?php if ($field->isBoolean()): ?>
+        <?= Element::checkbox($name, false, array('id' => $field->getId(), 'title' => $field->getHint())); ?>
+        <?php endif; ?>
+
+        <?php if ($field->isCheckboxList()): ?>
+        <?php foreach ($field->getValues() as $id => $value): ?>
+        <div class="checkbox">
+          <label>
+            <?= Element::checkbox($name.'[]', false, array('value' => $value), false); ?>
+            <?= $value; ?>
+          </label>
+        </div>
+        <?php endforeach; ?>
+        <?php endif; ?>
+
+        <?php if ($field->isRadioList()): ?>
+        <?php foreach ($field->getValues() as $id => $value): ?>
+        <div class="radio">
+          <label>
+            <?= Element::radio($name, $value, false); ?>
+            <?= $value; ?>
+          </label>
+        </div>
+        <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</div>

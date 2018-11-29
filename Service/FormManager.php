@@ -18,7 +18,6 @@ use MailForm\Storage\FormMapperInterface;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Stdlib\ArrayUtils;
 use Krystal\Security\Filter;
-use Krystal\Templating\PhpEngine;
 
 final class FormManager extends AbstractManager implements FormManagerInterface
 {
@@ -73,19 +72,6 @@ final class FormManager extends AbstractManager implements FormManagerInterface
     }
 
     /**
-     * Fetches message view by associated form id
-     * 
-     * @param string $id Form id
-     * @param array $vars Message variables
-     * @return string
-     */
-    public function fetchMessageViewById($id, array $vars = array())
-    {
-        $code = $this->formMapper->fetchMessageViewById($id);
-        return PhpEngine::execute($code, $vars);
-    }
-
-    /**
      * Updates SEO states by associated form ids
      * 
      * @param array $pair
@@ -120,8 +106,15 @@ final class FormManager extends AbstractManager implements FormManagerInterface
                 ->setPermanentUrl('/module/mail-form/'.$entity->getId())
                 ->setTemplate($form['template'], VirtualEntity::FILTER_HTML)
                 ->setKeywords($form['keywords'], VirtualEntity::FILTER_HTML)
+                ->setFlash($form['flash'], VirtualEntity::FILTER_HTML)
                 ->setMetaDescription($form['meta_description'], VirtualEntity::FILTER_HTML)
-                ->setMessage($form['message']);
+                ->setMessage($form['message'])
+                ->setSubject($form['subject'], VirtualEntity::FILTER_HTML)
+                ->setCaptcha($form['captcha'], VirtualEntity::FILTER_BOOL);
+
+        if (isset($form['field_count'])) {
+            $entity->setFieldCount($form['field_count'], VirtualEntity::FILTER_INT);
+        }
 
         return $entity;
     }

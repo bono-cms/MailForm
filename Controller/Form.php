@@ -11,36 +11,13 @@
 
 namespace MailForm\Controller;
 
-use Site\Controller\AbstractController;
-use Krystal\Validate\Pattern;
 use Krystal\Stdlib\VirtualEntity;
-use RuntimeException;
+use Site\Controller\AbstractController;
+use MailForm\Service\ValidationParser;
+use MailForm\Service\FieldService;
 
 final class Form extends AbstractController
 {
-    /**
-     * Returns a list of validation rules for dynamic forms
-     * 
-     * @param array $input Raw post data
-     * @return array
-     */
-    private function getValidationRules(array $input)
-    {
-        return array(
-            '1' => array(
-                'input' => array(
-                    'source' => $input,
-                    'definition' => array(
-                        'name' => new Pattern\Name(),
-                        'email' => new Pattern\Email(),
-                        'message' => new Pattern\Message(),
-                        'captcha' => new Pattern\Captcha($this->captcha)
-                    )
-                )
-            )
-        );
-    }
-
     /**
      * Shows a form
      * 
@@ -49,49 +26,15 @@ final class Form extends AbstractController
      */
     public function indexAction($id)
     {
-        if ($this->request->isPost()) {
-            return $this->submitAction($id);
-        } else {
-            return $this->showAction($id);
-        }
-    }
-
-    /**
-     * Shows a partial form (without layout)
-     * 
-     * @param string $id Form id
-     * @return string
-     */
-    public function partialAction($id)
-    {
-        if ($this->request->isPost()) {
-            return $this->submitAction($id);
-        } else {
-            return 'Invalid request';
-        }
-    }
-
-    /**
-     * Shows a form
-     * 
-     * @param string $id Form id
-     * @return string
-     */
-    private function showAction($id)
-    {
-        $form = $this->getFormManager()->fetchById($id, false);
+        // Grab form entity by its ID
+        $form = $this->getModuleService('formManager')->fetchById($id, false);
 
         if ($form !== false) {
-            // Configure view
-            $this->loadSitePlugins();
-            $this->view->getBreadcrumbBag()
-                       ->addOne($form->getName());
-
-            return $this->view->render($form->getTemplate(), array(
-                'page' => $form,
-                'action' => $this->request->getCurrentUrl(),
-                'languages' => $this->getFormManager()->getSwitchUrls($id)
-            ));
+            if ($this->request->isPost()) {
+                return $this->submitAction($form);
+            } else {
+                return $this->showAction($form);
+            }
 
         } else {
             // Returning false will trigger 404 error automatically
@@ -100,79 +43,88 @@ final class Form extends AbstractController
     }
 
     /**
-     * Submits a form
-     *  
+     * Handles a partial form (without layout)
+     * 
      * @param string $id Form id
      * @return string
      */
-    private function submitAction($id)
+    public function partialAction($id)
     {
-        $formValidator = $this->getValidator($id, $this->request->getPost());
+        $form = $this->getModuleService('formManager')->fetchById($id, false);
+
+        if ($form && $this->request->isPost()) {
+            return $this->submitAction($form);
+        } else {
+            return 'Invalid request';
+        }
+    }
+
+    /**
+     * Shows a form
+     * 
+     * @param \Krystal\Stdlib\VirtualEntity $form
+     * @return string
+     */
+    private function showAction(VirtualEntity $form)
+    {
+        // Append dynamic fields
+        $this->getModuleService('fieldService')->addFields($form, $this->getModuleService('fieldValueService'));
+
+        // Configure view
+        $this->loadSitePlugins();
+        $this->view->getBreadcrumbBag()
+                   ->addOne($form->getName());
+
+        return $this->view->render($form->getTemplate(), array(
+            'page' => $form,
+            'action' => $this->request->getCurrentUrl(),
+            'languages' => $this->getModuleService('formManager')->getSwitchUrls($form->getId())
+        ));
+    }
+
+    /**
+     * Submits a form
+     *  
+     * @param \Krystal\Stdlib\VirtualEntity $form
+     * @return string
+     */
+    private function submitAction(VirtualEntity $form)
+    {
+        $fieldService = $this->getModuleService('fieldService');
+
+        // Grab raw input data and normalize it
+        $input = $this->request->getPost('field'); // Request data
+        $input = $fieldService->normalizeInput($form->getId(), $input);
+
+        // Create parameters from input
+        $params = $fieldService->createParams($input);
+
+        // Generate rules depending on CAPTCHA requirement
+        if ($form->getCaptcha()) {
+            $rules = ValidationParser::createProtected($params, $this->request, $this->captcha);
+        } else {
+            $rules = ValidationParser::createStandart($params);
+        }
+
+        $formValidator = $this->createValidator($rules);
 
         if ($formValidator->isValid()) {
+            // Prepare subject
+            $subject = FieldService::createSubject($params, $form->getSubject());
+            // Create prepared subject
+            $body = $fieldService->createMessage($form->getMessage(), $params);
+
             // It's time to send a message
-            if ($this->sendMessage($id, $this->request->getPost())) {
-                $this->flashBag->set('success', 'Your message has been sent!');
+            if ($this->getService('Cms', 'mailer')->send($subject, $body)) {
+                // Use explicit flash message if provided, otherwise fallback to default one
+                $this->flashBag->set('success', $form->getFlash() ? $form->getFlash() : 'Your message has been sent!');
             } else {
                 $this->flashBag->set('warning', 'Could not send your message. Please again try later');
             }
 
             return '1';
         } else {
-            return $formValidator->getErrors();
+            return ValidationParser::normalizeErrors($formValidator->getErrors());
         }
-    }
-
-    /**
-     * Sends a message from the input
-     * 
-     * @param string $id Form id
-     * @param array $input
-     * @throws \RuntimeException If can't fetch message view by associated page id
-     * @return boolean
-     */
-    private function sendMessage($id, array $input)
-    {
-        $message = $this->getFormManager()->fetchMessageViewById($id, array(
-            'input' => $input
-        ));
-
-        // Prepare a subject
-        $subject = $this->translator->translate('You received a new message from %s <%s>', $input['name'], $input['email']);
-
-        // Grab mailer service
-        $mailer = $this->getService('Cms', 'mailer');
-        return $mailer->send($subject, $message);
-    }
-
-    /**
-     * Returns prepared form validator
-     * 
-     * @param string $id Form id
-     * @param array $input Raw input data
-     * @throws \RuntimeException if attempted to get non-attached validation rule
-     * @return \Krystal\Validate\ValidatorChain
-     */
-    private function getValidator($id, array $input)
-    {
-        $rules = $this->getValidationRules($input);
-
-        if (!isset($rules[$id])) {
-            throw new RuntimeException(sprintf('No validation rules found for %s id', $id));
-        } else {
-            $options = $rules[$id];
-        }
-
-        return $this->createValidator($options);
-    }
-
-    /**
-     * Returns form manager
-     * 
-     * @return \MailForm\Service\FormManager
-     */
-    private function getFormManager()
-    {
-        return $this->getModuleService('formManager');
     }
 }

@@ -1,0 +1,166 @@
+<?php
+
+use Krystal\Grid\Grid;
+use Krystal\Form\Element;
+use Cms\Service\LanguageManager;
+
+defined('KRYSTAL') or die;
+
+?>
+
+<form data-group="field">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#field" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-file"></i> <?php $this->show('Field'); ?></a></li>
+        <?php if ($canHaveValue): ?>
+        <li role="presentation"><a href="#values" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-file"></i> <?php $this->show('Values'); ?></a></li>
+        <?php endif; ?>
+        <li role="presentation"><a href="#configuration" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Configuration'); ?></a></li>
+	</ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="field" role="tabpanel">
+            <div class="well">
+                <?php $this->loadPartial('language-tabs'); ?>
+
+                <div class="tab-content">
+                    <?php foreach ($languages as $index => $language): ?>
+                    <div class="tab-pane fade in <?php echo $index == 0 ? 'active' : null; ?>" id="<?php printf('language-%s', $language->getId()); ?>" role="tabpanel">
+                        <?php $entity = LanguageManager::findByLangId($language->getId(), $field); ?>
+
+                        <?php echo Element::hidden(sprintf('translation[%s][id]', $language->getId()), $entity->getId()); ?>
+                        <?php echo Element::hidden(sprintf('translation[%s][lang_id]', $language->getId()), $language->getId()); ?>
+
+                        <?php $this->loadPartial('language-name', array('language' => $language)); ?>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <?php echo Element::text(sprintf('translation[%s][name]', $language->getId()), $entity->getName(), array('class' => 'form-control', 'placeholder' => $this->translate('Name'))); ?>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Hint'); ?></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <?php echo Element::textarea(sprintf('translation[%s][hint]', $language->getId()), $entity->getHint(), array('class' => 'form-control', 'placeholder' => $this->translate('Hint or placeholder'))); ?>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Default value'); ?></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <?php echo Element::textarea(sprintf('translation[%s][default]', $language->getId()), $entity->getDefault(), array('class' => 'form-control', 'placeholder' => $this->translate('Value to be assigned on page load'))); ?>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('On error'); ?></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <?php echo Element::textarea(sprintf('translation[%s][error]', $language->getId()), $entity->getError(), array('class' => 'form-control', 'placeholder' => $this->translate('Error message'))); ?>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="values" role="tabpanel">
+            <div class="well">
+                <p>
+                    <a class="btn btn-primary" href="<?= $this->createQueryUrl('MailForm:Admin:FieldValue@addAction', array('form_id' => $entity->getFormId(), 'field_id' => $entity->getId())); ?>"><?php $this->show('Add new value'); ?></a>
+                </p>
+
+                <?= Grid::render($values, array(
+                    // A column to be considered as a primary key
+                    'pk' => 'id',
+                    'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
+                    'columns' => array(
+                        array(
+                            'column' => 'id',
+                            'label' => '#'
+                        ),
+
+                        array(
+                            'column' => 'value',
+                        ),
+
+                        array(
+                            'column' => 'order',
+                        )
+                    ),
+
+                    'actions' => array(
+                        'edit' => function($row){
+                            return Element::icon('glyphicon glyphicon-pencil', $this->url('MailForm:Admin:FieldValue@editAction', $row['id']), array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Edit this value'), 'data-button' => 'edit'));
+                        },
+
+                        'remove' => function($row){
+                            return Element::icon('glyphicon glyphicon-remove', '#', array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Remove this value'), 'data-button' => 'delete', 'data-url' => $this->url('MailForm:Admin:FieldValue@deleteAction', $row['id'])));
+                        }
+                    )
+
+                ), $this->translator); ?>                
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="configuration" role="tabpanel">
+            <div class="well">
+                <?php echo Element::hidden('field[id]', $entity->getId()); ?>
+                <?php echo Element::hidden('field[form_id]', $entity->getFormId()); ?>
+
+                <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Required to be filled in'); ?></label>
+                    <div class="col-lg-10">
+                        <?php echo Element::checkbox('field[required]', $entity->getRequired(), array('class' => 'form-control', 'disabled' => $entity->isButton())); ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
+                    <div class="col-lg-10">
+                        <?php echo Element::number('field[order]', $entity->getOrder(), array('class' => 'form-control', 'min' => 0)); ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Type'); ?></label>
+                    <div class="col-lg-10">
+                        <?php echo Element::select('field[type]', $this->translateArray($types), $entity->getType(), array('class' => 'form-control')); ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Column'); ?></label>
+                    <div class="col-lg-10">
+                        <?php echo Element::number('field[column]', $entity->getColumn(), array('class' => 'form-control', 'min' => 0, 'placeholder' => $this->translate('Optional column to handle rendering'))); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php if (!$entity->getId()): ?>
+	<button data-button="add" data-back-url="<?php echo $this->url('MailForm:Admin:Field@editAction', null); ?>" data-url="<?php echo $this->url('MailForm:Admin:Field@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
+	<button data-button="add-create" data-url="<?php echo $this->url('MailForm:Admin:Field@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
+
+    <?php else: ?>
+	<button data-button="save" data-url="<?php echo $this->url('MailForm:Admin:Field@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
+	<button data-button="save-create" data-back-url="<?php echo $this->url('MailForm:Admin:Field@addAction', $entity->getFormId()); ?>" data-url="<?php echo $this->url('MailForm:Admin:Field@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
+	<?php endif; ?>
+
+	<button data-button="cancel" data-url="<?php echo $this->url('MailForm:Admin:Field@gridAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
+</form>

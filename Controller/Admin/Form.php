@@ -11,9 +11,10 @@
 
 namespace MailForm\Controller\Admin;
 
-use Cms\Controller\Admin\AbstractController;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Validate\Pattern;
+use Cms\Controller\Admin\AbstractController;
+use MailForm\Service\FieldService;
 
 final class Form extends AbstractController
 {
@@ -28,6 +29,17 @@ final class Form extends AbstractController
     }
 
     /**
+     * Generates a message
+     * 
+     * @param int $id Form Id
+     * @return string
+     */
+    public function messageAction($id)
+    {
+        return $this->getModuleService('fieldService')->createMessageTemplate($id);
+    }
+
+    /**
      * Creates a form
      * 
      * @param \Krystal\Stdlib\VirtualEntity|array $form
@@ -36,6 +48,14 @@ final class Form extends AbstractController
      */
     private function createForm($form, $title)
     {
+        $new = is_object($form);
+
+        if ($new) {
+            $id = $form->getId();
+        } else {
+            $id = $form[0]->getId();
+        }
+
         // Load view plugins
         $this->view->getPluginBag()
                    ->load($this->getWysiwygPluginName());
@@ -44,8 +64,12 @@ final class Form extends AbstractController
         $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
                                        ->addOne($title);
 
+        $fields = $this->getModuleService('fieldService')->fetchAll($id, false);
+        
         return $this->view->render('form', array(
-            'form' => $form
+            'form' => $form,
+            'fields' => $fields,
+            'subjectVars' => FieldService::createSubjectVars($fields)
         ));
     }
 
@@ -58,7 +82,8 @@ final class Form extends AbstractController
     {
         $form = new VirtualEntity();
         $form->setSeo(true)
-             ->setMessageView('message');
+             ->setMessageView('message')
+             ->setSubject($this->translator->translate('You have received a new message'));
 
         return $this->createForm($form, 'Add a form');
     }

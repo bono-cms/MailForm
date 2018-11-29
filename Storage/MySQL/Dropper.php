@@ -22,7 +22,11 @@ final class Dropper extends AbstractStorageDropper
     {
         return array(
             FormMapper::getTableName(),
-            FormTranslationMapper::getTableName()
+            FormTranslationMapper::getTableName(),
+            FieldMapper::getTableName(),
+            FieldTranslationMapper::getTableName(),
+            FieldValueMapper::getTableName(),
+            FieldValueTranslationMapper::getTableName()
         );
     }
 }
