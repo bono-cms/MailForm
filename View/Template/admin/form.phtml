@@ -150,21 +150,19 @@ defined('KRYSTAL') or die;
                             </div>
                         </div>
 
+                        <div class="form-group <?php HtmlHelper::addOnDemand(!$extendedMode, 'hidden'); ?>">
+                            <label class="control-label"><?php $this->show('Template'); ?></label>
+                            <div class="input-group">
+                                <?php echo Element::text('form[template]', $entity->getTemplate(), array('class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file inside current site theme directory'))); ?>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label class="control-label"><?php $this->show('Subject'); ?></label>
                             <div class="input-group">
                                 <?php echo Element::text('form[subject]', $entity->getSubject(), array('class' => 'form-control', 'placeholder' => $this->translate('Message subject. It may contain variables as well'))); ?>
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group <?php HtmlHelper::addOnDemand(!$extendedMode, 'hidden'); ?>">
-                            <label class="col-lg-2 control-label"><?php $this->show('Template'); ?></label>
-                            <div class="col-lg-10">
-                                <div class="input-group">
-                                    <?php echo Element::text('form[template]', $entity->getTemplate(), array('class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file inside current site theme directory'))); ?>
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                </div>
                             </div>
                         </div>
 
