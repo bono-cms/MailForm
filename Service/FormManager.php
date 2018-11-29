@@ -110,6 +110,7 @@ final class FormManager extends AbstractManager implements FormManagerInterface
                 ->setMetaDescription($form['meta_description'], VirtualEntity::FILTER_HTML)
                 ->setMessage($form['message'])
                 ->setSubject($form['subject'], VirtualEntity::FILTER_HTML)
+                ->setType($form['type'], VirtualEntity::FILTER_INT)
                 ->setCaptcha($form['captcha'], VirtualEntity::FILTER_BOOL);
 
         if (isset($form['field_count'])) {
