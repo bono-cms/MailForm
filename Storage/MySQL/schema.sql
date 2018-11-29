@@ -6,7 +6,8 @@ CREATE TABLE `bono_module_mailform` (
     `seo` varchar(1) NOT NULL,
     `message` LONGTEXT COMMENT 'Message template',
     `captcha` BOOLEAN NOT NULL COMMENT 'Whether this form is protected by CAPTCHA',
-    `subject` varchar(255) NOT NULL COMMENT 'Subject with opt.variables'
+    `subject` varchar(255) NOT NULL COMMENT 'Subject with opt.variables',
+    `type` SMALLINT NOT NULL COMMENT 'Form type constant'
 ) DEFAULT CHARSET = UTF8;
 
 DROP TABLE IF EXISTS `bono_module_mailform_translations`;
@@ -14,12 +15,12 @@ CREATE TABLE `bono_module_mailform_translations` (
 
     `id` INT NOT NULL,
 	`lang_id` INT NOT NULL,
-	`web_page_id` INT NOT NULL,
+	`web_page_id` INT DEFAULT NULL,
     `name` varchar(255) NOT NULL,
 	`title` varchar(255) NOT NULL,
-	`description` LONGTEXT NOT NULL,
-	`keywords` text NOT NULL,
-    `meta_description` TEXT NOT NULL,
+    `description` LONGTEXT NOT NULL,
+    `keywords` TEXT DEFAULT NULL,
+    `meta_description` TEXT DEFAULT NULL,
     `flash` TEXT NOT NULL COMMENT 'Optional flash message'
 
 ) DEFAULT CHARSET = UTF8;

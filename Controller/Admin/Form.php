@@ -15,6 +15,8 @@ use Krystal\Stdlib\VirtualEntity;
 use Krystal\Validate\Pattern;
 use Cms\Controller\Admin\AbstractController;
 use MailForm\Service\FieldService;
+use MailForm\Service\FormEntity;
+use MailForm\Collection\FormTypeCollection;
 
 final class Form extends AbstractController
 {
@@ -42,19 +44,15 @@ final class Form extends AbstractController
     /**
      * Creates a form
      * 
-     * @param \Krystal\Stdlib\VirtualEntity|array $form
-     * @param string $title
+     * @param \MailForm\Service\FormEntity|array $form
      * @return string
      */
-    private function createForm($form, $title)
+    private function createForm($form)
     {
         $new = is_object($form);
 
-        if ($new) {
-            $id = $form->getId();
-        } else {
-            $id = $form[0]->getId();
-        }
+        // Entity object
+        $id = $new ? $form->getId() : $form[0]->getId();
 
         // Load view plugins
         $this->view->getPluginBag()
@@ -62,15 +60,42 @@ final class Form extends AbstractController
 
         // Append breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
-                                       ->addOne($title);
+                                       ->addOne($new ? 'Add a form' : 'Edit the form');
 
         $fields = $this->getModuleService('fieldService')->fetchAll($id, false);
-        
+
         return $this->view->render('form', array(
             'form' => $form,
             'fields' => $fields,
             'subjectVars' => FieldService::createSubjectVars($fields)
         ));
+    }
+
+    /**
+     * Creates add form
+     * 
+     * @param boolean $seo Whether to enable SEO
+     * @param int $type Form type constant
+     * @return string
+     */
+    private function createAddForm($seo, $type)
+    {
+        $form = new FormEntity();
+        $form->setSeo($seo)
+             ->setType($type)
+             ->setSubject($this->translator->translate('You have received a new message'));
+
+        return $this->createForm($form);
+    }
+
+    /**
+     * Renders form for AJAX form
+     * 
+     * @return string
+     */
+    public function addAjaxAction()
+    {
+        return $this->createAddForm(false, FormTypeCollection::TYPE_AJAX);
     }
 
     /**
@@ -80,14 +105,9 @@ final class Form extends AbstractController
      */
     public function addAction()
     {
-        $form = new VirtualEntity();
-        $form->setSeo(true)
-             ->setMessageView('message')
-             ->setSubject($this->translator->translate('You have received a new message'));
-
-        return $this->createForm($form, 'Add a form');
+        return $this->createAddForm(true, FormTypeCollection::TYPE_REGULAR);
     }
-    
+
     /**
      * Renders edit form
      * 
@@ -100,7 +120,7 @@ final class Form extends AbstractController
 
         // if $form isn't false, then its must be entity object
         if ($form !== false) {
-            return $this->createForm($form, 'Edit the form');
+            return $this->createForm($form);
         } else {
             return false;
         }

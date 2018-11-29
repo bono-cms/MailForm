@@ -12,6 +12,7 @@
 namespace MailForm\Service;
 
 use Krystal\Application\View\ViewManagerInterface;
+use RuntimeException;
 
 final class SiteService implements SiteServiceInterface
 {
@@ -56,6 +57,7 @@ final class SiteService implements SiteServiceInterface
      * Renders the partial form by its id
      * 
      * @param string $id Form id
+     * @throws \RuntimeException If trying to render non-AJAX form
      * @return string
      */
     public function render($id)
@@ -63,6 +65,11 @@ final class SiteService implements SiteServiceInterface
         $page = $this->formManager->fetchById($id, false);
 
         if ($page !== false) {
+            // Don't let render non-AJAX forms
+            if (!$page->isAjaxForm()) {
+                throw new RuntimeException('Non-AJAX forms can not be rendered in templates this way');
+            }
+
             $this->view->disableLayout();
 
             // Save initial page entity
