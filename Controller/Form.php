@@ -91,7 +91,13 @@ final class Form extends AbstractController
     private function submitAction(VirtualEntity $form)
     {
         $fieldService = $this->getModuleService('fieldService');
-        $params = $fieldService->createParams($this->request->getPost('field'));
+
+        // Grab raw input data and normalize it
+        $input = $this->request->getPost('field'); // Request data
+        $input = $fieldService->normalizeInput($form->getId(), $input);
+
+        // Create parameters from input
+        $params = $fieldService->createParams($input);
 
         // Generate rules depending on CAPTCHA requirement
         if ($form->getCaptcha()) {
