@@ -1,8 +1,10 @@
-<?php defined('KRYSTAL') or die; ?>
 <?php
 
 use Krystal\Form\Element;
+use Krystal\Grid\Grid;
 use MailForm\Collection\FormTypeCollection;
+
+defined('KRYSTAL') or die;
 
 ?>
 
@@ -32,60 +34,74 @@ use MailForm\Collection\FormTypeCollection;
 
 <form>
 	<div class="table-responsive">
-		<table class="table table-hover table-bordered table-striped">
-			<thead>
-				<tr>
-					<th class="text-center">
-						<?php if (!empty($forms)): ?>
-						<input type="checkbox" />
-						<?php endif; ?>
-					</th>
-					<th class="text-center"><?php $this->show('#'); ?></th>
-					<th class="text-center"><?php $this->show('Name'); ?></th>
-					<th class="text-center"><?php $this->show('Type'); ?></th>
-					<th class="text-center"><?php $this->show('SEO'); ?></th>
-					<th class="text-center"><?php $this->show('Field count'); ?></th>
-					<th class="text-center"><?php $this->show('Actions'); ?></th>
-				</tr>
-			</thead>
+        <?= Grid::render($forms, array(
+            // A column to be considered as a primary key
+            'pk' => 'id',
+            'batch' => true,
+            'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
+            'columns' => array(
+                array(
+                    'column' => 'id',
+                    'label' => '#'
+                ),
 
-            <?php if (!empty($forms)): ?>
-            <tbody>
-                <?php foreach ($forms as $form): ?>
-				<tr>
-					<td class="text-center">
-						<input type="checkbox" name="toDelete[<?php echo $form->getId(); ?>]" />
-					</td>
-					<td class="text-center text-muted"><?php echo $form->getId(); ?></td>
-					<td class="text-center"><?php echo $form->getName(); ?></td>
-					<td class="text-center">
-                        <?php $this->show((new FormTypeCollection)->findByKey($form->getType())); ?>
-                    </td>
-					<td class="text-center">
-                        <?php if ($form->isRegularForm()): ?>
-                        <?php echo Element::checkbox(sprintf('seo[%s]', $form->getId()), $form->getSeo()); ?>
-                        <?php endif; ?>
-					</td>
-					<td class="text-center"><?php echo $form->getFieldCount(); ?></td>
-					<td class="text-center">
-                        <?php if ($form->isRegularForm()): ?>
-                        <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('View this page on site'); ?>" data-button="view" target="_blank" href="<?php echo $form->getUrl(); ?>"><i class="glyphicon glyphicon-search"></i></a>
-                        <?php endif; ?>
-						<a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this page'); ?>" data-button="edit" href="<?php echo $this->url('MailForm:Admin:Form@editAction', $form->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
-						<a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this page'); ?>" data-button="delete" data-url="<?php echo $this->url('MailForm:Admin:Form@deleteAction', $form->getId()); ?>" href="#" ><i class="glyphicon glyphicon-remove"></i></a>
-					</td>
-				</tr>
-				<?php endforeach; ?>
-			</tbody>
-			<?php endif; ?>
-		</table>
+                array(
+                    'column' => 'name'
+                ),
+
+                array(
+                    'column' => 'type',
+                    'translateable' => true,
+                    'value' => function($row){
+                        $typeCol = new FormTypeCollection();
+                        return $typeCol->findByKey($row['type']);
+                    }
+                ),
+
+                array(
+                    'column' => 'seo',
+                    'label' => 'SEO',
+                    'value' => function($form){
+                        if ($form->isRegularForm()) {
+                            return Element::checkbox(sprintf('seo[%s]', $form->getId()), $form->getSeo());
+                        } else {
+                            return null;
+                        }
+                    }
+                ),
+
+                array(
+                    'column' => 'field_count',
+                    'label' => 'Field count'
+                )
+            ),
+
+            'actions' => array(
+                'view' => function($form){
+                    if ($form->isRegularForm()) {
+                        return Element::icon('glyphicon glyphicon-search', $form->getUrl(), array('target' => '_blank', 'data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('View this page on site'), 'data-button' => 'view'));
+                    } else {
+                        return null;
+                    }
+                },
+
+                'edit' => function($form){
+                    return Element::icon('glyphicon glyphicon-pencil', $this->url('MailForm:Admin:Form@editAction', $form->getId()), array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Edit this page'), 'data-button' => 'edit'));
+                },
+
+                'remove' => function($form){
+                    return Element::icon('glyphicon glyphicon-remove', '#', array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Remove this page'), 'data-button' => 'delete', 'data-url' => $this->url('MailForm:Admin:Form@deleteAction', $form->getId())));
+                }
+            )
+
+        ), $this->translator); ?>    
 		
 		<?php if (empty($forms)): ?>
 		<div class="center-block">
 			<h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No forms'); ?></h2>
 		</div>
 		<?php endif; ?>
-		
+
 	</div>
 </form>
 
