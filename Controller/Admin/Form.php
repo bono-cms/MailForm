@@ -15,6 +15,7 @@ use Krystal\Stdlib\VirtualEntity;
 use Krystal\Validate\Pattern;
 use Cms\Controller\Admin\AbstractController;
 use MailForm\Service\FieldService;
+use MailForm\Service\FormEntity;
 use MailForm\Collection\FormTypeCollection;
 
 final class Form extends AbstractController
@@ -43,7 +44,7 @@ final class Form extends AbstractController
     /**
      * Creates a form
      * 
-     * @param \Krystal\Stdlib\VirtualEntity|array $form
+     * @param \MailForm\Service\FormEntity|array $form
      * @return string
      */
     private function createForm($form)
@@ -79,7 +80,7 @@ final class Form extends AbstractController
      */
     private function createAddForm($seo, $type)
     {
-        $form = new VirtualEntity();
+        $form = new FormEntity();
         $form->setSeo($seo)
              ->setType($type)
              ->setSubject($this->translator->translate('You have received a new message'));

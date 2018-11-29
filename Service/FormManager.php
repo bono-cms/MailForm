@@ -16,7 +16,6 @@ use Cms\Service\AbstractManager;
 use Cms\Service\WebPageManagerInterface;
 use MailForm\Storage\FormMapperInterface;
 use MailForm\Collection\FormTypeCollection;
-use Krystal\Stdlib\VirtualEntity;
 use Krystal\Stdlib\ArrayUtils;
 use Krystal\Security\Filter;
 
@@ -94,28 +93,28 @@ final class FormManager extends AbstractManager implements FormManagerInterface
      */
     protected function toEntity(array $form)
     {
-        $entity = new VirtualEntity();
-        $entity->setId($form['id'], VirtualEntity::FILTER_INT)
-                ->setLangId($form['lang_id'], VirtualEntity::FILTER_INT)
-                ->setWebPageId($form['web_page_id'], VirtualEntity::FILTER_INT)
-                ->setTitle($form['title'], VirtualEntity::FILTER_HTML)
-                ->setName($form['name'], VirtualEntity::FILTER_HTML)
-                ->setDescription($form['description'], VirtualEntity::FILTER_SAFE_TAGS)
-                ->setSeo($form['seo'], VirtualEntity::FILTER_BOOL)
+        $entity = new FormEntity();
+        $entity->setId($form['id'], FormEntity::FILTER_INT)
+                ->setLangId($form['lang_id'], FormEntity::FILTER_INT)
+                ->setWebPageId($form['web_page_id'], FormEntity::FILTER_INT)
+                ->setTitle($form['title'], FormEntity::FILTER_HTML)
+                ->setName($form['name'], FormEntity::FILTER_HTML)
+                ->setDescription($form['description'], FormEntity::FILTER_SAFE_TAGS)
+                ->setSeo($form['seo'], FormEntity::FILTER_BOOL)
                 ->setSlug($form['slug'])
                 ->setUrl($this->webPageManager->surround($entity->getSlug(), $entity->getLangId()))
                 ->setPermanentUrl('/module/mail-form/'.$entity->getId())
-                ->setTemplate($form['template'], VirtualEntity::FILTER_HTML)
-                ->setKeywords($form['keywords'], VirtualEntity::FILTER_HTML)
-                ->setFlash($form['flash'], VirtualEntity::FILTER_HTML)
-                ->setMetaDescription($form['meta_description'], VirtualEntity::FILTER_HTML)
+                ->setTemplate($form['template'], FormEntity::FILTER_HTML)
+                ->setKeywords($form['keywords'], FormEntity::FILTER_HTML)
+                ->setFlash($form['flash'], FormEntity::FILTER_HTML)
+                ->setMetaDescription($form['meta_description'], FormEntity::FILTER_HTML)
                 ->setMessage($form['message'])
-                ->setSubject($form['subject'], VirtualEntity::FILTER_HTML)
-                ->setType($form['type'], VirtualEntity::FILTER_INT)
-                ->setCaptcha($form['captcha'], VirtualEntity::FILTER_BOOL);
+                ->setSubject($form['subject'], FormEntity::FILTER_HTML)
+                ->setType($form['type'], FormEntity::FILTER_INT)
+                ->setCaptcha($form['captcha'], FormEntity::FILTER_BOOL);
 
         if (isset($form['field_count'])) {
-            $entity->setFieldCount($form['field_count'], VirtualEntity::FILTER_INT);
+            $entity->setFieldCount($form['field_count'], FormEntity::FILTER_INT);
         }
 
         return $entity;

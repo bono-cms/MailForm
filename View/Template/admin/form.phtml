@@ -5,7 +5,6 @@ use Krystal\Form\HtmlHelper;
 use Krystal\Form\Element;
 use Cms\Service\LanguageManager;
 use MailForm\Collection\FieldTypeCollection;
-use MailForm\Collection\FormTypeCollection;
 
 defined('KRYSTAL') or die;
 
@@ -61,7 +60,7 @@ defined('KRYSTAL') or die;
                             </div>
                         </div>
 
-                        <?php if ($entity->getType() == FormTypeCollection::TYPE_REGULAR): ?>
+                        <?php if ($entity->isRegularForm()): ?>
                         <div class="options">
                             <div class="form-group">
                                 <label class="col-lg-2 control-label"><?php $this->show('Slug'); ?></label>
@@ -116,11 +115,11 @@ defined('KRYSTAL') or die;
             <?php else: ?>
 
             <button data-button="save" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
-            <button data-button="save-create" data-back-url="<?php echo $this->url(sprintf('MailForm:Admin:Form@%s', $entity->getType() == FormTypeCollection::TYPE_REGULAR ? 'addAction' : 'addAjaxAction')); ?>" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
+            <button data-button="save-create" data-back-url="<?php echo $this->url(sprintf('MailForm:Admin:Form@%s', $entity->isRegularForm() ? 'addAction' : 'addAjaxAction')); ?>" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
 
             <?php endif; ?>
 
-            <?php if ($entity->getType() == FormTypeCollection::TYPE_REGULAR): ?>
+            <?php if ($entity->isRegularForm()): ?>
             <button data-button="options" class="btn btn-primary"><i class="glyphicon glyphicon-open"></i> <?php $this->show('More options'); ?></button>
             <?php endif; ?>
 
