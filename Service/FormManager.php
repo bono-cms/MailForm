@@ -15,6 +15,7 @@ use Cms\Service\HistoryManagerInterface;
 use Cms\Service\AbstractManager;
 use Cms\Service\WebPageManagerInterface;
 use MailForm\Storage\FormMapperInterface;
+use MailForm\Collection\FormTypeCollection;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Stdlib\ArrayUtils;
 use Krystal\Security\Filter;
@@ -189,15 +190,21 @@ final class FormManager extends AbstractManager implements FormManagerInterface
     }
 
     /**
-     * Save a page
+     * Saves a form. Depending on type saves as a page or as AJAX-form
      * 
-     * @param array $input
+     * @param array $input Raw input data
      * @return boolean
      */
     private function savePage(array $input)
     {
-        $data = ArrayUtils::arrayWithout($input['form'], array('slug'));
-        return $this->formMapper->savePage('MailForm', 'MailForm:Form@indexAction', $data, $input['translation']);
+        // Save depending on form type
+        if ($input['form']['type'] == FormTypeCollection::TYPE_AJAX) {
+            return $this->formMapper->saveEntity($input['form'], $input['translation']);
+        } else {
+            $input['form'] = ArrayUtils::arrayWithout($input['form'], array('slug'));
+            // Regular form
+            return $this->formMapper->savePage('MailForm', 'MailForm:Form@indexAction', $input['form'], $input['translation']);
+        }
     }
 
     /**
