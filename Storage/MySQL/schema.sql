@@ -15,12 +15,12 @@ CREATE TABLE `bono_module_mailform_translations` (
 
     `id` INT NOT NULL,
 	`lang_id` INT NOT NULL,
-	`web_page_id` INT NOT NULL,
+	`web_page_id` INT DEFAULT NULL,
     `name` varchar(255) NOT NULL,
 	`title` varchar(255) NOT NULL,
-	`description` LONGTEXT NOT NULL,
-	`keywords` text NOT NULL,
-    `meta_description` TEXT NOT NULL,
+    `description` LONGTEXT NOT NULL,
+    `keywords` TEXT DEFAULT NULL,
+    `meta_description` TEXT DEFAULT NULL,
     `flash` TEXT NOT NULL COMMENT 'Optional flash message'
 
 ) DEFAULT CHARSET = UTF8;
