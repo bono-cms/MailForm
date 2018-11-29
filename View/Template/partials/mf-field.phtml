@@ -11,7 +11,7 @@ use Krystal\Stdlib\ArrayUtils;
 // Defaults
 $name = sprintf('field[%s]', $field->getId());
 $attrs = array('class' => 'form-control', 'id' => $field->getId(), 'placeholder' => $field->getHint());
-$value = null;
+$value = $field->getDefault();
 
 ?>
 
