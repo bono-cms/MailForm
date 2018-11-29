@@ -21,16 +21,6 @@ use MailForm\Collection\FormTypeCollection;
 final class Form extends AbstractController
 {
     /**
-     * Returns form manager
-     * 
-     * @return \MailForm\Service\FormManager
-     */
-    private function getFormManager()
-    {
-        return $this->getModuleService('formManager');
-    }
-
-    /**
      * Generates a message
      * 
      * @param int $id Form Id
@@ -117,7 +107,7 @@ final class Form extends AbstractController
      */
     public function editAction($id)
     {
-        $form = $this->getFormManager()->fetchById($id, true);
+        $form = $this->getModuleService('formManager')->fetchById($id, true);
 
         // if $form isn't false, then its must be entity object
         if ($form !== false) {
@@ -169,7 +159,7 @@ final class Form extends AbstractController
                    ->addOne('Mail forms');
 
         return $this->view->render('browser', array(
-            'forms' => $this->getFormManager()->fetchAll()
+            'forms' => $this->getModuleService('formManager')->fetchAll()
         ));
     }
 
@@ -183,7 +173,7 @@ final class Form extends AbstractController
         if ($this->request->hasPost('seo')) {
             $seo = $this->request->getPost('seo');
 
-            if ($this->getFormManager()->updateSeo($seo)) {
+            if ($this->getModuleService('formManager')->updateSeo($seo)) {
                 $this->flashBag->set('success', 'Settings have been updated successfully');
                 return '1';
             }
