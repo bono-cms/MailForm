@@ -65,6 +65,7 @@ final class Form extends AbstractController
         $fields = $this->getModuleService('fieldService')->fetchAll($id, false);
 
         return $this->view->render('form', array(
+            'new' => $new,
             'form' => $form,
             'fields' => $fields,
             'subjectVars' => FieldService::createSubjectVars($fields)
