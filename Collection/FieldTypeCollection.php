@@ -47,7 +47,7 @@ final class FieldTypeCollection extends ArrayGroupCollection
             self::TYPE_TEXT => 'Text',
             self::TYPE_NUMBER => 'Number',
             self::TYPE_EMAIL => 'Email',
-            self::TYPE_TEXTAREA => 'Text Area',
+            self::TYPE_TEXTAREA => 'Textarea',
         )
     );
 
