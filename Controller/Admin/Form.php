@@ -158,7 +158,7 @@ final class Form extends AbstractController
         $this->view->getBreadcrumbBag()
                    ->addOne('Mail forms');
 
-        return $this->view->render('browser', array(
+        return $this->view->render('index', array(
             'forms' => $this->getModuleService('formManager')->fetchAll()
         ));
     }
