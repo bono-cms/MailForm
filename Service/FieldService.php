@@ -39,6 +39,28 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Normalizes raw input
+     * 
+     * @param int $formId
+     * @param array $input Raw input data
+     * @return array
+     */
+    public function normalizeInput($formId, array $input)
+    {
+        // Field IDs that belong to that form
+        $ids = $this->fieldMapper->fetchIdsByFormId($formId);
+
+        foreach ($ids as $id) {
+            // Recovery missing ID
+            if (!isset($input[$id])) {
+                $input[$id] = null;
+            }
+        }
+
+        return $input;
+    }
+    
+    /**
      * Creates message from parameters
      * 
      * @param string $rawMessage Raw form message
