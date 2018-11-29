@@ -43,18 +43,14 @@ final class Form extends AbstractController
      * Creates a form
      * 
      * @param \Krystal\Stdlib\VirtualEntity|array $form
-     * @param string $title
      * @return string
      */
-    private function createForm($form, $title)
+    private function createForm($form)
     {
         $new = is_object($form);
 
-        if ($new) {
-            $id = $form->getId();
-        } else {
-            $id = $form[0]->getId();
-        }
+        // Entity object
+        $id = $new ? $form->getId() : $form[0]->getId();
 
         // Load view plugins
         $this->view->getPluginBag()
@@ -62,10 +58,10 @@ final class Form extends AbstractController
 
         // Append breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
-                                       ->addOne($title);
+                                       ->addOne($new ? 'Add a form' : 'Edit the form');
 
         $fields = $this->getModuleService('fieldService')->fetchAll($id, false);
-        
+
         return $this->view->render('form', array(
             'form' => $form,
             'fields' => $fields,
@@ -85,7 +81,7 @@ final class Form extends AbstractController
              ->setMessageView('message')
              ->setSubject($this->translator->translate('You have received a new message'));
 
-        return $this->createForm($form, 'Add a form');
+        return $this->createForm($form);
     }
     
     /**
@@ -100,7 +96,7 @@ final class Form extends AbstractController
 
         // if $form isn't false, then its must be entity object
         if ($form !== false) {
-            return $this->createForm($form, 'Edit the form');
+            return $this->createForm($form);
         } else {
             return false;
         }
