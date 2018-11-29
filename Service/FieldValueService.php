@@ -42,12 +42,12 @@ final class FieldValueService extends AbstractManager
     protected function toEntity(array $row)
     {
         $entity = new VirtualEntity();
-        $entity->setId($row['id'])
-               ->setLangId($row['lang_id'])
-               ->setFieldId($row['field_id'])
-               ->setFormId($row['form_id'])
-               ->setOrder($row['order'])
-               ->setValue($row['value']);
+        $entity->setId($row['id'], VirtualEntity::FILTER_INT)
+               ->setLangId($row['lang_id'], VirtualEntity::FILTER_INT)
+               ->setFieldId($row['field_id'], VirtualEntity::FILTER_INT)
+               ->setFormId($row['form_id'], VirtualEntity::FILTER_INT)
+               ->setOrder($row['order'], VirtualEntity::FILTER_INT)
+               ->setValue($row['value'], VirtualEntity::FILTER_TAGS);
 
         return $entity;
     }

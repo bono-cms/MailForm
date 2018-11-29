@@ -259,17 +259,17 @@ final class FieldService extends AbstractManager
     protected function toEntity(array $row)
     {
         $entity = new FieldEntity();
-        $entity->setId($row['id'])
-               ->setLangId($row['lang_id'])
-               ->setFormId($row['form_id'])
-               ->setType($row['type'])
-               ->setOrder($row['order'])
+        $entity->setId($row['id'], FieldEntity::FILTER_INT)
+               ->setLangId($row['lang_id'], FieldEntity::FILTER_INT)
+               ->setFormId($row['form_id'], FieldEntity::FILTER_INT)
+               ->setType($row['type'], FieldEntity::FILTER_INT)
+               ->setOrder($row['order'], FieldEntity::FILTER_INT)
                ->setRequired($row['required'], FieldEntity::FILTER_BOOL)
-               ->setColumn($row['column'])
-               ->setName($row['name'])
-               ->setHint($row['hint'])
-               ->setDefault($row['default'])
-               ->setError($row['error']);
+               ->setColumn($row['column'], FieldEntity::FILTER_INT)
+               ->setName($row['name'], FieldEntity::FILTER_TAGS)
+               ->setHint($row['hint'], FieldEntity::FILTER_TAGS)
+               ->setDefault($row['default'], FieldEntity::FILTER_TAGS)
+               ->setError($row['error'], FieldEntity::FILTER_TAGS);
 
         return $entity;
     }
