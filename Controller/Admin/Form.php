@@ -15,6 +15,7 @@ use Krystal\Stdlib\VirtualEntity;
 use Krystal\Validate\Pattern;
 use Cms\Controller\Admin\AbstractController;
 use MailForm\Service\FieldService;
+use MailForm\Collection\FormTypeCollection;
 
 final class Form extends AbstractController
 {
@@ -70,20 +71,42 @@ final class Form extends AbstractController
     }
 
     /**
+     * Creates add form
+     * 
+     * @param boolean $seo Whether to enable SEO
+     * @param int $type Form type constant
+     * @return string
+     */
+    private function createAddForm($seo, $type)
+    {
+        $form = new VirtualEntity();
+        $form->setSeo($seo)
+             ->setType($type)
+             ->setSubject($this->translator->translate('You have received a new message'));
+
+        return $this->createForm($form);
+    }
+
+    /**
+     * Renders form for AJAX form
+     * 
+     * @return string
+     */
+    public function addAjaxAction()
+    {
+        return $this->createAddForm(false, FormTypeCollection::TYPE_AJAX);
+    }
+
+    /**
      * Renders empty form
      * 
      * @return string
      */
     public function addAction()
     {
-        $form = new VirtualEntity();
-        $form->setSeo(true)
-             ->setMessageView('message')
-             ->setSubject($this->translator->translate('You have received a new message'));
-
-        return $this->createForm($form);
+        return $this->createAddForm(true, FormTypeCollection::TYPE_REGULAR);
     }
-    
+
     /**
      * Renders edit form
      * 

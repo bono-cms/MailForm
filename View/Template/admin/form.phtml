@@ -5,6 +5,7 @@ use Krystal\Form\HtmlHelper;
 use Krystal\Form\Element;
 use Cms\Service\LanguageManager;
 use MailForm\Collection\FieldTypeCollection;
+use MailForm\Collection\FormTypeCollection;
 
 defined('KRYSTAL') or die;
 
@@ -60,6 +61,7 @@ defined('KRYSTAL') or die;
                             </div>
                         </div>
 
+                        <?php if ($entity->getType() == FormTypeCollection::TYPE_REGULAR): ?>
                         <div class="options">
                             <div class="form-group">
                                 <label class="col-lg-2 control-label"><?php $this->show('Slug'); ?></label>
@@ -99,6 +101,8 @@ defined('KRYSTAL') or die;
                                 </div>
                             </div>
                         </div>
+                        <?php endif; ?>
+
                     </div>
                     <?php endforeach; ?>
                 </div>
@@ -112,17 +116,21 @@ defined('KRYSTAL') or die;
             <?php else: ?>
 
             <button data-button="save" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
-            <button data-button="save-create" data-back-url="<?php echo $this->url('MailForm:Admin:Form@addAction'); ?>" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
+            <button data-button="save-create" data-back-url="<?php echo $this->url(sprintf('MailForm:Admin:Form@%s', $entity->getType() == FormTypeCollection::TYPE_REGULAR ? 'addAction' : 'addAjaxAction')); ?>" data-url="<?php echo $this->url('MailForm:Admin:Form@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
 
             <?php endif; ?>
 
+            <?php if ($entity->getType() == FormTypeCollection::TYPE_REGULAR): ?>
             <button data-button="options" class="btn btn-primary"><i class="glyphicon glyphicon-open"></i> <?php $this->show('More options'); ?></button>
+            <?php endif; ?>
+
             <button data-button="cancel" data-url="<?php echo $this->url('MailForm:Admin:Form@gridAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
 		</div>
 
         <div class="tab-pane fade" id="message" role="tabpanel">
             <div class="well">
                 <?php echo Element::hidden('form[id]', $entity->getId()); ?>
+                <?php echo Element::hidden('form[type]', $entity->getType()); ?>
 
                 <div class="alert alert-dismissable alert-info">
                     <button type="button" class="close" data-dismiss="alert">x</button>

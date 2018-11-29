@@ -30,6 +30,10 @@ return array(
         'controller' => 'Admin:Form@addAction'
     ),
     
+    '/%s/module/mail-form/add-ajax' => array(
+        'controller' => 'Admin:Form@addAjaxAction'
+    ),
+    
     '/%s/module/mail-form/edit/(:var)' => array(
         'controller' => 'Admin:Form@editAction'
     ),
