@@ -159,7 +159,7 @@ defined('KRYSTAL') or die;
 
                             <ul>
                                 <?php foreach ($subjectVars as $subjectVar => $varName): ?>
-                                <li><?= $subjectVar; ?> - <?= $varName; ?></li>
+                                <li><span data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Click to copy to clipboard'); ?>" data-button="clipboard" data-value="<?= $subjectVar; ?>"><?= $subjectVar; ?> - <?= $varName; ?></span></li>
                                 <?php endforeach; ?>
                             </ul>
                             <?php else: ?>
