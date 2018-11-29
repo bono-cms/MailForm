@@ -14,6 +14,14 @@ namespace MailForm\Storage;
 interface FieldMapperInterface
 {
     /**
+     * Fetch field Ids by attached form Id
+     * 
+     * @param int $formid Form Id
+     * @return array
+     */
+    public function fetchIdsByFormId($formId);
+
+    /**
      * Fetch fields by their IDs
      * 
      * @param array $ids Field IDs
