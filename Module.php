@@ -27,11 +27,14 @@ final class Module extends AbstractCmsModule
         $formMapper = $this->getMapper('/MailForm/Storage/MySQL/FormMapper');
         $formManager = new FormManager($formMapper, $this->getWebPageManager(), $this->getHistoryManager(), $this->getMenuWidget());
 
+        $fieldValueService = new FieldValueService($this->getMapper('/MailForm/Storage/MySQL/FieldValueMapper'));
+        $fieldService = new FieldService($this->getMapper('/MailForm/Storage/MySQL/FieldMapper'));
+
         return array(
-            'fieldValueService' => new FieldValueService($this->getMapper('/MailForm/Storage/MySQL/FieldValueMapper')),
-            'fieldService' => new FieldService($this->getMapper('/MailForm/Storage/MySQL/FieldMapper')),
+            'fieldValueService' => $fieldValueService,
+            'fieldService' => $fieldService,
             'formManager' => $formManager,
-            'siteService' => new SiteService($formManager)
+            'siteService' => new SiteService($formManager, $fieldService, $fieldValueService)
         );
     }
 }

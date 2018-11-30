@@ -31,14 +31,32 @@ final class SiteService implements SiteServiceInterface
     private $formManager;
 
     /**
+     * Field service
+     * 
+     * @var \MailForm\Service\FieldService
+     */
+    private $fieldService;
+
+    /**
+     * Field value service
+     * 
+     * @var \MailForm\Service\FieldValueService
+     */
+    private $fieldValueService;
+
+    /**
      * State initialization
      * 
      * @param \MailForm\Service\FormManagerInterface $formManager
+     * @param \MailForm\Service\FieldService $fieldService
+     * @param \MailForm\Service\FieldValueService $fieldValueService
      * @return void
      */
-    public function __construct(FormManagerInterface $formManager)
+    public function __construct(FormManagerInterface $formManager, FieldService $fieldService, FieldValueService $fieldValueService)
     {
         $this->formManager = $formManager;
+        $this->fieldService = $fieldService;
+        $this->fieldValueService = $fieldValueService;
     }
 
     /**
@@ -69,6 +87,9 @@ final class SiteService implements SiteServiceInterface
             if (!$page->isAjaxForm()) {
                 throw new RuntimeException('Non-AJAX forms can not be rendered in templates this way');
             }
+
+            // Append dynamic fields
+            $this->fieldService->addFields($page, $this->fieldValueService);
 
             $this->view->disableLayout();
 
