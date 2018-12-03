@@ -12,8 +12,10 @@
 namespace MailForm\Service;
 
 use MailForm\Storage\SubmitLogMapperInterface;
+use Cms\Service\AbstractManager;
+use Krystal\Stdlib\VirtualEntity;
 
-final class SubmitLogService
+final class SubmitLogService extends AbstractManager
 {
     /**
      * Any compliant submit log mapper
@@ -31,5 +33,18 @@ final class SubmitLogService
     public function __construct(SubmitLogMapperInterface $submitLogMapper)
     {
         $this->submitLogMapper = $submitLogMapper;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function toEntity(array $row)
+    {
+        $entity = new VirtualEntity();
+        $entity->setId($row['id'], VirtualEntity::FILTER_INT)
+               ->setDatetime($row['datetime'])
+               ->setMessage($row['message'], VirtualEntity::FILTER_TAGS);
+
+        return $entity;
     }
 }
