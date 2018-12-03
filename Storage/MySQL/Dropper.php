@@ -26,7 +26,8 @@ final class Dropper extends AbstractStorageDropper
             FieldMapper::getTableName(),
             FieldTranslationMapper::getTableName(),
             FieldValueMapper::getTableName(),
-            FieldValueTranslationMapper::getTableName()
+            FieldValueTranslationMapper::getTableName(),
+            SubmitLogMapper::getTableName()
         );
     }
 }
