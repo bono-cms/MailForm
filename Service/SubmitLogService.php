@@ -14,6 +14,7 @@ namespace MailForm\Service;
 use MailForm\Storage\SubmitLogMapperInterface;
 use Cms\Service\AbstractManager;
 use Krystal\Stdlib\VirtualEntity;
+use Krystal\Date\TimeHelper;
 
 final class SubmitLogService extends AbstractManager
 {
@@ -46,6 +47,22 @@ final class SubmitLogService extends AbstractManager
                ->setMessage($row['message'], VirtualEntity::FILTER_TAGS);
 
         return $entity;
+    }
+
+    /**
+     * Saves new log
+     * 
+     * @param string $message
+     * @return boolean
+     */
+    public function log($message)
+    {
+        $data = array(
+            'datetime' => TimeHelper::getNow(),
+            'message' => $message
+        );
+
+        return $this->submitLogMapper->persist($data);
     }
 
     /**
