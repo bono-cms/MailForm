@@ -12,8 +12,9 @@
 namespace MailForm\Storage\MySQL;
 
 use Cms\Storage\MySQL\AbstractMapper;
+use MailForm\Storage\SubmitLogMapperInterface;
 
-final class SubmitLogMapper extends AbstractMapper
+final class SubmitLogMapper extends AbstractMapper implements SubmitLogMapperInterface
 {
     /**
      * {@inheritDoc}
