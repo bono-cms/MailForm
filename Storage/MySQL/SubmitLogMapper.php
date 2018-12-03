@@ -23,4 +23,19 @@ final class SubmitLogMapper extends AbstractMapper implements SubmitLogMapperInt
     {
         return self::getWithPrefix('bono_module_mailform_submits');
     }
+
+    /**
+     * Fetch all submission logs
+     * 
+     * @return array
+     */
+    public function fetchAll()
+    {
+        $db = $this->db->select('*')
+                       ->from(self::getTableName())
+                       ->orderBy('id')
+                       ->desc();
+
+        return $db->queryAll();
+    }
 }

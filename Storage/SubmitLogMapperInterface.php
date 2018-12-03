@@ -13,5 +13,10 @@ namespace MailForm\Storage;
 
 interface SubmitLogMapperInterface
 {
-    
+    /**
+     * Fetch all submission logs
+     * 
+     * @return array
+     */
+    public function fetchAll();
 }

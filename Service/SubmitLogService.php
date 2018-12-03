@@ -47,4 +47,14 @@ final class SubmitLogService extends AbstractManager
 
         return $entity;
     }
+
+    /**
+     * Fetch all submission logs
+     * 
+     * @return array
+     */
+    public function fetchAll()
+    {
+        return $this->prepareResults($this->submitLogMapper->fetchAll());
+    }
 }
