@@ -52,7 +52,12 @@ return array(
         'controller' => 'Admin:Form@tweakAction',
         'disallow' => array('guest')
     ),
-    
+
+    // Submit logger
+    '/%s/module/mail-form/submit-logs' => array(
+        'controller' => 'Admin:SubmitLog@indexAction'
+    ),
+
     // Dynamic fields
     '/%s/module/mail-form/field/add/(:var)' => array(
         'controller' => 'Admin:Field@addAction'
