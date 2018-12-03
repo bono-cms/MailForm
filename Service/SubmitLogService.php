@@ -52,14 +52,16 @@ final class SubmitLogService extends AbstractManager
     /**
      * Saves new log
      * 
-     * @param string $message
+     * @param string $subject Message subject
+     * @param string $message Message body
      * @return boolean
      */
-    public function log($message)
+    public function log($subject, $message)
     {
         $data = array(
             'datetime' => TimeHelper::getNow(),
-            'message' => $message
+            'message' => $message,
+            'subject' => $subject
         );
 
         return $this->submitLogMapper->persist($data);
