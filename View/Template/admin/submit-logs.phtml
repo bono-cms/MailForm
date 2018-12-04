@@ -33,6 +33,10 @@ defined('KRYSTAL') or die;
         'actions' => array(
             'view' => function($form){
                 return Element::icon('glyphicon glyphicon-eye-open', $this->url('MailForm:Admin:SubmitLog@viewAction', $form->getId()), array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('View this message'), 'data-button' => 'ajax-view'));
+            },
+
+            'remove' => function($row){
+                return Element::icon('glyphicon glyphicon-remove', '#', array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Remove this log'), 'data-button' => 'delete', 'data-url' => $this->url('MailForm:Admin:SubmitLog@deleteAction', $row['id'])));
             }
         )
 
