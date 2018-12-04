@@ -70,3 +70,12 @@ CREATE TABLE `bono_module_mailform_fields_values_translations` (
 
     FOREIGN KEY (id) REFERENCES bono_module_mailform_fields_values(id) ON DELETE CASCADE
 ) DEFAULT CHARSET = UTF8;
+
+/* Submit logger */
+DROP TABLE IF EXISTS `bono_module_mailform_submits`;
+CREATE TABLE `bono_module_mailform_submits` (
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Submit ID',
+    `datetime` DATETIME NOT NULL COMMENT 'Date and time of submission',
+    `message` TEXT NOT NULL COMMENT 'Message body',
+    `subject` varchar(255) NOT NULL COMMENT 'Message subject'
+);

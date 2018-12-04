@@ -16,6 +16,7 @@ use MailForm\Service\FormManager;
 use MailForm\Service\SiteService;
 use MailForm\Service\FieldService;
 use MailForm\Service\FieldValueService;
+use MailForm\Service\SubmitLogService;
 
 final class Module extends AbstractCmsModule
 {
@@ -31,6 +32,7 @@ final class Module extends AbstractCmsModule
         $fieldService = new FieldService($this->getMapper('/MailForm/Storage/MySQL/FieldMapper'));
 
         return array(
+            'submitLogService' => new SubmitLogService($this->getMapper('/MailForm/Storage/MySQL/SubmitLogMapper')),
             'fieldValueService' => $fieldValueService,
             'fieldService' => $fieldService,
             'formManager' => $formManager,

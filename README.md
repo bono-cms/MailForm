@@ -18,6 +18,7 @@ Mail form is the **ultimate FREE** form creation tool for Bono CMS. Build variou
 - Protection with CAPTCHA (can be enabled or disabled) and CSRF by default.
 - Customizeable subjects and messages with variable placeholders
 - Custom templates support
+- Form submission logger
 
 # Installation
 

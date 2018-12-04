@@ -4,6 +4,7 @@ CHANGELOG
 1.2
 ---
 
+ * Added form submission logger
  * Introduced conception of regular and AJAX forms
  * Added shared form partial template. As of now, there's no need to write boilerplate code in site templates
  * Ability to set custom subjects
