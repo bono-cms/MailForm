@@ -68,6 +68,17 @@ final class SubmitLogService extends AbstractManager
     }
 
     /**
+     * Deletes a log by its ID
+     * 
+     * @param int $id Submit log ID
+     * @return boolean
+     */
+    public function deleteById($id)
+    {
+        return $this->submitLogMapper->deleteByPk($id);
+    }
+
+    /**
      * Fetch log by its ID
      * 
      * @param int $id Log ID
