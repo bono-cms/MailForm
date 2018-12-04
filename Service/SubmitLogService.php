@@ -68,6 +68,17 @@ final class SubmitLogService extends AbstractManager
     }
 
     /**
+     * Fetch log by its ID
+     * 
+     * @param int $id Log ID
+     * @return \Krystal\Stdlib\VirtualEntity|boolean
+     */
+    public function fetchById($id)
+    {
+        return $this->prepareResult($this->submitLogMapper->findByPk($id));
+    }
+
+    /**
      * Fetch all submission logs
      * 
      * @return array
