@@ -1,5 +1,6 @@
 <?php
 
+use Krystal\Form\Element;
 use Krystal\Grid\Grid;
 
 defined('KRYSTAL') or die;
@@ -24,11 +25,13 @@ defined('KRYSTAL') or die;
 
             array(
                 'column' => 'subject'
-            ),
-
-            array(
-                'column' => 'message'
             )
+        ),
+
+        'actions' => array(
+            'view' => function($form){
+                return Element::icon('glyphicon glyphicon-eye-open', $this->url('MailForm:Admin:SubmitLog@viewAction', $form->getId()), array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('View this message'), 'data-button' => 'ajax-view'));
+            }
         )
 
     ), $this->translator); ?>    
