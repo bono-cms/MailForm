@@ -30,4 +30,21 @@ final class SubmitLog extends AbstractController
             'logs' => $this->getModuleService('submitLogService')->fetchAll()
         ));
     }
+
+    /**
+     * View message log by its ID
+     * 
+     * @param int $id Message log ID
+     * @return string
+     */
+    public function viewAction($id)
+    {
+        $message = $this->getModuleService('submitLogService')->fetchById($id);
+
+        if ($message) {
+            return nl2br($message->getMessage());
+        } else {
+            return false;
+        }
+    }
 }
