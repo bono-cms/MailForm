@@ -62,6 +62,10 @@ return array(
         'controller' => 'Admin:SubmitLog@viewAction'
     ),
 
+    '/%s/module/mail-form/submit-logs/delete/(:var)' => array(
+        'controller' => 'Admin:SubmitLog@deleteAction'
+    ),
+
     // Dynamic fields
     '/%s/module/mail-form/field/add/(:var)' => array(
         'controller' => 'Admin:Field@addAction'

@@ -32,6 +32,20 @@ final class SubmitLog extends AbstractController
     }
 
     /**
+     * Deletes a log by its ID
+     * 
+     * @param int $id Message log ID
+     * @return string
+     */
+    public function deleteAction($id)
+    {
+        $this->getModuleService('submitLogService')->deleteById($id);
+
+        $this->flashBag->set('success', 'Selected element has been removed successfully');
+        return 1;
+    }
+
+    /**
      * View message log by its ID
      * 
      * @param int $id Message log ID
