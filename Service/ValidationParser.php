@@ -98,43 +98,29 @@ final class ValidationParser
             )
         );
 
-        // Reference shorthand
-        $definition =& $rules['input']['definition'];
-
         // Append field validation rules
         foreach ($fields as $field) {
             // If rule needs to be appended
             if ($field['required']) {
                 // Check if file by type
                 if ($field['type'] == FieldTypeCollection::TYPE_FILE) {
-                    // If no explicit error message provided, then use default one
-                    if (empty($field['error'])) {
-                        // If found in corresponding messages.php file, then messaged is translated
-                        $field['error'] = 'Please select a file';
-                    }
-
                     $rules['file']['definition'][$field['id']] = array(
                         'required' => true,
                         'rules' => array(
                             'NotEmpty' => array(
-                                'message' => $field['error']
+                                // If no explicit error message provided, then use default one
+                                'message' => !empty($field['error']) ? $field['error'] : 'Please select a file'
                             )
                         )
                     );
                 } else {
-                    // No file by type, so handle as text input
-                    // If no explicit error message provided, then use default one
-                    if (empty($field['error'])) {
-                        // If found in corresponding messages.php file, then messaged is translated
-                        $field['error'] = 'This field is required';
-                    }
-
                     // Append rule for current text-like field
-                    $definition[$field['id']] = array(
+                    $rules['input']['definition'][$field['id']] = array(
                         'required' => true,
                         'rules' => array(
                             'NotEmpty' => array(
-                                'message' => $field['error']
+                                // If no explicit error message provided, then use default one
+                                'message' => !empty($field['error']) ? $field['error'] : 'This field is required'
                             )
                         )
                     );
@@ -144,7 +130,7 @@ final class ValidationParser
 
         // Apply input callback if defined
         if ($definitionCallback instanceof Closure) {
-            $definition = array_replace($definition, $definitionCallback());
+            $rules['input']['definition'] = array_replace($rules['input']['definition'], $definitionCallback());
         }
 
         // Prepared and populated validation rules to be passed to validator component
