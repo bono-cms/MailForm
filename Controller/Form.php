@@ -92,27 +92,25 @@ final class Form extends AbstractController
     {
         $fieldService = $this->getModuleService('fieldService');
 
-        // Grab raw input data and normalize it
-        $input = $this->request->getPost('field'); // Request data
-        $input = $fieldService->normalizeInput($form->getId(), $input);
+        // Get all request data (POST data and files if present)
+        $fields = $fieldService->parseInput($form->getId(), $this->request->getAll());
 
-        // Create parameters from input
-        $params = $fieldService->createParams($input);
+        $validationParser = new ValidationParser($this->request->getAll());
 
         // Generate rules depending on CAPTCHA requirement
         if ($form->getCaptcha()) {
-            $rules = ValidationParser::createProtected($params, $this->request, $this->captcha);
+            $rules = $validationParser->createProtected($fields, $this->captcha);
         } else {
-            $rules = ValidationParser::createStandart($params);
+            $rules = $validationParser->createStandart($fields);
         }
 
         $formValidator = $this->createValidator($rules);
 
         if ($formValidator->isValid()) {
             // Prepare subject
-            $subject = FieldService::createSubject($params, $form->getSubject());
+            $subject = FieldService::createSubject($fields, $form->getSubject());
             // Create prepared subject
-            $body = $fieldService->createMessage($form->getMessage(), $params);
+            $body = $fieldService->createMessage($form->getMessage(), $fields);
 
             // It's time to send a message
             if ($this->getService('Cms', 'mailer')->send($subject, $body)) {
