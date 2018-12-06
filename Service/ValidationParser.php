@@ -14,10 +14,29 @@ namespace MailForm\Service;
 use Closure;
 use Krystal\Http\RequestInterface;
 use Krystal\Captcha\CaptchaInterface;
-use Krystal\Validate\Pattern\Captcha as CaptchaPattern;
+use Krystal\Validate\Pattern;
+use MailForm\Collection\FieldTypeCollection;
 
 final class ValidationParser
 {
+    /**
+     * All request data (POST and Files)
+     * 
+     * @var array
+     */
+    private $request;
+
+    /**
+     * State initialization
+     * 
+     * @param array $request All request data
+     * @return void
+     */
+    public function __construct(array $request)
+    {
+        $this->request = $request;
+    }
+
     /**
      * Normalize error messages
      * 
@@ -46,7 +65,7 @@ final class ValidationParser
      * @param \Closure $definitionCallback Callback
      * @return array
      */
-    private static function createRules(array $fields, Closure $inputCallback = null, $definitionCallback = null)
+    private function createRules(array $fields, Closure $inputCallback = null, $definitionCallback = null)
     {
         $values = array_column($fields, 'value');
         $ids = array_column($fields, 'id');
@@ -58,10 +77,23 @@ final class ValidationParser
             $input = array_replace($input, $inputCallback($input));
         }
 
+        $files = isset($this->request['files']) ? $this->request['files']['field'] : array();
+
+        // Fix missing keys
+        foreach ($fields as $field) {
+            if (!isset($files[$field['id']]) && $field['type'] == FieldTypeCollection::TYPE_FILE) {
+                $files[$field['id']] = array();
+            }
+        }
+
         // Initial rules
         $rules = array(
             'input' => array(
                 'source' => $input,
+                'definition' => array()
+            ),
+            'file' => array(
+                'source' => $files,
                 'definition' => array()
             )
         );
@@ -73,21 +105,40 @@ final class ValidationParser
         foreach ($fields as $field) {
             // If rule needs to be appended
             if ($field['required']) {
-                // If no explicit error message provided, then use default one
-                if (empty($field['error'])) {
-                    // If found in corresponding messages.php file, then messaged is translated
-                    $field['error'] = 'This field is required';
-                }
+                // Check if file by type
+                if ($field['type'] == FieldTypeCollection::TYPE_FILE) {
+                    // If no explicit error message provided, then use default one
+                    if (empty($field['error'])) {
+                        // If found in corresponding messages.php file, then messaged is translated
+                        $field['error'] = 'Please select a file';
+                    }
 
-                // Append rule for current field
-                $definition[$field['id']] = array(
-                    'required' => true,
-                    'rules' => array(
-                        'NotEmpty' => array(
-                            'message' => $field['error']
+                    $rules['file']['definition'][$field['id']] = array(
+                        'required' => true,
+                        'rules' => array(
+                            'NotEmpty' => array(
+                                'message' => $field['error']
+                            )
                         )
-                    )
-                );
+                    );
+                } else {
+                    // No file by type, so handle as text input
+                    // If no explicit error message provided, then use default one
+                    if (empty($field['error'])) {
+                        // If found in corresponding messages.php file, then messaged is translated
+                        $field['error'] = 'This field is required';
+                    }
+
+                    // Append rule for current text-like field
+                    $definition[$field['id']] = array(
+                        'required' => true,
+                        'rules' => array(
+                            'NotEmpty' => array(
+                                'message' => $field['error']
+                            )
+                        )
+                    );
+                }
             }
         }
 
@@ -106,7 +157,7 @@ final class ValidationParser
      * @param array $fields
      * @return array
      */
-    public static function createStandart(array $fields)
+    public function createStandart(array $fields)
     {
         return self::createRules($fields);
     }
@@ -115,20 +166,21 @@ final class ValidationParser
      * Create validation rules depending on columns
      * 
      * @param array $fields
-     * @param \Krystal\Http\RequestInterface $request
      * @param \Krystal\Captcha\CaptchaInterface $captcha
      * @return array
      */
-    public static function createProtected(array $fields, RequestInterface $request, CaptchaInterface $captcha)
+    public function createProtected(array $fields, CaptchaInterface $captcha)
     {
-        return self::createRules($fields, function($input) use ($request){
+        $data = $this->request['data'];
+
+        return self::createRules($fields, function($input) use ($data){
             // To be appended
             return array(
-                'captcha' => $request->getPost('captcha')
+                'captcha' => isset($data['captcha']) ? $data['captcha'] : null
             );
         }, function() use ($captcha){
             return array(
-                'captcha' => new CaptchaPattern($captcha)
+                'captcha' => new Pattern\Captcha($captcha)
             );
         });
     }

@@ -57,7 +57,7 @@ final class FieldService extends AbstractManager
         // Create parameters from input
         return $this->createParams($data['data'], $data['files']);
     }
-    
+
     /**
      * Normalizes raw input data
      * 
@@ -94,9 +94,9 @@ final class FieldService extends AbstractManager
             }
 
             // File
-            if ($type == FieldTypeCollection::TYPE_FILE && isset($files[$id])) {
+            if ($type == FieldTypeCollection::TYPE_FILE) {
                 // Append file
-                $output['files'][$id] = $files[$id];
+                $output['files'][$id] = isset($files[$id]) ? $files[$id] : array();
             }
         }
 
