@@ -178,7 +178,12 @@ final class FieldService extends AbstractManager
      */
     public function createMessageTemplate($formId, $before = null, $after = null)
     {
-        $fields = $this->fetchList($formId);
+        // We don't want to see these ones in message template
+        $ignoredTypes = array(
+            FieldTypeCollection::TYPE_FILE
+        );
+
+        $fields = $this->fetchList($formId, $ignoredTypes);
 
         // Target message
         $message = null;
@@ -363,11 +368,12 @@ final class FieldService extends AbstractManager
      * Fetch field Ids and their names by form ID
      * 
      * @param int $formId
+     * @param array $ignoreTypes Optional array of ignored type constants
      * @return array
      */
-    public function fetchList($formId)
+    public function fetchList($formId, array $ignoreTypes = array())
     {
-        return ArrayUtils::arrayList($this->fieldMapper->fetchAll($formId, true), 'id', 'name');
+        return ArrayUtils::arrayList($this->fieldMapper->fetchAll($formId, true, $ignoreTypes), 'id', 'name');
     }
 
     /**
