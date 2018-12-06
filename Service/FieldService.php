@@ -48,18 +48,18 @@ final class FieldService extends AbstractManager
     public function normalizeInput($formId, array $input)
     {
         // Field IDs that belong to that form
-        $ids = $this->fieldMapper->fetchIdsByFormId($formId);
+        $rows = $this->fieldMapper->fetchByFormId($formId);
 
-        foreach ($ids as $id) {
+        foreach ($rows as $row) {
             // Recovery missing ID
-            if (!isset($input[$id])) {
-                $input[$id] = null;
+            if ($row['type'] != FieldTypeCollection::TYPE_FILE && !isset($input[$row['id']])) {
+                $input[$row['id']] = null;
             }
         }
 
         return $input;
     }
-    
+
     /**
      * Creates message from parameters
      * 
