@@ -109,13 +109,19 @@ final class FieldMapper extends AbstractMapper implements FieldMapperInterface
      * 
      * @param int $formId
      * @param boolean $sort Whether to sort fields
+     * @param array $ignoreTypes Optional array of ignored type constants
      * @return array
      */
-    public function fetchAll($formId, $sort)
+    public function fetchAll($formId, $sort, $ignoreTypes = array())
     {
         $db = $this->createEntitySelect($this->getColumns())
                    ->whereEquals(self::column('form_id'), $formId)
                    ->andWhereEquals(FieldTranslationMapper::column('lang_id'), $this->getLangId());
+
+        // Filter type constraints if required
+        if ($ignoreTypes) {
+            $db->andWhereNotIn(self::column('type'), $ignoreTypes);
+        }
 
         if ($sort === false) {
             $db->orderBy(self::column('id'))

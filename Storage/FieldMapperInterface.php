@@ -43,7 +43,8 @@ interface FieldMapperInterface
      * 
      * @param int $formId
      * @param boolean $sort Whether to sort fields
+     * @param array $ignoreTypes Optional array of ignored type constants
      * @return array
      */
-    public function fetchAll($formId, $sort);
+    public function fetchAll($formId, $sort, $ignoreTypes = array());
 }
