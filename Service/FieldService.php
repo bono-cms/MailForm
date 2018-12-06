@@ -47,11 +47,6 @@ final class FieldService extends AbstractManager
      */
     public function parseInput($formId, array $input)
     {
-        // Normalize files
-        if (!empty($input['files'])) {
-            $input['files'] = ValidationParser::normalizeFiles($_FILES);
-        }
-
         // References
         $fields =& $input['data']['field'];
         $files = isset($input['files']) ? $input['files']['field'] : array();

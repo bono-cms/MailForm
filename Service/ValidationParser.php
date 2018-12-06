@@ -12,51 +12,12 @@
 namespace MailForm\Service;
 
 use Closure;
-use RecursiveIteratorIterator;
-use RecursiveArrayIterator;
 use Krystal\Http\RequestInterface;
 use Krystal\Captcha\CaptchaInterface;
 use Krystal\Validate\Pattern\Captcha as CaptchaPattern;
 
 final class ValidationParser
 {
-    /**
-     * Normalize FILES data
-     * Taken from here: http://php.net/manual/en/reserved.variables.files.php#118294
-     * 
-     * @param array $input
-     * @return array
-     */
-    public static function normalizeFiles(array $input)
-    {
-        $output = array();
-
-        foreach ($input as $name => $array) {
-            foreach ($array as $field => $value) {
-                $pointer = &$output[$name];
-                if (!is_array($value)) {
-                    $pointer[$field] = $value;
-                    continue;
-                }
-
-                $stack = array(&$pointer);
-                $iterator = new RecursiveIteratorIterator(new RecursiveArrayIterator($value), RecursiveIteratorIterator::SELF_FIRST);
-
-                foreach ($iterator as $key => $value) {
-                    array_splice($stack, $iterator->getDepth() + 1);
-                    $pointer = &$stack[count($stack) - 1];
-                    $pointer = &$pointer[$key];
-                    $stack[] = &$pointer;
-                    if (!$iterator->hasChildren()) {
-                        $pointer[$field] = $value;
-                    }
-                }
-            }
-        }
-
-        return $output;
-    }
-
     /**
      * Normalize error messages
      * 
