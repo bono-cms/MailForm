@@ -8,6 +8,7 @@ Mail form is the **ultimate FREE** form creation tool for Bono CMS. Build variou
 - Simple and intuitive interface
 - Built-in internalization support
 - Common dynamic fields support plus extras (checkbox list, radio list)
+- File input support. On submit, uploaded files are sent as mail attachments
 - Required and non-required validation rule with custom message support
 - Sorting order for fields to be rendered
 - Regular and AJAX forms
