@@ -17,6 +17,16 @@ use MailForm\Collection\FieldTypeCollection;
 final class FieldEntity extends VirtualEntity
 {
     /**
+     * Checks whether field type is file upload
+     * 
+     * @return boolean
+     */
+    public function isFile()
+    {
+        return $this->is(FieldTypeCollection::TYPE_FILE);
+    }
+
+    /**
      * Checks whether field type is text
      * 
      * @return boolean

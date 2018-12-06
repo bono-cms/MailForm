@@ -90,32 +90,36 @@ final class Form extends AbstractController
      */
     private function submitAction(VirtualEntity $form)
     {
+        // Get input data and files
+        $input = $this->request->getAll();
+
         $fieldService = $this->getModuleService('fieldService');
 
-        // Grab raw input data and normalize it
-        $input = $this->request->getPost('field'); // Request data
-        $input = $fieldService->normalizeInput($form->getId(), $input);
+        // Get all request data (POST data and files if present)
+        $fields = $fieldService->parseInput($form->getId(), $input);
 
-        // Create parameters from input
-        $params = $fieldService->createParams($input);
+        $validationParser = new ValidationParser($input);
 
         // Generate rules depending on CAPTCHA requirement
         if ($form->getCaptcha()) {
-            $rules = ValidationParser::createProtected($params, $this->request, $this->captcha);
+            $rules = $validationParser->createProtected($fields, $this->captcha);
         } else {
-            $rules = ValidationParser::createStandart($params);
+            $rules = $validationParser->createStandart($fields);
         }
 
         $formValidator = $this->createValidator($rules);
 
         if ($formValidator->isValid()) {
             // Prepare subject
-            $subject = FieldService::createSubject($params, $form->getSubject());
+            $subject = FieldService::createSubject($fields, $form->getSubject());
             // Create prepared subject
-            $body = $fieldService->createMessage($form->getMessage(), $params);
+            $body = $fieldService->createMessage($form->getMessage(), $fields);
+
+            // Request files if available
+            $files = isset($input['files']) ? $input['files']['field'] : array();
 
             // It's time to send a message
-            if ($this->getService('Cms', 'mailer')->send($subject, $body)) {
+            if ($this->getService('Cms', 'mailer')->send($subject, $body, null, $files)) {
                 // Log current message
                 $this->getModuleService('submitLogService')->log($subject, $body);
 

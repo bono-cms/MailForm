@@ -39,27 +39,105 @@ final class FieldService extends AbstractManager
     }
 
     /**
-     * Normalizes raw input
+     * Returns parsed input data
      * 
-     * @param int $formId
-     * @param array $input Raw input data
+     * @param int $formId Current form ID being process
+     * @param array $input POST data with Files
      * @return array
      */
-    public function normalizeInput($formId, array $input)
+    public function parseInput($formId, array $input)
     {
-        // Field IDs that belong to that form
-        $ids = $this->fieldMapper->fetchIdsByFormId($formId);
+        // References
+        $fields =& $input['data']['field'];
+        $files = isset($input['files']) ? $input['files']['field'] : array();
 
-        foreach ($ids as $id) {
-            // Recovery missing ID
-            if (!isset($input[$id])) {
-                $input[$id] = null;
+        // Normalize raw input it
+        $data = $this->normalizeInput($formId, $fields, $files);
+
+        // Create parameters from input
+        return $this->createParams($data['data'], $data['files']);
+    }
+
+    /**
+     * Normalizes raw input data
+     * 
+     * @param int $formId Form ID being processed
+     * @param array $fields Field Ids with their values
+     * @pram array $files An array of files if present
+     * @return array
+     */
+    private function normalizeInput($formId, array $fields, array $files)
+    {
+        // To be returned
+        $output = array(
+            'data' => array(),
+            'files' => array()
+        );
+
+        // Field IDs that belong to that form
+        $rows = $this->fieldMapper->fetchByFormId($formId);
+
+        foreach ($rows as $row) {
+            // Current values
+            $id =& $row['id'];
+            $type =& $row['type'];
+
+            // Recovery missing ID with empty value
+            if (!isset($fields[$id])) {
+                $fields[$id] = null;
+            }
+
+            // Non-file
+            if ($type != FieldTypeCollection::TYPE_FILE) {
+                // Append text
+                $output['data'][$id] = $fields[$id]; // Value
+            }
+
+            // File
+            if ($type == FieldTypeCollection::TYPE_FILE) {
+                // Append file
+                $output['files'][$id] = isset($files[$id]) ? $files[$id] : array();
             }
         }
 
-        return $input;
+        return $output;
     }
-    
+
+    /**
+     * Create message parameters from input fields
+     * Later on, these ones expected to be rendered in email message template
+     * 
+     * @param array $fields Raw input data
+     * @param array $files Files if present
+     * @return array
+     */
+    private function createParams(array $fields, array $files = array())
+    {
+        // Get IDs from text and file inputs
+        $ids = array_merge(array_keys($fields), array_keys($files));
+
+        $entities = $this->fetchByIds($ids);
+
+        // To be returned
+        $output = array();
+
+        foreach ($entities as $entity) {
+            // Current input value
+            $value = isset($fields[$entity->getId()]) ? $fields[$entity->getId()] : null;
+
+            $output[] = array(
+                'name' => $entity->getName(), // Field name
+                'value' => is_array($value) ? implode(', ', $value) : $value, // Always convert to readable string
+                'id' => $entity->getId(), // Field ID
+                'type' => $entity->getType(), // Type constant
+                'required' => $entity->getRequired(), // Whether this field is a must
+                'error' => $entity->getError() // Error message, not error itself
+            );
+        }
+
+        return $output;
+    }
+
     /**
      * Creates message from parameters
      * 
@@ -100,7 +178,12 @@ final class FieldService extends AbstractManager
      */
     public function createMessageTemplate($formId, $before = null, $after = null)
     {
-        $fields = $this->fetchList($formId);
+        // We don't want to see these ones in message template
+        $ignoredTypes = array(
+            FieldTypeCollection::TYPE_FILE
+        );
+
+        $fields = $this->fetchList($formId, $ignoredTypes);
 
         // Target message
         $message = null;
@@ -222,38 +305,6 @@ final class FieldService extends AbstractManager
     }
 
     /**
-     * Create message parameters from input fields
-     * Later on, these ones expected to be rendered in email message template
-     * 
-     * @param array $fields Raw input data
-     * @return array
-     */
-    public function createParams(array $fields)
-    {
-        $ids = array_keys($fields);
-        $entities = $this->fetchByIds($ids);
-
-        // To be returned
-        $output = array();
-
-        foreach ($entities as $entity) {
-            // Current input value
-            $value = $fields[$entity->getId()];
-
-            $output[] = array(
-                'name' => $entity->getName(), // Field name
-                'value' => is_array($value) ? implode(', ', $value) : $value, // Always convert to readable string
-                'id' => $entity->getId(), // Field ID
-                'type' => $entity->getType(), // Type constant
-                'required' => $entity->getRequired(), // Whether this field is a must
-                'error' => $entity->getError() // Error message, not error itself
-            );
-        }
-
-        return $output;
-    }
-
-    /**
      * {@inheritDoc}
      */
     protected function toEntity(array $row)
@@ -317,11 +368,12 @@ final class FieldService extends AbstractManager
      * Fetch field Ids and their names by form ID
      * 
      * @param int $formId
+     * @param array $ignoreTypes Optional array of ignored type constants
      * @return array
      */
-    public function fetchList($formId)
+    public function fetchList($formId, array $ignoreTypes = array())
     {
-        return ArrayUtils::arrayList($this->fieldMapper->fetchAll($formId, true), 'id', 'name');
+        return ArrayUtils::arrayList($this->fieldMapper->fetchAll($formId, true, $ignoreTypes), 'id', 'name');
     }
 
     /**
