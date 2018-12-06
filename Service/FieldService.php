@@ -39,6 +39,31 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Returns parsed input data
+     * 
+     * @param int $formId Current form ID being process
+     * @param array $input POST data with Files
+     * @return array
+     */
+    public function parseInput($formId, array $input)
+    {
+        // Normalize files
+        if (!empty($input['files'])) {
+            $input['files'] = ValidationParser::normalizeFiles($_FILES);
+        }
+
+        // References
+        $fields =& $input['data']['field'];
+        $files = isset($input['files']) ? $input['files']['field'] : array();
+
+        // Normalize raw input it
+        $data = $this->normalizeInput($formId, $fields, $files);
+
+        // Create parameters from input
+        return $this->createParams($data['data'], $data['files']);
+    }
+    
+    /**
      * Normalizes raw input data
      * 
      * @param int $formId Form ID being processed
@@ -46,7 +71,7 @@ final class FieldService extends AbstractManager
      * @pram array $files An array of files if present
      * @return array
      */
-    public function normalizeInput($formId, array $fields, array $files)
+    private function normalizeInput($formId, array $fields, array $files)
     {
         // To be returned
         $output = array(
@@ -91,7 +116,7 @@ final class FieldService extends AbstractManager
      * @param array $files Files if present
      * @return array
      */
-    public function createParams(array $fields, array $files = array())
+    private function createParams(array $fields, array $files = array())
     {
         // Get IDs from text and file inputs
         $ids = array_merge(array_keys($fields), array_keys($files));
