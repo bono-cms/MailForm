@@ -39,25 +39,48 @@ final class FieldService extends AbstractManager
     }
 
     /**
-     * Normalizes raw input
+     * Normalizes raw input data
      * 
-     * @param int $formId
-     * @param array $input Raw input data
+     * @param int $formId Form ID being processed
+     * @param array $fields Field Ids with their values
+     * @pram array $files An array of files if present
      * @return array
      */
-    public function normalizeInput($formId, array $input)
+    public function normalizeInput($formId, array $fields, array $files)
     {
+        // To be returned
+        $output = array(
+            'data' => array(),
+            'files' => array()
+        );
+
         // Field IDs that belong to that form
         $rows = $this->fieldMapper->fetchByFormId($formId);
 
         foreach ($rows as $row) {
-            // Recovery missing ID
-            if ($row['type'] != FieldTypeCollection::TYPE_FILE && !isset($input[$row['id']])) {
-                $input[$row['id']] = null;
+            // Current values
+            $id =& $row['id'];
+            $type =& $row['type'];
+
+            // Recovery missing ID with empty value
+            if (!isset($fields[$id])) {
+                $fields[$id] = null;
+            }
+
+            // Non-file
+            if ($type != FieldTypeCollection::TYPE_FILE) {
+                // Append text
+                $output['data'][$id] = $fields[$id]; // Value
+            }
+
+            // File
+            if ($type == FieldTypeCollection::TYPE_FILE && isset($files[$id])) {
+                // Append file
+                $output['files'][$id] = $files[$id];
             }
         }
 
-        return $input;
+        return $output;
     }
 
     /**
