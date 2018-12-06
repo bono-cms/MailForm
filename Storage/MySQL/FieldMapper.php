@@ -56,18 +56,24 @@ final class FieldMapper extends AbstractMapper implements FieldMapperInterface
     }
 
     /**
-     * Fetch field Ids by attached form Id
+     * Fetch basic fields data by attached form Id
      * 
      * @param int $formid Form Id
      * @return array
      */
-    public function fetchIdsByFormId($formId)
+    public function fetchByFormId($formId)
     {
-        $db = $this->db->select('id')
+        // To be selected
+        $columns = array(
+            'id', // Field ID
+            'type' // Field type constant
+        );
+
+        $db = $this->db->select($columns)
                        ->from(self::getTableName())
                        ->whereEquals('form_id', $formId);
 
-        return $db->queryAll('id');
+        return $db->queryAll();
     }
 
     /**
