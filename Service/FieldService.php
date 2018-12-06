@@ -88,11 +88,14 @@ final class FieldService extends AbstractManager
      * Later on, these ones expected to be rendered in email message template
      * 
      * @param array $fields Raw input data
+     * @param array $files Files if present
      * @return array
      */
-    public function createParams(array $fields)
+    public function createParams(array $fields, array $files = array())
     {
-        $ids = array_keys($fields);
+        // Get IDs from text and file inputs
+        $ids = array_merge(array_keys($fields), array_keys($files));
+
         $entities = $this->fetchByIds($ids);
 
         // To be returned
@@ -100,7 +103,7 @@ final class FieldService extends AbstractManager
 
         foreach ($entities as $entity) {
             // Current input value
-            $value = $fields[$entity->getId()];
+            $value = isset($fields[$entity->getId()]) ? $fields[$entity->getId()] : null;
 
             $output[] = array(
                 'name' => $entity->getName(), // Field name
