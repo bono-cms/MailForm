@@ -84,6 +84,38 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Create message parameters from input fields
+     * Later on, these ones expected to be rendered in email message template
+     * 
+     * @param array $fields Raw input data
+     * @return array
+     */
+    public function createParams(array $fields)
+    {
+        $ids = array_keys($fields);
+        $entities = $this->fetchByIds($ids);
+
+        // To be returned
+        $output = array();
+
+        foreach ($entities as $entity) {
+            // Current input value
+            $value = $fields[$entity->getId()];
+
+            $output[] = array(
+                'name' => $entity->getName(), // Field name
+                'value' => is_array($value) ? implode(', ', $value) : $value, // Always convert to readable string
+                'id' => $entity->getId(), // Field ID
+                'type' => $entity->getType(), // Type constant
+                'required' => $entity->getRequired(), // Whether this field is a must
+                'error' => $entity->getError() // Error message, not error itself
+            );
+        }
+
+        return $output;
+    }
+
+    /**
      * Creates message from parameters
      * 
      * @param string $rawMessage Raw form message
@@ -242,38 +274,6 @@ final class FieldService extends AbstractManager
         }
 
         return StringTemplate::template($rawSubject, $vars);
-    }
-
-    /**
-     * Create message parameters from input fields
-     * Later on, these ones expected to be rendered in email message template
-     * 
-     * @param array $fields Raw input data
-     * @return array
-     */
-    public function createParams(array $fields)
-    {
-        $ids = array_keys($fields);
-        $entities = $this->fetchByIds($ids);
-
-        // To be returned
-        $output = array();
-
-        foreach ($entities as $entity) {
-            // Current input value
-            $value = $fields[$entity->getId()];
-
-            $output[] = array(
-                'name' => $entity->getName(), // Field name
-                'value' => is_array($value) ? implode(', ', $value) : $value, // Always convert to readable string
-                'id' => $entity->getId(), // Field ID
-                'type' => $entity->getType(), // Type constant
-                'required' => $entity->getRequired(), // Whether this field is a must
-                'error' => $entity->getError() // Error message, not error itself
-            );
-        }
-
-        return $output;
     }
 
     /**
