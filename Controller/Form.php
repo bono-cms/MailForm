@@ -90,12 +90,15 @@ final class Form extends AbstractController
      */
     private function submitAction(VirtualEntity $form)
     {
+        // Get input data and files
+        $input = $this->request->getAll();
+
         $fieldService = $this->getModuleService('fieldService');
 
         // Get all request data (POST data and files if present)
-        $fields = $fieldService->parseInput($form->getId(), $this->request->getAll());
+        $fields = $fieldService->parseInput($form->getId(), $input);
 
-        $validationParser = new ValidationParser($this->request->getAll());
+        $validationParser = new ValidationParser($input);
 
         // Generate rules depending on CAPTCHA requirement
         if ($form->getCaptcha()) {
@@ -112,8 +115,11 @@ final class Form extends AbstractController
             // Create prepared subject
             $body = $fieldService->createMessage($form->getMessage(), $fields);
 
+            // Request files if available
+            $files = isset($input['files']) ? $input['files']['field'] : array();
+
             // It's time to send a message
-            if ($this->getService('Cms', 'mailer')->send($subject, $body)) {
+            if ($this->getService('Cms', 'mailer')->send($subject, $body, null, $files)) {
                 // Log current message
                 $this->getModuleService('submitLogService')->log($subject, $body);
 
