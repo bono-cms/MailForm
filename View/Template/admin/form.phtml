@@ -137,22 +137,22 @@ defined('KRYSTAL') or die;
                 <div class="row">
                     <div class="col-lg-7">
                         <div class="form-group">
-                            <label class="col-lg-2 control-label"><?php $this->show('Enable CAPTCHA'); ?></label>
-                            <div class="col-lg-10">
+                            <label class="col-lg-7 control-label"><?php $this->show('Enable CAPTCHA'); ?></label>
+                            <div class="col-lg-5">
                                 <?php echo Element::checkbox('form[captcha]', $entity->getCaptcha(), array('class' => 'form-control')); ?>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-lg-2 control-label"><?php $this->show('Enable auto complete on site'); ?></label>
-                            <div class="col-lg-10">
+                            <label class="col-lg-7 control-label"><?php $this->show('Enable auto complete on site'); ?></label>
+                            <div class="col-lg-5">
                                 <?php echo Element::checkbox('form[autocomplete]', $entity->getAutocomplete(), array('class' => 'form-control')); ?>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-lg-2 control-label"><?php $this->show('Enable SEO'); ?></label>
-                            <div class="col-lg-10">
+                            <label class="col-lg-7 control-label"><?php $this->show('Enable SEO'); ?></label>
+                            <div class="col-lg-5">
                                 <?php echo Element::checkbox('form[seo]', $entity->getSeo(), array('class' => 'form-control')); ?>
                             </div>
                         </div>
