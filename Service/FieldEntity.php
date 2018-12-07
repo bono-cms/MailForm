@@ -17,6 +17,16 @@ use MailForm\Collection\FieldTypeCollection;
 final class FieldEntity extends VirtualEntity
 {
     /**
+     * Returns extension hints
+     * 
+     * @return string
+     */
+    public function getExtensionHints()
+    {
+        return FieldTypeCollection::guessMimeByConstant($this->getType());
+    }
+
+    /**
      * Checks whether field type is file upload
      * 
      * @return boolean
