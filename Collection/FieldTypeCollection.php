@@ -70,7 +70,8 @@ final class FieldTypeCollection extends ArrayGroupCollection
             self::TYPE_NUMBER,
             self::TYPE_EMAIL,
             self::TYPE_DATE,
-            self::TYPE_DATETIME
+            self::TYPE_DATETIME,
+            self::TYPE_PASSWORD
         );
     }
 }
