@@ -37,6 +37,16 @@ final class FieldEntity extends VirtualEntity
     }
 
     /**
+     * Checks whether field type is password
+     * 
+     * @return boolean
+     */
+    public function isPassword()
+    {
+        return $this->is(FieldTypeCollection::TYPE_PASSWORD);
+    }
+
+    /**
      * Checks whether field type is number
      * 
      * @return boolean

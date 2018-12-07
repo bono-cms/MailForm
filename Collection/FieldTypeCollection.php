@@ -27,6 +27,7 @@ final class FieldTypeCollection extends ArrayGroupCollection
     const TYPE_RADIO_LIST = 9;
     const TYPE_BOOLEAN = 10;
     const TYPE_FILE = 11;
+    const TYPE_PASSWORD = 12;
 
     /**
      * {@inheritDoc}
@@ -49,6 +50,7 @@ final class FieldTypeCollection extends ArrayGroupCollection
             self::TYPE_NUMBER => 'Number',
             self::TYPE_EMAIL => 'Email',
             self::TYPE_TEXTAREA => 'Textarea',
+            self::TYPE_PASSWORD => 'Password'
         ),
 
         'Files' => array(
