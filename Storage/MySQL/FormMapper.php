@@ -43,9 +43,6 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
     {
         return array(
             self::column('id'),
-            FormTranslationMapper::column('lang_id'),
-            FormTranslationMapper::column('web_page_id'),
-            FormTranslationMapper::column('description'),
             self::column('template'),
             self::column('message'),
             self::column('seo'),
@@ -53,6 +50,9 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
             self::column('subject'),
             self::column('type'),
             self::column('autocomplete'),
+            FormTranslationMapper::column('lang_id'),
+            FormTranslationMapper::column('web_page_id'),
+            FormTranslationMapper::column('description'),
             FormTranslationMapper::column('title'),
             FormTranslationMapper::column('name'),
             FormTranslationMapper::column('meta_description'),
