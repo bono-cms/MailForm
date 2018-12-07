@@ -90,6 +90,33 @@ final class Form extends AbstractController
      */
     private function submitAction(VirtualEntity $form)
     {
+        $result = $this->processForm($form);
+
+        if ($result === true) {
+
+            // Here you can add some logic to alter default behavior after successful form submission
+            // By default 1 is returned and page gets refreshed showing flash message
+
+            // Use explicit flash message if provided, otherwise fallback to default one
+            $this->flashBag->set('success', $form->getFlash() ? $form->getFlash() : 'Your message has been sent!');
+            return 1;
+        } else if ($result === false) {
+            $this->flashBag->set('warning', 'Could not send your message. Please again try later');
+            return 1;
+        } else {
+            // Error messages
+            return $result;
+        }
+    }
+    
+    /**
+     * Submits a form and sends a message
+     * 
+     * @param \Krystal\Stdlib\VirtualEntity $form
+     * @return boolean|string
+     */
+    private function processForm(VirtualEntity $form)
+    {
         // Get input data and files
         $input = $this->request->getAll();
 
@@ -123,13 +150,12 @@ final class Form extends AbstractController
                 // Log current message
                 $this->getModuleService('submitLogService')->log($subject, $body);
 
-                // Use explicit flash message if provided, otherwise fallback to default one
-                $this->flashBag->set('success', $form->getFlash() ? $form->getFlash() : 'Your message has been sent!');
+                // Success
+                return true;
             } else {
-                $this->flashBag->set('warning', 'Could not send your message. Please again try later');
+                // Error
+                return false;
             }
-
-            return '1';
         } else {
             return ValidationParser::normalizeErrors($formValidator->getErrors());
         }
