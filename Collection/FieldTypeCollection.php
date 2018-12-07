@@ -126,6 +126,17 @@ final class FieldTypeCollection extends ArrayGroupCollection
     }
 
     /**
+     * Whether constant type belongs to one of file types
+     * 
+     * @param int $const
+     * @return boolean
+     */
+    public static function isFileType($const)
+    {
+        return in_array($const, self::getFileTypes());
+    }
+
+    /**
      * Returns file type constants
      * 
      * @return array
