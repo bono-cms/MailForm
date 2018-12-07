@@ -74,6 +74,24 @@ final class FieldTypeCollection extends ArrayGroupCollection
     );
 
     /**
+     * Returns file type constants
+     * 
+     * @return array
+     */
+    public static function getFileTypes()
+    {
+        return array(
+            self::TYPE_FILE,
+            self::TYPE_FILE_WORD,
+            self::TYPE_FILE_EXCEL,
+            self::TYPE_FILE_POWER_POINT,
+            self::TYPE_FILE_TEXT,
+            self::TYPE_FILE_PDF,
+            self::TYPE_FILE_IMAGE
+        );
+    }
+
+    /**
      * Returns simple types
      * 
      * @return array

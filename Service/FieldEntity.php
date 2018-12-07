@@ -23,7 +23,7 @@ final class FieldEntity extends VirtualEntity
      */
     public function isFile()
     {
-        return $this->is(FieldTypeCollection::TYPE_FILE);
+        return $this->inType(FieldTypeCollection::getFileTypes());
     }
 
     /**
