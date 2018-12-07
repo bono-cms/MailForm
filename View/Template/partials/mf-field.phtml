@@ -19,7 +19,7 @@ $value = $field->getDefault();
     <label for="<?php echo $field->getId(); ?>" class="col-lg-2 control-label"><?= $field->getName(); ?></label>
     <div class="col-lg-10">
         <?php if ($field->isFile()): ?>
-        <?= Element::file($name, null, array('class' => 'form-control', 'id' => $field->getId(), 'title' => $field->getHint())); ?>
+        <?= Element::file($name, null, array('class' => 'form-control', 'id' => $field->getId(), 'title' => $field->getHint(), 'accept' => $field->getExtensionHints())); ?>
         <?php endif; ?>
 
         <?php if ($field->isText()): ?>
