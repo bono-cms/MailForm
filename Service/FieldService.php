@@ -148,7 +148,12 @@ final class FieldService extends AbstractManager
     public function createMessage($rawMessage, array $params)
     {
         $vars = self::extractValues($params);
-        return StringTemplate::template($rawMessage, $vars);
+        $message = StringTemplate::template($rawMessage, $vars);
+
+        // Convert new lines to breaks
+        $message = nl2br($message);
+
+        return $message;
     }
 
     /**
