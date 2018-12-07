@@ -11,7 +11,7 @@ $fields = $page->getFields();
 
 ?>
 
-<form class="form-horizontal" action="<?= $action; ?>">
+<form class="form-horizontal" action="<?= $action; ?>" autocomplete="<?= $page->getAutocomplete() ? 'on' : 'off'; ?>">
     <fieldset>
     <?php if (FieldService::hasColumns($fields)): ?>
     <div class="row">
