@@ -81,7 +81,7 @@ final class ValidationParser
 
         // Fix missing keys
         foreach ($fields as $field) {
-            if (!isset($files[$field['id']]) && $field['type'] == FieldTypeCollection::TYPE_FILE) {
+            if (!isset($files[$field['id']]) && FieldTypeCollection::isFileType($field['type'])) {
                 $files[$field['id']] = array();
             }
         }
@@ -103,7 +103,7 @@ final class ValidationParser
             // If rule needs to be appended
             if ($field['required']) {
                 // Check if file by type
-                if ($field['type'] == FieldTypeCollection::TYPE_FILE) {
+                if (FieldTypeCollection::isFileType($field['type'])) {
                     $rules['file']['definition'][$field['id']] = array(
                         'required' => true,
                         'rules' => array(
