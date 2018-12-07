@@ -74,6 +74,58 @@ final class FieldTypeCollection extends ArrayGroupCollection
     );
 
     /**
+     * Constant type map with its extensions
+     * 
+     * @var array
+     */
+    private static $extensions = array(
+        self::TYPE_FILE_WORD => array(
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/msword'
+        ),
+
+        self::TYPE_FILE_EXCEL => array(
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.ms-excel',
+            'application/vnd.msexcel',
+            'application/excel'
+        ),
+
+        self::TYPE_FILE_POWER_POINT => array(
+            'application/vnd.ms-powerpoint', 
+            'application/vnd.openxmlformats-officedocument.presentationml.slideshow', 
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+        ),
+
+        self::TYPE_FILE_TEXT => array(
+            'text/plain'
+        ),
+
+        self::TYPE_FILE_PDF => array(
+            'application/pdf'
+        ),
+
+        self::TYPE_FILE_IMAGE => array(
+            'image/*'
+        )
+    );
+
+    /**
+     * Guess MIME-type by constant
+     * 
+     * @param int $const
+     * @return string
+     */
+    public static function guessMimeByConstant($const)
+    {
+        if (isset(self::$extensions[$const])) {
+            return implode(', ', self::$extensions[$const]);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Returns file type constants
      * 
      * @return array
