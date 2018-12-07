@@ -26,6 +26,10 @@ $value = $field->getDefault();
         <?= Element::text($name, $value, $attrs); ?>
         <?php endif; ?>
 
+        <?php if ($field->isPassword()): ?>
+        <?= Element::password($name, $value, $attrs); ?>
+        <?php endif; ?>
+
         <?php if ($field->isNumber()): ?>
         <?= Element::number($name, $value, $attrs); ?>
         <?php endif; ?>
