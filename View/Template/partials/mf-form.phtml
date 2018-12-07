@@ -12,6 +12,7 @@ $fields = $page->getFields();
 // View configuration parameters
 $resetButton = isset($resetButton) && $resetButton == true;
 $resetButtonText = isset($resetButtonText) ? $resetButtonText : 'Reset';
+$submitButtonText = isset($submitButtonText) ? $submitButtonText : 'Submit';
 
 ?>
 
@@ -60,7 +61,7 @@ $resetButtonText = isset($resetButtonText) ? $resetButtonText : 'Reset';
     <?php if (!empty($fields)): ?>
     <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
-            <button type="submit" data-button="submit" class="btn btn-primary"><? $this->show('Submit'); ?></button>
+            <button type="submit" data-button="submit" class="btn btn-primary"><?php $this->show($submitButtonText); ?></button>
             <?php if ($resetButton): ?>
             <button type="reset" class="btn btn-default"><?php $this->show($resetButtonText); ?></button>
             <?php endif; ?>
