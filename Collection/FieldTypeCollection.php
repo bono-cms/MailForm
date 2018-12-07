@@ -29,6 +29,15 @@ final class FieldTypeCollection extends ArrayGroupCollection
     const TYPE_FILE = 11;
     const TYPE_PASSWORD = 12;
 
+    /* File extras */
+    const TYPE_FILE_WORD = 13;
+    const TYPE_FILE_EXCEL = 14;
+    const TYPE_FILE_POWER_POINT = 15;
+    const TYPE_FILE_TEXT = 16;
+    const TYPE_FILE_PDF = 17;
+    const TYPE_FILE_IMAGE = 18;
+    const TYPE_FILE_ARCHIVE = 19;
+
     /**
      * {@inheritDoc}
      */
@@ -54,7 +63,13 @@ final class FieldTypeCollection extends ArrayGroupCollection
         ),
 
         'Files' => array(
-            self::TYPE_FILE => 'File selection'
+            self::TYPE_FILE => 'File selection',
+            self::TYPE_FILE_WORD => 'Word file selection',
+            self::TYPE_FILE_EXCEL => 'Excel file selection',
+            self::TYPE_FILE_POWER_POINT => 'PowerPoint file selection',
+            self::TYPE_FILE_TEXT => 'Text file selection',
+            self::TYPE_FILE_PDF => 'PDF file selection',
+            self::TYPE_FILE_IMAGE => 'Image file selection'
         )
     );
 
