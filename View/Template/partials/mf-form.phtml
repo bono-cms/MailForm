@@ -22,7 +22,7 @@ $submitButtonText = isset($submitButtonText) ? $submitButtonText : 'Submit';
     <div class="row">
         <?php foreach (FieldService::groupFields($fields) as $column => $collection): ?>
 
-        <div data-column="<?= $column; ?>">
+        <div data-column="<?= $column; ?>" class="<?= isset($classes[$column]) ? $classes[$column] : null; ?>">
             <?php $this->loadPartial('mf-fields', array(
                 'fields' => $collection
             )); ?>
