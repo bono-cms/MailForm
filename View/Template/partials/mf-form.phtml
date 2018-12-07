@@ -9,6 +9,10 @@ use MailForm\Service\FieldService;
 
 $fields = $page->getFields();
 
+// View configuration parameters
+$resetButton = isset($resetButton) && $resetButton == true;
+$resetButtonText = isset($resetButtonText) ? $resetButtonText : 'Reset';
+
 ?>
 
 <form class="form-horizontal" action="<?= $action; ?>" autocomplete="<?= $page->getAutocomplete() ? 'on' : 'off'; ?>">
@@ -57,7 +61,9 @@ $fields = $page->getFields();
     <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
             <button type="submit" data-button="submit" class="btn btn-primary"><? $this->show('Submit'); ?></button>
-            <button type="reset" class="btn btn-default"><? $this->show('Reset'); ?></button>
+            <?php if ($resetButton): ?>
+            <button type="reset" class="btn btn-default"><?php $this->show($resetButtonText); ?></button>
+            <?php endif; ?>
         </div>
     </div>
     <?php endif; ?>
