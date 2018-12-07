@@ -111,6 +111,7 @@ final class FormManager extends AbstractManager implements FormManagerInterface
                 ->setMessage($form['message'])
                 ->setSubject($form['subject'], FormEntity::FILTER_HTML)
                 ->setType($form['type'], FormEntity::FILTER_INT)
+                ->setAutocomplete($form['autocomplete'], FormEntity::FILTER_BOOL)
                 ->setCaptcha($form['captcha'], FormEntity::FILTER_BOOL);
 
         if (isset($form['field_count'])) {
