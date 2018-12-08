@@ -16,6 +16,7 @@ Mail form is the **ultimate FREE** form creation tool for Bono CMS. Build variou
 - Default values for inputs
 - Separation by columns. This optional feature makes it possible to render fields in different blocks on your page.
 - Custom flash messages on successful sending
+- Flash message positions (up or down)
 - Protection with CAPTCHA (can be enabled or disabled) and CSRF by default.
 - Customizeable subjects and messages with variable placeholders
 - Custom templates support
