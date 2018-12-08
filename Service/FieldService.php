@@ -183,12 +183,8 @@ final class FieldService extends AbstractManager
      */
     public function createMessageTemplate($formId, $before = null, $after = null)
     {
-        // We don't want to see these ones in message template
-        $ignoredTypes = array(
-            FieldTypeCollection::TYPE_FILE
-        );
-
-        $fields = $this->fetchList($formId, $ignoredTypes);
+        // Fields without file types
+        $fields = $this->fetchList($formId, FieldTypeCollection::getFileTypes());
 
         // Target message
         $message = null;
