@@ -137,6 +137,16 @@ defined('KRYSTAL') or die;
                 <div class="row">
                     <div class="col-lg-7">
                         <div class="form-group">
+                            <label class="col-lg-7 control-label"><?php $this->show('Template'); ?></label>
+                            <div class="col-lg-5">
+                            <div class="input-group">
+                                <?php echo Element::text('form[template]', $entity->getTemplate(), array('class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file inside current site theme directory'))); ?>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-lg-7 control-label"><?php $this->show('Flash message position'); ?></label>
                             <div class="col-lg-5">
                                 <?php echo Element::select('form[flash_position]', $this->translateArray($flashPositions), $entity->getFlashPosition(), array('class' => 'form-control')); ?>
@@ -161,14 +171,6 @@ defined('KRYSTAL') or die;
                             <label class="col-lg-7 control-label"><?php $this->show('Enable SEO'); ?></label>
                             <div class="col-lg-5">
                                 <?php echo Element::checkbox('form[seo]', $entity->getSeo(), array('class' => 'form-control')); ?>
-                            </div>
-                        </div>
-
-                        <div class="form-group <?php HtmlHelper::addOnDemand(!$extendedMode, 'hidden'); ?>">
-                            <label class="control-label"><?php $this->show('Template'); ?></label>
-                            <div class="input-group">
-                                <?php echo Element::text('form[template]', $entity->getTemplate(), array('class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file inside current site theme directory'))); ?>
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                             </div>
                         </div>
 
