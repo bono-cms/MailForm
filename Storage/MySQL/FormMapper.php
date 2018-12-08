@@ -50,6 +50,7 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
             self::column('subject'),
             self::column('type'),
             self::column('autocomplete'),
+            self::column('flash_position'),
             FormTranslationMapper::column('lang_id'),
             FormTranslationMapper::column('web_page_id'),
             FormTranslationMapper::column('description'),

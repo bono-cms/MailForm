@@ -8,7 +8,8 @@ CREATE TABLE `bono_module_mailform` (
     `captcha` BOOLEAN NOT NULL COMMENT 'Whether this form is protected by CAPTCHA',
     `subject` varchar(255) NOT NULL COMMENT 'Subject with opt.variables',
     `type` SMALLINT NOT NULL COMMENT 'Form type constant',
-    `autocomplete` BOOLEAN NOT NULL COMMENT 'Whether autocomplete enabled'
+    `autocomplete` BOOLEAN NOT NULL COMMENT 'Whether autocomplete enabled',
+    `flash_position` INT NOT NULL COMMENT 'Flash message position'
 ) DEFAULT CHARSET = UTF8;
 
 DROP TABLE IF EXISTS `bono_module_mailform_translations`;
