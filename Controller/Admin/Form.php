@@ -17,6 +17,7 @@ use Cms\Controller\Admin\AbstractController;
 use MailForm\Service\FieldService;
 use MailForm\Service\FormEntity;
 use MailForm\Collection\FormTypeCollection;
+use MailForm\Collection\FlashPositionCollection;
 
 final class Form extends AbstractController
 {
@@ -54,11 +55,14 @@ final class Form extends AbstractController
 
         $fields = $this->getModuleService('fieldService')->fetchAll($id, false);
 
+        $flashPolCol = new FlashPositionCollection();
+        
         return $this->view->render('form', array(
             'new' => $new,
             'form' => $form,
             'fields' => $fields,
-            'subjectVars' => FieldService::createSubjectVars($fields)
+            'subjectVars' => FieldService::createSubjectVars($fields),
+            'flashPositions' => $flashPolCol->getAll()
         ));
     }
 
