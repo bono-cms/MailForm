@@ -6,6 +6,7 @@
 
 use Krystal\Form\Element;
 use MailForm\Service\FieldService;
+use MailForm\Collection\FlashPositionCollection;
 
 $fields = $page->getFields();
 
@@ -15,6 +16,10 @@ $resetButtonText = isset($resetButtonText) ? $resetButtonText : 'Reset';
 $submitButtonText = isset($submitButtonText) ? $submitButtonText : 'Submit';
 
 ?>
+
+<?php if ($page->getFlashPosition() == FlashPositionCollection::POS_UP): ?>
+<?php $this->loadPartial('mf-flash'); ?>
+<?php endif; ?>
 
 <form class="form-horizontal" action="<?= $action; ?>" autocomplete="<?= $page->getAutocomplete() ? 'on' : 'off'; ?>">
     <fieldset>
@@ -70,3 +75,7 @@ $submitButtonText = isset($submitButtonText) ? $submitButtonText : 'Submit';
     <?php endif; ?>
     </fieldset>
 </form>
+
+<?php if ($page->getFlashPosition() == FlashPositionCollection::POS_DOWN): ?>
+<?php $this->loadPartial('mf-flash'); ?>
+<?php endif; ?>
