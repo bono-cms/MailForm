@@ -74,3 +74,7 @@ Please don't open an issue if that bug related to security. Instead send an emai
 # License
 
 Licensed under the same license as Bono CMS
+
+# Credits
+
+Icons made by [Freepik](https://www.freepik.com/ "Freepik") from [www.flaticon.com](https://www.flaticon.com/ "Flaticon") is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/ "Creative Commons BY 3.0")
