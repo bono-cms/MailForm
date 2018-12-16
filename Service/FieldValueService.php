@@ -86,6 +86,18 @@ final class FieldValueService extends AbstractManager
      * @param int $fieldId
      * @return array
      */
+    public function fetchGrouped($fieldId)
+    {
+        $rows = $this->fieldValueMapper->fetchAll($fieldId, true);
+        return ArrayUtils::arrayDropdown($rows, 'lang_id', 'value', 'value');
+    }
+
+    /**
+     * Fetch all values by associated field ID
+     * 
+     * @param int $fieldId
+     * @return array
+     */
     public function fetchAll($fieldId)
     {
         return $this->prepareResults($this->fieldValueMapper->fetchAll($fieldId));
