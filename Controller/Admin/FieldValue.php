@@ -86,10 +86,10 @@ final class FieldValue extends AbstractController
      */
     public function editAction($id)
     {
-        $field = $this->getModuleService('fieldValueService')->fetchById($id, true);
+        $value = $this->getModuleService('fieldValueService')->fetchById($id, true);
 
-        if ($field !== false) {
-            return $this->createForm($field);
+        if ($value !== false) {
+            return $this->createForm($value);
         } else {
             return false;
         }
@@ -110,7 +110,7 @@ final class FieldValue extends AbstractController
     }
 
     /**
-     * Saves a field
+     * Saves field value
      * 
      * @return mixed
      */
@@ -119,15 +119,15 @@ final class FieldValue extends AbstractController
         $input = $this->request->getPost();
         $new = (bool) !$input['value']['id'];
 
-        $fieldService = $this->getModuleService('fieldValueService');
-        $fieldService->save($input);
+        $fieldValueService = $this->getModuleService('fieldValueService');
+        $fieldValueService->save($input);
 
         if (!$new) {
             $this->flashBag->set('success', 'The element has been updated successfully');
             return 1;
         } else {
             $this->flashBag->set('success', 'The element has been created successfully');
-            return $fieldService->getLastId();
+            return $fieldValueService->getLastId();
         }
     }
 }
