@@ -11,7 +11,6 @@
 
 namespace MailForm\Service;
 
-use Krystal\Stdlib\VirtualEntity;
 use Krystal\Stdlib\ArrayUtils;
 use Cms\Service\AbstractManager;
 use MailForm\Storage\FieldValueMapperInterface;
@@ -35,19 +34,21 @@ final class FieldValueService extends AbstractManager
     {
         $this->fieldValueMapper = $fieldValueMapper;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     protected function toEntity(array $row)
     {
-        $entity = new VirtualEntity();
-        $entity->setId($row['id'], VirtualEntity::FILTER_INT)
-               ->setLangId($row['lang_id'], VirtualEntity::FILTER_INT)
-               ->setFieldId($row['field_id'], VirtualEntity::FILTER_INT)
-               ->setFormId($row['form_id'], VirtualEntity::FILTER_INT)
-               ->setOrder($row['order'], VirtualEntity::FILTER_INT)
-               ->setValue($row['value'], VirtualEntity::FILTER_TAGS);
+        $entity = new FieldValueEntity();
+        $entity->setId($row['id'], FieldValueEntity::FILTER_INT)
+               ->setLangId($row['lang_id'], FieldValueEntity::FILTER_INT)
+               ->setFieldId($row['field_id'], FieldValueEntity::FILTER_INT)
+               ->setType($row['type'], FieldValueEntity::FILTER_INT)
+               ->setFormId($row['form_id'], FieldValueEntity::FILTER_INT)
+               ->setOrder($row['order'], FieldValueEntity::FILTER_INT)
+               ->setValue($row['value'], FieldValueEntity::FILTER_TAGS)
+               ->setDefault($row['default'], FieldValueEntity::FILTER_TAGS);
 
         return $entity;
     }
