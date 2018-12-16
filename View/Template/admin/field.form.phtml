@@ -52,14 +52,18 @@ defined('KRYSTAL') or die;
                             </div>
                         </div>
 
-                        <?php if (!$entity->isFile()): ?>
+                        <?php if (!$entity->isFile() || $entity->isBoolean()): ?>
                         <div class="form-group">
                             <label class="col-lg-2 control-label"><?php $this->show('Default value'); ?></label>
                             <div class="col-lg-10">
+                                <?php if ($entity->isBoolean()): ?>
+                                <?php echo Element::select(sprintf('translation[%s][default]', $language->getId()), $this->translateArray($states), $entity->getDefault(), array('class' => 'form-control')); ?>
+                                <?php else: ?>
                                 <div class="input-group">
                                     <?php echo Element::textarea(sprintf('translation[%s][default]', $language->getId()), $entity->getDefault(), array('class' => 'form-control', 'placeholder' => $this->translate('Value to be assigned on page load'))); ?>
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                                 </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <?php endif; ?>
