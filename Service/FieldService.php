@@ -88,13 +88,13 @@ final class FieldService extends AbstractManager
             }
 
             // Non-file
-            if ($type != FieldTypeCollection::TYPE_FILE) {
+            if (!FieldTypeCollection::isFileType($type)) {
                 // Append text
                 $output['data'][$id] = $fields[$id]; // Value
             }
 
             // File
-            if ($type == FieldTypeCollection::TYPE_FILE) {
+            if (FieldTypeCollection::isFileType($type)) {
                 // Append file
                 $output['files'][$id] = isset($files[$id]) ? $files[$id] : array();
             }
