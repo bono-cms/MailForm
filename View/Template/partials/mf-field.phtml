@@ -55,7 +55,7 @@ $value = $field->getDefault();
         <?php endif; ?>
 
         <?php if ($field->isBoolean()): ?>
-        <?= Element::checkbox($name, false, array('id' => $field->getId(), 'title' => $field->getHint())); ?>
+        <?= Element::checkbox($name, (bool) $value, array('id' => $field->getId(), 'title' => $field->getHint())); ?>
         <?php endif; ?>
 
         <?php if ($field->isCheckboxList()): ?>

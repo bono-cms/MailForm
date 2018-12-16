@@ -14,6 +14,7 @@ namespace MailForm\Controller\Admin;
 use Cms\Controller\Admin\AbstractController;
 use Krystal\Stdlib\VirtualEntity;
 use MailForm\Collection\FieldTypeCollection;
+use MailForm\Collection\FieldStateCollection;
 
 final class Field extends AbstractController
 {
@@ -36,12 +37,14 @@ final class Field extends AbstractController
                                        ->addOne($new ? 'Add new field' : 'Edit the field');
 
         $fTypeCol = new FieldTypeCollection;
+        $fStateCol = new FieldStateCollection;
 
         return $this->view->render('field.form', array(
             'canHaveValue' => $entity->canHaveValue(),
             'field' => $field,
             'new' => $new,
             'types' => $fTypeCol->getAll(),
+            'states' => $fStateCol->getAll(),
             'values' => $entity->getId() ? $this->getModuleService('fieldValueService')->fetchAll($entity->getId()) : array()
         ));
     }
