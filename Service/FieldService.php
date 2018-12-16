@@ -243,6 +243,23 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Extract value list
+     * 
+     * @param array $values
+     * @return array
+     */
+    private static function createValuesList(array $values)
+    {
+        $output = array();
+
+        foreach ($values as $value) {
+            $output[$value->getValue()] = $value->getValue();
+        }
+
+        return $output;
+    }
+
+    /**
      * Append dynamic fields on form entity
      * 
      * @param \Krystal\Stdlib\VirtualEntity $form
@@ -256,8 +273,10 @@ final class FieldService extends AbstractManager
 
         foreach ($fields as $field) {
             $values = $fieldValueService->fetchAll($field->getId());
+
             // Append values
-            $field->setValues($values);
+            $field->setValues($values)
+                  ->setValuesList(self::createValuesList($values));
         }
 
         // Finally, append prepared fields with their values
