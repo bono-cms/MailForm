@@ -15,4 +15,17 @@ use Krystal\Stdlib\VirtualEntity;
 
 final class FieldValueEntity extends AbstractEntity
 {
+    /**
+     * Checks whether current value must be checked by default
+     * 
+     * @return mixed
+     */
+    public function isChecked()
+    {
+        if ($this->isCheckboxList()) {
+            return (bool) $this->getDefault();
+        }
+
+        return null;
+    }
 }
