@@ -47,7 +47,8 @@ final class FieldValueMapper extends AbstractMapper implements FieldValueMapperI
             FieldMapper::column('form_id'),
             FieldMapper::column('type'),
             FieldValueTranslationMapper::column('lang_id'),
-            FieldValueTranslationMapper::column('value')
+            FieldValueTranslationMapper::column('value'),
+            FieldValueTranslationMapper::column('default')
         );
 
         $db = $this->createEntitySelect($columns)
