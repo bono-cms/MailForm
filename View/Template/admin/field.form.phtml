@@ -52,12 +52,14 @@ defined('KRYSTAL') or die;
                             </div>
                         </div>
 
-                        <?php if (!$entity->isFile() || $entity->isBoolean()): ?>
+                        <?php if ((!$entity->isFile() || $entity->isBoolean()) && !$entity->isCheckboxList()): ?>
                         <div class="form-group">
                             <label class="col-lg-2 control-label"><?php $this->show('Default value'); ?></label>
                             <div class="col-lg-10">
                                 <?php if ($entity->isBoolean()): ?>
                                 <?php echo Element::select(sprintf('translation[%s][default]', $language->getId()), $this->translateArray($states), $entity->getDefault(), array('class' => 'form-control')); ?>
+                                <?php elseif ($entity->isSelect() || $entity->isRadioList()): ?>
+                                <?php echo Element::select(sprintf('translation[%s][default]', $language->getId()), isset($grouped[$language->getId()]) ? $grouped[$language->getId()] : array(), $entity->getDefault(), array('class' => 'form-control')); ?>
                                 <?php else: ?>
                                 <div class="input-group">
                                     <?php echo Element::textarea(sprintf('translation[%s][default]', $language->getId()), $entity->getDefault(), array('class' => 'form-control', 'placeholder' => $this->translate('Value to be assigned on page load'))); ?>

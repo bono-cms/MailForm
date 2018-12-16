@@ -39,13 +39,16 @@ final class Field extends AbstractController
         $fTypeCol = new FieldTypeCollection;
         $fStateCol = new FieldStateCollection;
 
+        $fieldValueService = $this->getModuleService('fieldValueService');
+        
         return $this->view->render('field.form', array(
             'canHaveValue' => $entity->canHaveValue(),
             'field' => $field,
             'new' => $new,
             'types' => $fTypeCol->getAll(),
             'states' => $fStateCol->getAll(),
-            'values' => $entity->getId() ? $this->getModuleService('fieldValueService')->fetchAll($entity->getId()) : array()
+            'values' => !$new ? $fieldValueService->fetchAll($entity->getId()) : array(),
+            'grouped' => !$new ? $fieldValueService->fetchGrouped($entity->getId()) : array()
         ));
     }
 

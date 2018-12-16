@@ -51,7 +51,7 @@ $default = $field->getDefault();
         <?php endif; ?>
 
         <?php if ($field->isSelect()): ?>
-        <?= Element::select($name, ArrayUtils::valuefy($field->getValues()), null, $attrs); ?>
+        <?= Element::select($name, $field->getValuesList(), $default, $attrs); ?>
         <?php endif; ?>
 
         <?php if ($field->isBoolean()): ?>
@@ -72,7 +72,7 @@ $default = $field->getDefault();
         <?php foreach ($field->getValues() as $value): ?>
         <div class="radio">
           <label>
-            <?= Element::radio($name, $value->getValue(), false); ?>
+            <?= Element::radio($name, $value->getValue(), $default); ?>
             <?= $value->getValue(); ?>
           </label>
         </div>
