@@ -255,7 +255,7 @@ final class FieldService extends AbstractManager
         $fields = $this->fetchAll($form->getId(), true);
 
         foreach ($fields as $field) {
-            $values = $fieldValueService->fetchList($field->getId());
+            $values = $fieldValueService->fetchAll($field->getId());
             // Append values
             $field->setValues($values);
         }
