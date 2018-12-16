@@ -26,7 +26,8 @@ interface FieldValueMapperInterface
      * Fetch all values by field ID
      * 
      * @param int $fieldId
+     * @param boolean $withTranslations Whether to fetch translations or not
      * @return array
      */
-    public function fetchAll($fieldId);
+    public function fetchAll($fieldId, $withTranslations = false);
 }

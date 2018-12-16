@@ -84,15 +84,20 @@ final class FieldValueMapper extends AbstractMapper implements FieldValueMapperI
      * Fetch all values by field ID
      * 
      * @param int $fieldId
+     * @param boolean $withTranslations Whether to fetch translations or not
      * @return array
      */
-    public function fetchAll($fieldId)
+    public function fetchAll($fieldId, $withTranslations = false)
     {
         $db = $this->createSelect()
-                   ->whereEquals(self::column('field_id'), $fieldId)
-                   ->andWhereEquals(FieldValueTranslationMapper::column('lang_id'), $this->getLangId())
-                   ->orderBy(self::column('id'))
-                   ->desc();
+                   ->whereEquals(self::column('field_id'), $fieldId);
+
+        if ($withTranslations == false) {
+            $db->andWhereEquals(FieldValueTranslationMapper::column('lang_id'), $this->getLangId());
+        }
+
+        $db->orderBy(self::column('id'))
+           ->desc();
 
         return $db->queryAll();
     }
