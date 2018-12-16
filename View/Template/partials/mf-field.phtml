@@ -11,7 +11,7 @@ use Krystal\Stdlib\ArrayUtils;
 // Defaults
 $name = sprintf('field[%s]', $field->getId());
 $attrs = array('class' => 'form-control', 'id' => $field->getId(), 'placeholder' => $field->getHint());
-$value = $field->getDefault();
+$default = $field->getDefault();
 
 ?>
 
@@ -23,58 +23,57 @@ $value = $field->getDefault();
         <?php endif; ?>
 
         <?php if ($field->isText()): ?>
-        <?= Element::text($name, $value, $attrs); ?>
+        <?= Element::text($name, $default, $attrs); ?>
         <?php endif; ?>
 
         <?php if ($field->isPassword()): ?>
-        <?= Element::password($name, $value, $attrs); ?>
+        <?= Element::password($name, $default, $attrs); ?>
         <?php endif; ?>
 
         <?php if ($field->isNumber()): ?>
-        <?= Element::number($name, $value, $attrs); ?>
+        <?= Element::number($name, $default, $attrs); ?>
         <?php endif; ?>
 
         <?php if ($field->isEmail()): ?>
-        <?= Element::email($name, $value, $attrs); ?>
+        <?= Element::email($name, $default, $attrs); ?>
         <?php endif; ?>
 
         <?php if ($field->isDate()): ?>
-        <?= Element::date($name, $value, $attrs); ?>
+        <?= Element::date($name, $default, $attrs); ?>
         <?php endif; ?>
 
         <?php if ($field->isDatetime()): ?>
-        <?= Element::date($name, $value, $attrs); ?>
+        <?= Element::date($name, $default, $attrs); ?>
         <?php endif; ?>
 
         <?php if ($field->isTextarea()): ?>
-        <?= Element::textarea($name, $value, $attrs); ?>
+        <?= Element::textarea($name, $default, $attrs); ?>
         <?php endif; ?>
 
         <?php if ($field->isSelect()): ?>
-        <?= Element::select($name, ArrayUtils::valuefy($field->getValues()), null, $attrs); ?>
+        <?= Element::select($name, $field->getValuesList(), $default, $attrs); ?>
         <?php endif; ?>
 
         <?php if ($field->isBoolean()): ?>
-        <?= Element::checkbox($name, false, array('id' => $field->getId(), 'title' => $field->getHint())); ?>
+        <?= Element::checkbox($name, (bool) $default, array('id' => $field->getId(), 'title' => $field->getHint())); ?>
         <?php endif; ?>
-
         <?php if ($field->isCheckboxList()): ?>
-        <?php foreach ($field->getValues() as $id => $value): ?>
+        <?php foreach ($field->getValues() as $value): ?>
         <div class="checkbox">
           <label>
-            <?= Element::checkbox($name.'[]', false, array('value' => $value), false); ?>
-            <?= $value; ?>
+            <?= Element::checkbox($name.'[]', $value->isChecked(), array('value' => $value->getValue()), false); ?>
+            <?= $value->getValue(); ?>
           </label>
         </div>
         <?php endforeach; ?>
         <?php endif; ?>
 
         <?php if ($field->isRadioList()): ?>
-        <?php foreach ($field->getValues() as $id => $value): ?>
+        <?php foreach ($field->getValues() as $value): ?>
         <div class="radio">
           <label>
-            <?= Element::radio($name, $value, false); ?>
-            <?= $value; ?>
+            <?= Element::radio($name, $value->getValue(), $default); ?>
+            <?= $value->getValue(); ?>
           </label>
         </div>
         <?php endforeach; ?>

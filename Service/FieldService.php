@@ -49,7 +49,7 @@ final class FieldService extends AbstractManager
     {
         // References
         $fields =& $input['data']['field'];
-        $files = isset($input['files']) ? $input['files']['field'] : array();
+        $files = isset($input['files']['field']) ? $input['files']['field'] : array();
 
         // Normalize raw input it
         $data = $this->normalizeInput($formId, $fields, $files);
@@ -88,13 +88,13 @@ final class FieldService extends AbstractManager
             }
 
             // Non-file
-            if ($type != FieldTypeCollection::TYPE_FILE) {
+            if (!FieldTypeCollection::isFileType($type)) {
                 // Append text
                 $output['data'][$id] = $fields[$id]; // Value
             }
 
             // File
-            if ($type == FieldTypeCollection::TYPE_FILE) {
+            if (FieldTypeCollection::isFileType($type)) {
                 // Append file
                 $output['files'][$id] = isset($files[$id]) ? $files[$id] : array();
             }
@@ -243,6 +243,23 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Extract value list
+     * 
+     * @param array $values
+     * @return array
+     */
+    private static function createValuesList(array $values)
+    {
+        $output = array();
+
+        foreach ($values as $value) {
+            $output[$value->getValue()] = $value->getValue();
+        }
+
+        return $output;
+    }
+
+    /**
      * Append dynamic fields on form entity
      * 
      * @param \Krystal\Stdlib\VirtualEntity $form
@@ -255,9 +272,11 @@ final class FieldService extends AbstractManager
         $fields = $this->fetchAll($form->getId(), true);
 
         foreach ($fields as $field) {
-            $values = $fieldValueService->fetchList($field->getId());
+            $values = $fieldValueService->fetchAll($field->getId());
+
             // Append values
-            $field->setValues($values);
+            $field->setValues($values)
+                  ->setValuesList(self::createValuesList($values));
         }
 
         // Finally, append prepared fields with their values

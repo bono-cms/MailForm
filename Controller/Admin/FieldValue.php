@@ -12,7 +12,8 @@
 namespace MailForm\Controller\Admin;
 
 use Cms\Controller\Admin\AbstractController;
-use Krystal\Stdlib\VirtualEntity;
+use MailForm\Collection\FieldStateCollection;
+use MailForm\Service\FieldValueEntity;
 
 final class FieldValue extends AbstractController
 {
@@ -35,9 +36,12 @@ final class FieldValue extends AbstractController
                                        ->addOne('Edit the field', $this->createUrl('MailForm:Admin:Field@editAction', array($entity->getFieldId())))
                                        ->addOne($new ? 'Add new value' : 'Edit the value');
 
+        $fStateCol = new FieldStateCollection;
+
         return $this->view->render('value.form', array(
             'value' => $value,
-            'new' => $new
+            'new' => $new,
+            'states' => $fStateCol->getAll()
         ));
     }
 
@@ -49,10 +53,23 @@ final class FieldValue extends AbstractController
     public function addAction()
     {
         if ($this->request->hasQuery('form_id', 'field_id')) {
+            // Request variables
+            $fieldId = $this->request->getQuery('field_id');
+            $formId = $this->request->getQuery('form_id');
 
-            $form = new VirtualEntity();
-            $form->setFieldId($this->request->getQuery('field_id'))
-                 ->setFormId($this->request->getQuery('form_id'));
+            // Get field entity
+            $field = $this->getModuleService('fieldService')->fetchById($fieldId, false);
+
+            // If invalid field ID provided, then trigger 404 error
+            if ($field === false) {
+                return false;
+            }
+
+            // Otherwise continue flow
+            $form = new FieldValueEntity();
+            $form->setFieldId($fieldId)
+                 ->setFormId($formId)
+                 ->setType($field->getType());
 
             return $this->createForm($form);
             
@@ -69,10 +86,10 @@ final class FieldValue extends AbstractController
      */
     public function editAction($id)
     {
-        $field = $this->getModuleService('fieldValueService')->fetchById($id, true);
+        $value = $this->getModuleService('fieldValueService')->fetchById($id, true);
 
-        if ($field !== false) {
-            return $this->createForm($field);
+        if ($value !== false) {
+            return $this->createForm($value);
         } else {
             return false;
         }
@@ -93,7 +110,7 @@ final class FieldValue extends AbstractController
     }
 
     /**
-     * Saves a field
+     * Saves field value
      * 
      * @return mixed
      */
@@ -102,15 +119,15 @@ final class FieldValue extends AbstractController
         $input = $this->request->getPost();
         $new = (bool) !$input['value']['id'];
 
-        $fieldService = $this->getModuleService('fieldValueService');
-        $fieldService->save($input);
+        $fieldValueService = $this->getModuleService('fieldValueService');
+        $fieldValueService->save($input);
 
         if (!$new) {
             $this->flashBag->set('success', 'The element has been updated successfully');
             return 1;
         } else {
             $this->flashBag->set('success', 'The element has been created successfully');
-            return $fieldService->getLastId();
+            return $fieldValueService->getLastId();
         }
     }
 }

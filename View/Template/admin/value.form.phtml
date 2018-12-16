@@ -37,6 +37,15 @@ defined('KRYSTAL') or die;
                                 </div>
                             </div>
                         </div>
+
+                        <?php if ($entity->isCheckboxList()): ?>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Default'); ?></label>
+                            <div class="col-lg-10">
+                                <?php echo Element::select(sprintf('translation[%s][default]', $language->getId()), $this->translateArray($states), $entity->getDefault(), array('class' => 'form-control')); ?>
+                            </div>
+                        </div>
+                        <?php endif; ?>
                     </div>
                     <?php endforeach; ?>
                 </div>

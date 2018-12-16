@@ -77,7 +77,7 @@ final class ValidationParser
             $input = array_replace($input, $inputCallback($input));
         }
 
-        $files = isset($this->request['files']) ? $this->request['files']['field'] : array();
+        $files = isset($this->request['files']['field']) ? $this->request['files']['field'] : array();
 
         // Fix missing keys
         foreach ($fields as $field) {
