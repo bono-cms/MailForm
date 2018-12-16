@@ -45,6 +45,7 @@ final class FieldValueMapper extends AbstractMapper implements FieldValueMapperI
             self::column('field_id'),
             self::column('order'),
             FieldMapper::column('form_id'),
+            FieldMapper::column('type'),
             FieldValueTranslationMapper::column('lang_id'),
             FieldValueTranslationMapper::column('value')
         );
