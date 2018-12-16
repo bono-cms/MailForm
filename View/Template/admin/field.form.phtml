@@ -52,6 +52,7 @@ defined('KRYSTAL') or die;
                             </div>
                         </div>
 
+                        <?php if (!$entity->isFile()): ?>
                         <div class="form-group">
                             <label class="col-lg-2 control-label"><?php $this->show('Default value'); ?></label>
                             <div class="col-lg-10">
@@ -61,6 +62,7 @@ defined('KRYSTAL') or die;
                                 </div>
                             </div>
                         </div>
+                        <?php endif; ?>
 
                         <div class="form-group">
                             <label class="col-lg-2 control-label"><?php $this->show('On error'); ?></label>
