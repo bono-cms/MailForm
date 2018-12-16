@@ -49,7 +49,7 @@ final class FieldService extends AbstractManager
     {
         // References
         $fields =& $input['data']['field'];
-        $files = isset($input['files']) ? $input['files']['field'] : array();
+        $files = isset($input['files']['field']) ? $input['files']['field'] : array();
 
         // Normalize raw input it
         $data = $this->normalizeInput($formId, $fields, $files);
