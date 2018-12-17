@@ -139,11 +139,11 @@ final class Form extends AbstractController
         if ($formValidator->isValid()) {
             // Prepare subject
             $subject = FieldService::createSubject($fields, $form->getSubject());
-            // Create prepared subject
+            // Create body
             $body = $fieldService->createMessage($form->getMessage(), $fields);
 
             // Request files if available
-            $files = isset($input['files']) ? $input['files']['field'] : array();
+            $files = isset($input['files']['field']) ? $input['files']['field'] : array();
 
             // It's time to send a message
             if ($this->getService('Cms', 'mailer')->send($subject, $body, null, $files)) {
