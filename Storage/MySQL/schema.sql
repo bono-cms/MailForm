@@ -80,5 +80,6 @@ CREATE TABLE `bono_module_mailform_submits` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT 'Submit ID',
     `datetime` DATETIME NOT NULL COMMENT 'Date and time of submission',
     `message` TEXT NOT NULL COMMENT 'Message body',
-    `subject` varchar(255) NOT NULL COMMENT 'Message subject'
+    `subject` varchar(255) NOT NULL COMMENT 'Message subject',
+    `attachments` INT NOT NULL COMMENT 'Attachments count'
 );

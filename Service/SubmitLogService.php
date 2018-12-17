@@ -45,7 +45,8 @@ final class SubmitLogService extends AbstractManager
         $entity->setId($row['id'], VirtualEntity::FILTER_INT)
                ->setDatetime($row['datetime'])
                ->setMessage($row['message'], VirtualEntity::FILTER_TAGS)
-               ->setSubject($row['subject'], VirtualEntity::FILTER_TAGS);
+               ->setSubject($row['subject'], VirtualEntity::FILTER_TAGS)
+               ->setAttachments($row['attachments'], VirtualEntity::FILTER_INT);
 
         return $entity;
     }
