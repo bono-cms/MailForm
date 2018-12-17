@@ -148,7 +148,7 @@ final class Form extends AbstractController
             // It's time to send a message
             if ($this->getService('Cms', 'mailer')->send($subject, $body, null, $files)) {
                 // Log current message
-                $this->getModuleService('submitLogService')->log($subject, $body);
+                $this->getModuleService('submitLogService')->log($subject, $body, $files);
 
                 // Success
                 return true;
