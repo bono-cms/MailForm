@@ -27,6 +27,18 @@ defined('KRYSTAL') or die;
 
             array(
                 'column' => 'subject'
+            ),
+
+            array(
+                'column' => 'attachments',
+                'label' => 'Attachments file count',
+                'value' => function($entity){
+                    if ($entity->getAttachments() == 0) {
+                        return '-';
+                    } else {
+                        return $entity->getAttachments();
+                    }
+                }
             )
         ),
 
