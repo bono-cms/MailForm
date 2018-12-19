@@ -4,6 +4,7 @@ use Krystal\Grid\Grid;
 use Krystal\Form\HtmlHelper;
 use Krystal\Form\Element;
 use Cms\Service\LanguageManager;
+use Cms\View\Icon;
 use MailForm\Collection\FieldTypeCollection;
 
 defined('KRYSTAL') or die;
@@ -256,11 +257,17 @@ defined('KRYSTAL') or die;
 
                     'actions' => array(
                         'edit' => function($row){
-                            return Element::icon('glyphicon glyphicon-pencil', $this->url('MailForm:Admin:Field@editAction', $row['id']), array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Edit this field'), 'data-button' => 'edit'));
+                            return Icon::edit(
+                                $this->url('MailForm:Admin:Field@editAction', $row['id']),
+                                $this->translate('Edit this field')
+                            );
                         },
 
                         'remove' => function($row){
-                            return Element::icon('glyphicon glyphicon-remove', '#', array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Remove this field'), 'data-button' => 'delete', 'data-url' => $this->url('MailForm:Admin:Field@deleteAction', $row['id'])));
+                            return Icon::remove(
+                                $this->url('MailForm:Admin:Field@deleteAction', $row['id']),
+                                $this->translate('Remove this field')
+                            );
                         }
                     )
 

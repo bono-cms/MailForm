@@ -2,6 +2,7 @@
 
 use Krystal\Form\Element;
 use Krystal\Grid\Grid;
+use Cms\View\Icon;
 
 defined('KRYSTAL') or die;
 
@@ -48,7 +49,10 @@ defined('KRYSTAL') or die;
             },
 
             'remove' => function($row){
-                return Element::icon('glyphicon glyphicon-remove', '#', array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Remove this log'), 'data-button' => 'delete', 'data-url' => $this->url('MailForm:Admin:SubmitLog@deleteAction', $row['id'])));
+                return Icon::remove(
+                    $this->url('MailForm:Admin:SubmitLog@deleteAction', $row['id']),
+                    $this->translate('Remove this log')
+                );
             }
         )
 

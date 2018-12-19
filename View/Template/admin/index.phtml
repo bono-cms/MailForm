@@ -3,6 +3,7 @@
 use Krystal\Form\Element;
 use Krystal\Grid\Grid;
 use MailForm\Collection\FormTypeCollection;
+use Cms\View\Icon;
 
 defined('KRYSTAL') or die;
 
@@ -80,18 +81,24 @@ defined('KRYSTAL') or die;
             'actions' => array(
                 'view' => function($form){
                     if ($form->isRegularForm()) {
-                        return Element::icon('glyphicon glyphicon-search', $form->getUrl(), array('target' => '_blank', 'data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('View this page on site'), 'data-button' => 'view'));
+                        return Icon::view($form->getUrl(), $this->translate('View this page on site'));
                     } else {
                         return null;
                     }
                 },
 
                 'edit' => function($form){
-                    return Element::icon('glyphicon glyphicon-pencil', $this->url('MailForm:Admin:Form@editAction', $form->getId()), array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Edit this page'), 'data-button' => 'edit'));
+                    return Icon::edit(
+                        $this->url('MailForm:Admin:Form@editAction', $form->getId()),
+                        $this->translate('Edit this page')
+                    );
                 },
 
                 'remove' => function($form){
-                    return Element::icon('glyphicon glyphicon-remove', '#', array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('Remove this page'), 'data-button' => 'delete', 'data-url' => $this->url('MailForm:Admin:Form@deleteAction', $form->getId())));
+                    return Icon::remove(
+                        $this->url('MailForm:Admin:Form@deleteAction', $form->getId()),
+                        $this->translate('Remove this page')
+                    );
                 }
             )
 
