@@ -59,6 +59,16 @@ abstract class AbstractEntity extends VirtualEntity
     }
 
     /**
+     * Checks whether field type is hidden
+     * 
+     * @return boolean
+     */
+    public function isHidden()
+    {
+        return $this->is(FieldTypeCollection::TYPE_HIDDEN);
+    }
+
+    /**
      * Checks whether field type is text
      * 
      * @return boolean

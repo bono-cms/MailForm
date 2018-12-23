@@ -16,6 +16,7 @@ use Krystal\Stdlib\ArrayGroupCollection;
 final class FieldTypeCollection extends ArrayGroupCollection
 {
     /* Common field types used in mail forms */
+    const TYPE_HIDDEN = 0;
     const TYPE_TEXT = 1;
     const TYPE_NUMBER = 2;
     const TYPE_EMAIL = 3;
@@ -55,6 +56,7 @@ final class FieldTypeCollection extends ArrayGroupCollection
         ),
 
         'Text' => array(
+            self::TYPE_HIDDEN => 'Hidden field',
             self::TYPE_TEXT => 'Text',
             self::TYPE_NUMBER => 'Number',
             self::TYPE_EMAIL => 'Email',
