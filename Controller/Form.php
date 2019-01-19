@@ -108,7 +108,7 @@ final class Form extends AbstractController
             return $result;
         }
     }
-    
+
     /**
      * Submits a form and sends a message
      * 
