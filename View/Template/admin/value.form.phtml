@@ -69,7 +69,7 @@ defined('KRYSTAL') or die;
 
     <?php $this->loadPartial('actions', array(
         'new' => $new,
-        'add' => array('MailForm:Admin:FieldValue@addAction', $entity->getFieldId()),
+        'add' => $this->createQueryUrl('MailForm:Admin:FieldValue@addAction', array('form_id' => $entity->getFormId(), 'field_id' => $entity->getFieldId())),
         'edit' => 'MailForm:Admin:FieldValue@editAction',
         'save' => 'MailForm:Admin:FieldValue@saveAction',
         'cancel' => array('MailForm:Admin:Field@editAction', $entity->getFieldId()),
