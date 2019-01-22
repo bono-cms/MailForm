@@ -34,7 +34,7 @@ defined('KRYSTAL') or die;
 
 <h4 class="inline"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Mail forms'); ?></h4>
 
-<form>
+<form autocomplete="off">
 	<div class="table-responsive">
         <?= Grid::render($forms, array(
             // A column to be considered as a primary key
