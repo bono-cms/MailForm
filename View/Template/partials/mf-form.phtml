@@ -14,6 +14,7 @@ $fields = $page->getFields();
 $resetButton = isset($resetButton) && $resetButton == true;
 $resetButtonText = isset($resetButtonText) ? $resetButtonText : 'Reset';
 $submitButtonText = isset($submitButtonText) ? $submitButtonText : 'Submit';
+$submitButtonClass = isset($submitButtonClass) ? $submitButtonClass : 'btn btn-primary';
 
 ?>
 
@@ -66,7 +67,7 @@ $submitButtonText = isset($submitButtonText) ? $submitButtonText : 'Submit';
     <?php if (!empty($fields)): ?>
     <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
-            <button type="submit" data-button="submit" class="btn btn-primary"><?php $this->show($submitButtonText); ?></button>
+            <button type="submit" data-button="submit" class="<?= $submitButtonClass; ?>"><?php $this->show($submitButtonText); ?></button>
             <?php if ($resetButton): ?>
             <button type="reset" class="btn btn-default"><?php $this->show($resetButtonText); ?></button>
             <?php endif; ?>
