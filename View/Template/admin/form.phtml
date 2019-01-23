@@ -116,7 +116,7 @@ defined('KRYSTAL') or die;
                 'edit' => 'MailForm:Admin:Form@editAction',
                 'save' => 'MailForm:Admin:Form@saveAction',
                 'cancel' => 'MailForm:Admin:Form@gridAction',
-                'options' => true
+                'options' => $entity->isRegularForm()
             )); ?>
 
 		</div>
