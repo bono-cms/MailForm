@@ -15,6 +15,7 @@ $resetButton = isset($resetButton) && $resetButton == true;
 $resetButtonText = isset($resetButtonText) ? $resetButtonText : 'Reset';
 $submitButtonText = isset($submitButtonText) ? $submitButtonText : 'Submit';
 $submitButtonClass = isset($submitButtonClass) ? $submitButtonClass : 'btn btn-primary';
+$formClass = isset($formClass) ? $formClass : 'form-horizontal';
 
 ?>
 
@@ -22,7 +23,7 @@ $submitButtonClass = isset($submitButtonClass) ? $submitButtonClass : 'btn btn-p
 <?php $this->loadPartial('mf-flash'); ?>
 <?php endif; ?>
 
-<form class="form-horizontal" action="<?= $action; ?>" autocomplete="<?= $page->getAutocomplete() ? 'on' : 'off'; ?>">
+<form class="<?= $formClass; ?>" action="<?= $action; ?>" autocomplete="<?= $page->getAutocomplete() ? 'on' : 'off'; ?>">
     <fieldset>
     <?php if (FieldService::hasColumns($fields)): ?>
     <div class="row">
