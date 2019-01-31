@@ -47,8 +47,7 @@ final class FieldService extends AbstractManager
      */
     public function parseInput($formId, array $input)
     {
-        // References
-        $fields =& $input['data']['field'];
+        $fields = isset($input['data']['field']) ? $input['data']['field'] : array();
         $files = isset($input['files']['field']) ? $input['files']['field'] : array();
 
         // Normalize raw input it
