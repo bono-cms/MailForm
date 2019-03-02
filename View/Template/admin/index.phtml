@@ -1,7 +1,7 @@
 <?php
 
 use Krystal\Form\Element;
-use Krystal\Grid\Grid;
+use Krystal\Widget\GridWidget;
 use MailForm\Collection\FormTypeCollection;
 use Cms\View\Icon;
 
@@ -36,7 +36,7 @@ defined('KRYSTAL') or die;
 
 <form autocomplete="off">
 	<div class="table-responsive">
-        <?= Grid::render($forms, array(
+        <?= $this->widget(new GridWidget($forms, array(
             // A column to be considered as a primary key
             'pk' => 'id',
             'batch' => true,
@@ -101,15 +101,13 @@ defined('KRYSTAL') or die;
                     );
                 }
             )
+        ))); ?>    
 
-        ), $this->translator); ?>    
-		
-		<?php if (empty($forms)): ?>
-		<div class="center-block">
-			<h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No forms'); ?></h2>
-		</div>
-		<?php endif; ?>
-
+        <?php if (empty($forms)): ?>
+        <div class="center-block">
+            <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No forms'); ?></h2>
+        </div>
+        <?php endif; ?>
 	</div>
 </form>
 
