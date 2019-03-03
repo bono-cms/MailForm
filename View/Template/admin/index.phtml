@@ -1,7 +1,7 @@
 <?php
 
 use Krystal\Form\Element;
-use Krystal\Widget\GridWidget;
+use Krystal\Widget\GridView\GridViewWidget;
 use MailForm\Collection\FormTypeCollection;
 use Cms\View\Icon;
 
@@ -36,7 +36,7 @@ defined('KRYSTAL') or die;
 
 <form autocomplete="off">
 	<div class="table-responsive">
-        <?= $this->widget(new GridWidget($forms, array(
+        <?= $this->widget(new GridViewWidget($forms, array(
             // A column to be considered as a primary key
             'pk' => 'id',
             'batch' => true,

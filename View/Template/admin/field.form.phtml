@@ -1,6 +1,6 @@
 <?php
 
-use Krystal\Widget\GridWidget;
+use Krystal\Widget\GridView\GridViewWidget;
 use Krystal\Form\Element;
 use Cms\Service\LanguageManager;
 use Cms\View\Icon;
@@ -103,7 +103,7 @@ defined('KRYSTAL') or die;
                 <a class="btn btn-primary" href="<?= $this->createQueryUrl('MailForm:Admin:FieldValue@addAction', array('form_id' => $entity->getFormId(), 'field_id' => $entity->getId())); ?>"><?php $this->show('Add new value'); ?></a>
             </p>
 
-            <?= $this->widget(new GridWidget($values, array(
+            <?= $this->widget(new GridViewWidget($values, array(
                 // A column to be considered as a primary key
                 'pk' => 'id',
                 'tableClass' => 'table table-hover table-bordered table-striped table-condensed',

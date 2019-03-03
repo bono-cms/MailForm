@@ -1,7 +1,7 @@
 <?php
 
 use Krystal\Form\Element;
-use Krystal\Widget\GridWidget;
+use Krystal\Widget\GridView\GridViewWidget;
 use Cms\Service\LanguageManager;
 use Cms\View\Icon;
 use MailForm\Collection\FieldTypeCollection;
@@ -215,7 +215,7 @@ defined('KRYSTAL') or die;
                     <a class="btn btn-primary" href="<?= $this->url('MailForm:Admin:Field@addAction', $entity->getId()); ?>"><?php $this->show('Add new field'); ?></a>
                 </p>
 
-                <?= $this->widget(new GridWidget($fields, array(
+                <?= $this->widget(new GridViewWidget($fields, array(
                     // A column to be considered as a primary key
                     'pk' => 'id',
                     'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
