@@ -1,10 +1,32 @@
 <?php
 
+/**
+ * Module configuration container
+ */
+
 return array(
- 'route'=> 'MailForm:Admin:Form@gridAction',
- 'icon' => 'fa fa-envelope fa-5x',
- 'name' => 'MailForm',
- 'caption' => 'Mail forms',
- 'order' => 1,
- 'description' => 'Mail forms module allows you to manager forms that send data from your site to your email',
+    'name' => 'MailForm',
+    'description' => 'Mail forms module allows you to manager forms that send data from your site to your email',
+    'menu' => array(
+        'name' => 'Mail forms',
+        'icon' => 'fas fa-envelope',
+        'items' => array(
+            array(
+                'route' => 'MailForm:Admin:Form@gridAction',
+                'name' => 'View all forms'
+            ),
+            array(
+                'route' => 'MailForm:Admin:Form@addAction',
+                'name' => 'Add new form'
+            ),
+            array(
+                'route' => 'MailForm:Admin:Form@addAjaxAction',
+                'name' => 'Add new AJAX form'
+            ),
+            array(
+                'route' => 'MailForm:Admin:SubmitLog@indexAction',
+                'name' => 'Submit logs'
+            )
+        )
+    )
 );
