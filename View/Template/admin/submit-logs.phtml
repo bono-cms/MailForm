@@ -8,58 +8,65 @@ defined('KRYSTAL') or die;
 
 ?>
 
-<h2 class="page-header"><i class="glyphicon glyphicon-envelope"></i> <?php $this->show('Submission logs'); ?> <small>(<?= count($logs); ?>)</small></h2>
+<div class="card">
+    <?php $this->loadPartial('card-header', array(
+        'title' => 'Submission logs',
+        'rows' => $logs
+    )); ?>
 
-<div class="table-responsive">
-    <?= $this->widget(new GridViewWidget($logs, array(
-        // A column to be considered as a primary key
-        'pk' => 'id',
-        'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
-        'columns' => array(
-            array(
-                'column' => 'id',
-                'label' => '#'
-            ),
+    <div class="table-responsive">
+        <?= $this->widget(new GridViewWidget($logs, array(
+            'tableClass' => 'table table-hover table-bordered table-striped',
+            'columns' => array(
+                array(
+                    'column' => 'id',
+                    'label' => '#'
+                ),
 
-            array(
-                'column' => 'datetime',
-                'label' => 'Date and time'
-            ),
+                array(
+                    'column' => 'datetime',
+                    'label' => 'Date and time'
+                ),
 
-            array(
-                'column' => 'subject'
-            ),
+                array(
+                    'column' => 'subject'
+                ),
 
-            array(
-                'column' => 'attachments',
-                'label' => 'Attachments file count',
-                'value' => function($entity){
-                    if ($entity->getAttachments() == 0) {
-                        return '-';
-                    } else {
-                        return $entity->getAttachments();
+                array(
+                    'column' => 'attachments',
+                    'label' => 'Attachments file count',
+                    'value' => function($entity){
+                        if ($entity->getAttachments() == 0) {
+                            return '-';
+                        } else {
+                            return $entity->getAttachments();
+                        }
                     }
+                )
+            ),
+
+            'actions' => array(
+                'view' => function($form){
+                    return Icon::details(
+                        $this->url('MailForm:Admin:SubmitLog@viewAction', $form->getId()), 
+                        $this->translate('View this message'),
+                        array('data-button' => 'ajax-view')
+                    );
+                },
+
+                'remove' => function($form){
+                    return Icon::remove(
+                        $this->url('MailForm:Admin:SubmitLog@deleteAction', $form->getId()),
+                        $this->translate('Remove this log')
+                    );
                 }
             )
-        ),
+        ))); ?>
 
-        'actions' => array(
-            'view' => function($form){
-                return Element::icon('glyphicon glyphicon-eye-open', $this->url('MailForm:Admin:SubmitLog@viewAction', $form->getId()), array('data-toggle' => 'tooltip', 'data-placement' => 'left', 'data-original-title' => $this->translate('View this message'), 'data-button' => 'ajax-view'));
-            },
-
-            'remove' => function($row){
-                return Icon::remove(
-                    $this->url('MailForm:Admin:SubmitLog@deleteAction', $row['id']),
-                    $this->translate('Remove this log')
-                );
-            }
-        )
-    ))); ?>
-
-    <?php if (empty($logs)): ?>
-    <div class="center-block">
-        <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No logs'); ?></h2>
+        <?php if (empty($logs)): ?>
+        <div class="center-block">
+            <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No logs'); ?></h2>
+        </div>
+        <?php endif; ?>
     </div>
-    <?php endif; ?>
 </div>

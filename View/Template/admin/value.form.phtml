@@ -7,61 +7,57 @@ defined('KRYSTAL') or die;
 
 ?>
 
-<form data-group="value" autocomplete="off">
+<form class="card" data-group="value" autocomplete="off">
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#value" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-file"></i> <?php $this->show('Value'); ?></a></li>
-        <li role="presentation"><a href="#configuration" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Configuration'); ?></a></li>
+        <li role="presentation" class="nav-item active"><a class="nav-link" href="#value" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-file"></i> <?php $this->show('Value'); ?></a></li>
+        <li role="presentation" class="nav-item"><a class="nav-link" href="#configuration" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Configuration'); ?></a></li>
 	</ul>
 
     <div class="tab-content">
         <div class="tab-pane fade in active" id="value" role="tabpanel">
-            <div class="well">
-                <?php $this->loadPartial('language-tabs'); ?>
+            <?php $this->loadPartial('language-tabs'); ?>
 
-                <div class="tab-content">
-                    <?php foreach ($languages as $index => $language): ?>
-                    <div class="tab-pane fade in <?php echo $index == 0 ? 'active' : null; ?>" id="<?php printf('language-%s', $language->getId()); ?>" role="tabpanel">
-                        <?php $entity = LanguageManager::findByLangId($language->getId(), $value); ?>
+            <div class="tab-content">
+                <?php foreach ($languages as $index => $language): ?>
+                <div class="tab-pane fade in <?php echo $index == 0 ? 'active' : null; ?>" id="<?php printf('language-%s', $language->getId()); ?>" role="tabpanel">
+                    <?php $entity = LanguageManager::findByLangId($language->getId(), $value); ?>
 
-                        <?php echo Element::hidden(sprintf('translation[%s][id]', $language->getId()), $entity->getId()); ?>
-                        <?php echo Element::hidden(sprintf('translation[%s][lang_id]', $language->getId()), $language->getId()); ?>
+                    <?php echo Element::hidden(sprintf('translation[%s][id]', $language->getId()), $entity->getId()); ?>
+                    <?php echo Element::hidden(sprintf('translation[%s][lang_id]', $language->getId()), $language->getId()); ?>
 
-                        <?php $this->loadPartial('language-name', array('language' => $language)); ?>
+                    <?php $this->loadPartial('language-name', array('language' => $language)); ?>
 
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label"><?php $this->show('Value'); ?></label>
-                            <div class="col-lg-10">
-                                <div class="input-group">
-                                    <?php echo Element::textarea(sprintf('translation[%s][value]', $language->getId()), $entity->getValue(), array('class' => 'form-control', 'placeholder' => $this->translate('Name'))); ?>
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                                </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"><?php $this->show('Value'); ?></label>
+                        <div class="col-lg-10">
+                            <div class="input-group">
+                                <?php echo Element::textarea(sprintf('translation[%s][value]', $language->getId()), $entity->getValue(), array('class' => 'form-control', 'placeholder' => $this->translate('Name'))); ?>
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                             </div>
                         </div>
-
-                        <?php if ($entity->isCheckboxList()): ?>
-                        <div class="form-group">
-                            <label class="col-lg-2 control-label"><?php $this->show('Default'); ?></label>
-                            <div class="col-lg-10">
-                                <?php echo Element::select(sprintf('translation[%s][default]', $language->getId()), $this->translateArray($states), $entity->getDefault(), array('class' => 'form-control')); ?>
-                            </div>
-                        </div>
-                        <?php endif; ?>
                     </div>
-                    <?php endforeach; ?>
+
+                    <?php if ($entity->isCheckboxList()): ?>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label"><?php $this->show('Default'); ?></label>
+                        <div class="col-lg-10">
+                            <?php echo Element::select(sprintf('translation[%s][default]', $language->getId()), $this->translateArray($states), $entity->getDefault(), array('class' => 'form-control')); ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                 </div>
+                <?php endforeach; ?>
             </div>
         </div>
 
         <div class="tab-pane fade" id="configuration" role="tabpanel">
-            <div class="well">
-                <?php echo Element::hidden('value[id]', $entity->getId()); ?>
-                <?php echo Element::hidden('value[field_id]', $entity->getFieldId()); ?>
+            <?php echo Element::hidden('value[id]', $entity->getId()); ?>
+            <?php echo Element::hidden('value[field_id]', $entity->getFieldId()); ?>
 
-                <div class="form-group">
-                    <label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
-                    <div class="col-lg-10">
-                        <?php echo Element::number('value[order]', $entity->getOrder(), array('class' => 'form-control')); ?>
-                    </div>
+            <div class="form-group">
+                <label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
+                <div class="col-lg-10">
+                    <?php echo Element::number('value[order]', $entity->getOrder(), array('class' => 'form-control')); ?>
                 </div>
             </div>
         </div>
