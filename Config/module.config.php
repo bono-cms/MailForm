@@ -7,6 +7,13 @@
 return array(
     'name' => 'MailForm',
     'description' => 'Mail forms module allows you to manager forms that send data from your site to your email',
+    'bookmarks' => array(
+        array(
+            'name' => 'Email logs',
+            'controller' => 'MailForm:Admin:SubmitLog@indexAction',
+            'icon' => 'fas fa-envelope'
+        )
+    ),
     'menu' => array(
         'name' => 'Mail forms',
         'icon' => 'fas fa-envelope',
