@@ -25,6 +25,18 @@ final class SubmitLogMapper extends AbstractMapper implements SubmitLogMapperInt
     }
 
     /**
+     * Remove all logs
+     * 
+     * @return boolean
+     */
+    public function clearAll()
+    {
+        // Just truncate the table
+        return $this->db->truncate(self::getTableName())
+                        ->execute();
+    }
+
+    /**
      * Fetch all submission logs
      * 
      * @return array

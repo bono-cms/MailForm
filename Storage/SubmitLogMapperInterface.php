@@ -14,6 +14,13 @@ namespace MailForm\Storage;
 interface SubmitLogMapperInterface
 {
     /**
+     * Remove all logs
+     * 
+     * @return boolean
+     */
+    public function clearAll();
+
+    /**
      * Fetch all submission logs
      * 
      * @return array

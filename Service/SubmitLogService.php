@@ -52,6 +52,16 @@ final class SubmitLogService extends AbstractManager
     }
 
     /**
+     * Remove all logs
+     * 
+     * @return boolean
+     */
+    public function clearAll()
+    {
+        return $this->submitLogMapper->clearAll();
+    }
+
+    /**
      * Saves new log
      * 
      * @param string $subject Message subject
