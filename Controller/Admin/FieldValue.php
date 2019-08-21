@@ -21,28 +21,37 @@ final class FieldValue extends AbstractController
      * Creates a form
      * 
      * @param \Krystal\Stdlib\VirtualEntity|array $value
+     * @param string $title Page title
      * @return string
      */
-    private function createForm($value)
+    private function createForm($value, $title)
     {
         $new = is_object($value);
 
         // Grab entity
         $entity = $new ? $value : $value[0];
 
-        // Append breadcrumbs
-        $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
-                                       ->addOne('Edit the form', $this->createUrl('MailForm:Admin:Form@editAction', array($entity->getFormId())))
-                                       ->addOne('Edit the field', $this->createUrl('MailForm:Admin:Field@editAction', array($entity->getFieldId())))
-                                       ->addOne($new ? 'Add new value' : 'Edit the value');
+        // First of all, find form and field entities by their ids
+        $form = $this->getModuleService('formManager')->fetchById($entity->getFormId(), false);
+        $field = $this->getModuleService('fieldService')->fetchById($entity->getFieldId(), false);
 
-        $fStateCol = new FieldStateCollection;
+        if ($form !== false && $field !== false) {
+            // Append breadcrumbs
+            $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
+                                           ->addOne($this->translator->translate('Edit the form "%s"', $form->getName()), $this->createUrl('MailForm:Admin:Form@editAction', array($entity->getFormId())))
+                                           ->addOne($this->translator->translate('Edit the field "%s"', $field->getName()), $this->createUrl('MailForm:Admin:Field@editAction', array($entity->getFieldId())))
+                                           ->addOne($title);
 
-        return $this->view->render('value.form', array(
-            'value' => $value,
-            'new' => $new,
-            'states' => $fStateCol->getAll()
-        ));
+            $fStateCol = new FieldStateCollection;
+
+            return $this->view->render('value.form', array(
+                'value' => $value,
+                'new' => $new,
+                'states' => $fStateCol->getAll()
+            ));
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -71,7 +80,7 @@ final class FieldValue extends AbstractController
                  ->setFormId($formId)
                  ->setType($field->getType());
 
-            return $this->createForm($form);
+            return $this->createForm($form, 'Add new value');
             
         } else {
             return false;
@@ -89,7 +98,8 @@ final class FieldValue extends AbstractController
         $value = $this->getModuleService('fieldValueService')->fetchById($id, true);
 
         if ($value !== false) {
-            return $this->createForm($value);
+            $name = $this->getCurrentProperty($value, 'value');
+            return $this->createForm($value, $this->translator->translate('Edit the value "%s"', $name));
         } else {
             return false;
         }

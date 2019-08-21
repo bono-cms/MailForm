@@ -22,34 +22,43 @@ final class Field extends AbstractController
      * Creates a form
      * 
      * @param \Krystal\Stdlib\VirtualEntity|array $field
+     * @param string $title
      * @return string
      */
-    private function createForm($field)
+    private function createForm($field, $title)
     {
         $new = is_object($field);
 
         // Grab entity
         $entity = $new ? $field : $field[0];
 
-        // Append breadcrumbs
-        $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
-                                       ->addOne('Edit the form', $this->createUrl('MailForm:Admin:Form@editAction', array($entity->getFormId())))
-                                       ->addOne($new ? 'Add new field' : 'Edit the field');
+        // First of all, find form entity by its id
+        $form = $this->getModuleService('formManager')->fetchById($entity->getFormId(), false);
 
-        $fTypeCol = new FieldTypeCollection;
-        $fStateCol = new FieldStateCollection;
+        if ($form !== false) {
+            // Append breadcrumbs
+            $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
+                                           ->addOne($this->translator->translate('Edit the form "%s"', $form->getName()), $this->createUrl('MailForm:Admin:Form@editAction', array($entity->getFormId())))
+                                           ->addOne($title);
 
-        $fieldValueService = $this->getModuleService('fieldValueService');
-        
-        return $this->view->render('field.form', array(
-            'canHaveValue' => $entity->canHaveValue(),
-            'field' => $field,
-            'new' => $new,
-            'types' => $fTypeCol->getAll(),
-            'states' => $fStateCol->getAll(),
-            'values' => !$new ? $fieldValueService->fetchAll($entity->getId()) : array(),
-            'grouped' => !$new ? $fieldValueService->fetchGrouped($entity->getId()) : array()
-        ));
+            $fTypeCol = new FieldTypeCollection;
+            $fStateCol = new FieldStateCollection;
+
+            $fieldValueService = $this->getModuleService('fieldValueService');
+            
+            return $this->view->render('field.form', array(
+                'canHaveValue' => $entity->canHaveValue(),
+                'field' => $field,
+                'new' => $new,
+                'types' => $fTypeCol->getAll(),
+                'states' => $fStateCol->getAll(),
+                'values' => !$new ? $fieldValueService->fetchAll($entity->getId()) : array(),
+                'grouped' => !$new ? $fieldValueService->fetchGrouped($entity->getId()) : array()
+            ));
+        } else {
+            // Wrong form id supplied
+            return false;
+        }
     }
 
     /**
@@ -64,7 +73,7 @@ final class Field extends AbstractController
         $form->setFormId($formId)
              ->setType(FieldTypeCollection::TYPE_TEXT); // Set text type by default
 
-        return $this->createForm($form);
+        return $this->createForm($form, 'Add new field');
     }
 
     /**
@@ -78,7 +87,8 @@ final class Field extends AbstractController
         $field = $this->getModuleService('fieldService')->fetchById($id, true);
 
         if ($field !== false) {
-            return $this->createForm($field);
+            $name = $this->getCurrentProperty($field, 'name');
+            return $this->createForm($field, $this->translator->translate('Edit the field "%s"', $name));
         } else {
             return false;
         }

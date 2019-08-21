@@ -4,6 +4,7 @@ CHANGELOG
 1.2
 ---
 
+ * Added missing values in breadcrumbs
  * Disabled autocomplete in forms
  * Added form submission logger
  * Introduced conception of regular and AJAX forms

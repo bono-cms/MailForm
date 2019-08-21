@@ -36,9 +36,10 @@ final class Form extends AbstractController
      * Creates a form
      * 
      * @param \MailForm\Service\FormEntity|array $form
+     * @param string $title Page title
      * @return string
      */
-    private function createForm($form)
+    private function createForm($form, $title)
     {
         $new = is_object($form);
 
@@ -51,12 +52,12 @@ final class Form extends AbstractController
 
         // Append breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
-                                       ->addOne($new ? 'Add a form' : 'Edit the form');
+                                       ->addOne($title);
 
         $fields = $this->getModuleService('fieldService')->fetchAll($id, false);
 
         $flashPolCol = new FlashPositionCollection();
-        
+
         return $this->view->render('form', array(
             'new' => $new,
             'form' => $form,
@@ -80,7 +81,7 @@ final class Form extends AbstractController
              ->setType($type)
              ->setSubject($this->translator->translate('You have received a new message'));
 
-        return $this->createForm($form);
+        return $this->createForm($form, 'Add a form');
     }
 
     /**
@@ -106,7 +107,7 @@ final class Form extends AbstractController
     /**
      * Renders edit form
      * 
-     * @param string $id
+     * @param string $id Mail form id
      * @return string
      */
     public function editAction($id)
@@ -115,7 +116,8 @@ final class Form extends AbstractController
 
         // if $form isn't false, then its must be entity object
         if ($form !== false) {
-            return $this->createForm($form);
+            $name = $this->getCurrentProperty($form, 'name');
+            return $this->createForm($form, $this->translator->translate('Edit the form "%s"', $name));
         } else {
             return false;
         }
