@@ -32,6 +32,19 @@ final class SubmitLog extends AbstractController
     }
 
     /**
+     * Clears all logs
+     * 
+     * @return string
+     */
+    public function clearAction()
+    {
+        $this->getModuleService('submitLogService')->clearAll();
+
+        $this->flashBag->set('success', 'All message logs have been cleared successfully');
+        return 1;
+    }
+
+    /**
      * Deletes a log by its ID
      * 
      * @param int $id Message log ID

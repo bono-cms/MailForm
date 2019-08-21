@@ -58,6 +58,10 @@ return array(
         'controller' => 'Admin:SubmitLog@indexAction'
     ),
 
+    '/%s/module/mail-form/submit-logs/clear' => array(
+        'controller' => 'Admin:SubmitLog@clearAction'
+    ),
+
     '/%s/module/mail-form/submit-logs/view/(:var)' => array(
         'controller' => 'Admin:SubmitLog@viewAction'
     ),
