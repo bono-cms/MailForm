@@ -1,4 +1,5 @@
 
+/* Mail forms */
 DROP TABLE IF EXISTS `bono_module_mailform`;
 CREATE TABLE `bono_module_mailform` (
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -10,22 +11,25 @@ CREATE TABLE `bono_module_mailform` (
     `type` SMALLINT NOT NULL COMMENT 'Form type constant',
     `autocomplete` BOOLEAN NOT NULL COMMENT 'Whether autocomplete enabled',
     `flash_position` INT NOT NULL COMMENT 'Flash message position'
-) DEFAULT CHARSET = UTF8;
+) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
 
 DROP TABLE IF EXISTS `bono_module_mailform_translations`;
 CREATE TABLE `bono_module_mailform_translations` (
-
     `id` INT NOT NULL,
-	`lang_id` INT NOT NULL,
-	`web_page_id` INT DEFAULT NULL,
+    `lang_id` INT NOT NULL,
+    `web_page_id` INT DEFAULT NULL,
     `name` varchar(255) NOT NULL,
-	`title` varchar(255) NOT NULL,
+    `title` varchar(255) NOT NULL,
     `description` LONGTEXT NOT NULL,
     `keywords` TEXT DEFAULT NULL,
     `meta_description` TEXT DEFAULT NULL,
-    `flash` TEXT NOT NULL COMMENT 'Optional flash message'
+    `flash` TEXT NOT NULL COMMENT 'Optional flash message',
 
-) DEFAULT CHARSET = UTF8;
+    FOREIGN KEY (id) REFERENCES bono_module_mailform(id) ON DELETE CASCADE,
+    FOREIGN KEY (lang_id) REFERENCES bono_module_cms_languages(id) ON DELETE CASCADE,
+    FOREIGN KEY (web_page_id) REFERENCES bono_module_cms_webpages(id) ON DELETE CASCADE
+
+) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
 
 /* Dynamic fields */
 DROP TABLE IF EXISTS `bono_module_mailform_fields`;
@@ -39,7 +43,7 @@ CREATE TABLE `bono_module_mailform_fields` (
 
     FOREIGN KEY (form_id) REFERENCES bono_module_mailform(id) ON DELETE CASCADE
 
-) DEFAULT CHARSET = UTF8;
+) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
 
 DROP TABLE IF EXISTS `bono_module_mailform_fields_translations`;
 CREATE TABLE `bono_module_mailform_fields_translations` (
@@ -50,9 +54,10 @@ CREATE TABLE `bono_module_mailform_fields_translations` (
     `default` varchar(255) DEFAULT NULL COMMENT 'Optional default value',
     `error` varchar(255) DEFAULT NULL COMMENT 'Error message',
 
-    FOREIGN KEY (id) REFERENCES bono_module_mailform_fields(id) ON DELETE CASCADE
-) DEFAULT CHARSET = UTF8;
+    FOREIGN KEY (id) REFERENCES bono_module_mailform_fields(id) ON DELETE CASCADE,
+    FOREIGN KEY (lang_id) REFERENCES bono_module_cms_languages(id) ON DELETE CASCADE
 
+) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
 
 /* Field values */
 DROP TABLE IF EXISTS `bono_module_mailform_fields_values`;
@@ -62,7 +67,7 @@ CREATE TABLE `bono_module_mailform_fields_values` (
     `order` INT NOT NULL COMMENT 'Sorting order',
 
     FOREIGN KEY (field_id) REFERENCES bono_module_mailform_fields(id) ON DELETE CASCADE
-) DEFAULT CHARSET = UTF8;
+) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
 
 DROP TABLE IF EXISTS `bono_module_mailform_fields_values_translations`;
 CREATE TABLE `bono_module_mailform_fields_values_translations` (
@@ -71,8 +76,10 @@ CREATE TABLE `bono_module_mailform_fields_values_translations` (
     `value` varchar(255) COMMENT 'Value',
     `default` varchar(255) COMMENT 'Default state',
 
-    FOREIGN KEY (id) REFERENCES bono_module_mailform_fields_values(id) ON DELETE CASCADE
-) DEFAULT CHARSET = UTF8;
+    FOREIGN KEY (id) REFERENCES bono_module_mailform_fields_values(id) ON DELETE CASCADE,
+    FOREIGN KEY (lang_id) REFERENCES bono_module_cms_languages(id) ON DELETE CASCADE
+
+) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
 
 /* Submit logger */
 DROP TABLE IF EXISTS `bono_module_mailform_submits`;
@@ -82,4 +89,4 @@ CREATE TABLE `bono_module_mailform_submits` (
     `message` TEXT NOT NULL COMMENT 'Message body',
     `subject` varchar(255) NOT NULL COMMENT 'Message subject',
     `attachments` INT NOT NULL COMMENT 'Attachments count'
-);
+) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
