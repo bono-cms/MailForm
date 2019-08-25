@@ -22,7 +22,7 @@ final class SiteBootstrapper extends AbstractSiteBootstrapper
     {
         $siteService = $this->moduleManager->getModule('MailForm')->getService('siteService');
         $siteService->setView($this->view);
-        
+
         $this->view->addVariable('form', $siteService);
 
         // Append path to mf-* files
