@@ -26,7 +26,7 @@ final class Module extends AbstractCmsModule
     public function getServiceProviders()
     {
         $formMapper = $this->getMapper('/MailForm/Storage/MySQL/FormMapper');
-        $formManager = new FormManager($formMapper, $this->getWebPageManager(), $this->getMenuWidget());
+        $formManager = new FormManager($formMapper, $this->getWebPageManager());
 
         $fieldValueService = new FieldValueService($this->getMapper('/MailForm/Storage/MySQL/FieldValueMapper'));
         $fieldService = new FieldService($this->getMapper('/MailForm/Storage/MySQL/FieldMapper'));

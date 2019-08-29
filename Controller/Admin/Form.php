@@ -146,7 +146,7 @@ final class Form extends AbstractController
         if ($this->request->hasPost('batch')) {
             $ids = array_keys($this->request->getPost('batch'));
 
-            $service->deleteByIds($ids);
+            $service->delete($ids);
             $this->flashBag->set('success', 'Selected elements have been removed successfully');
 
             // Save in the history
@@ -160,7 +160,7 @@ final class Form extends AbstractController
         if (!empty($id)) {
             $form = $this->getModuleService('formManager')->fetchById($id, false);
 
-            $service->deleteById($id);
+            $service->delete($id);
             $this->flashBag->set('success', 'Selected element has been removed successfully');
 
             // Save in the history
@@ -228,21 +228,20 @@ final class Form extends AbstractController
             $service = $this->getModuleService('formManager');
             $historyService = $this->getService('Cms', 'historyManager');
 
+            // Save the form
+            $service->save($this->request->getPost());
+
             if (!empty($input['id'])) {
-                if ($service->update($this->request->getPost())) {
-                    $this->flashBag->set('success', 'The element has been updated successfully');
-                    
-                    $historyService->write('MailForm', 'Mail form "%s" has been updated', $name);
-                    return '1';
-                }
+                $this->flashBag->set('success', 'The element has been updated successfully');
+
+                $historyService->write('MailForm', 'Mail form "%s" has been updated', $name);
+                return '1';
 
             } else {
-                if ($service->add($this->request->getPost())) {
-                    $this->flashBag->set('success', 'The element has been created successfully');
+                $this->flashBag->set('success', 'The element has been created successfully');
 
-                    $historyService->write('MailForm', 'Mail form "%s" has been created', $name);
-                    return $service->getLastId();
-                }
+                $historyService->write('MailForm', 'Mail form "%s" has been created', $name);
+                return $service->getLastId();
             }
 
         } else {

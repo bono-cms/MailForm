@@ -15,9 +15,8 @@ use Cms\Service\AbstractManager;
 use Cms\Service\WebPageManagerInterface;
 use MailForm\Storage\FormMapperInterface;
 use MailForm\Collection\FormTypeCollection;
-use Krystal\Stdlib\ArrayUtils;
 
-final class FormManager extends AbstractManager implements FormManagerInterface
+final class FormManager extends AbstractManager
 {
     /**
      * Any compliant form mapper
@@ -44,34 +43,6 @@ final class FormManager extends AbstractManager implements FormManagerInterface
     {
         $this->formMapper = $formMapper;
         $this->webPageManager = $webPageManager;
-    }
-
-    /**
-     * Returns a collection of switching URLs
-     * 
-     * @param string $id Form ID
-     * @return array
-     */
-    public function getSwitchUrls($id)
-    {
-        return $this->formMapper->createSwitchUrls($id, 'MailForm', 'MailForm:Form@indexAction');
-    }
-
-    /**
-     * Updates SEO states by associated form ids
-     * 
-     * @param array $pair
-     * @return boolean
-     */
-    public function updateSeo(array $pair)
-    {
-        foreach ($pair as $id => $seo) {
-            if (!$this->formMapper->updateSeoById($id, $seo)) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -111,6 +82,34 @@ final class FormManager extends AbstractManager implements FormManagerInterface
     }
 
     /**
+     * Returns a collection of switching URLs
+     * 
+     * @param string $id Form ID
+     * @return array
+     */
+    public function getSwitchUrls($id)
+    {
+        return $this->formMapper->createSwitchUrls($id, 'MailForm', 'MailForm:Form@indexAction');
+    }
+
+    /**
+     * Updates SEO states by associated form ids
+     * 
+     * @param array $pair
+     * @return boolean
+     */
+    public function updateSeo(array $pair)
+    {
+        foreach ($pair as $id => $seo) {
+            if (!$this->formMapper->updateSeoById($id, $seo)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Returns last id
      * 
      * @return integer
@@ -121,23 +120,12 @@ final class FormManager extends AbstractManager implements FormManagerInterface
     }
 
     /**
-     * Delete by collection of ids
-     * 
-     * @param array $ids
-     * @return boolean
-     */
-    public function deleteByIds(array $ids)
-    {
-        return $this->formMapper->deletePage($ids);
-    }
-
-    /**
      * Deletes a form by its associated id
      * 
-     * @param string $id Form id
+     * @param string|array $id Form id
      * @return boolean
      */
-    public function deleteById($id)
+    public function delete($id)
     {
         return $this->formMapper->deletePage($id);
     }
@@ -174,37 +162,14 @@ final class FormManager extends AbstractManager implements FormManagerInterface
      * @param array $input Raw input data
      * @return boolean
      */
-    private function savePage(array $input)
+    public function save(array $input)
     {
         // Save depending on form type
         if ($input['form']['type'] == FormTypeCollection::TYPE_AJAX) {
             return $this->formMapper->saveEntity($input['form'], $input['translation']);
         } else {
-            $input['form'] = ArrayUtils::arrayWithout($input['form'], array('slug'));
             // Regular form
             return $this->formMapper->savePage('MailForm', 'MailForm:Form@indexAction', $input['form'], $input['translation']);
         }
-    }
-
-    /**
-     * Adds a form
-     * 
-     * @param array $input Raw input data
-     * @return boolean
-     */
-    public function add(array $input)
-    {
-        return $this->savePage($input);
-    }
-
-    /**
-     * Updates a form
-     * 
-     * @param array $input Raw input data
-     * @return boolean
-     */
-    public function update(array $input)
-    {
-        return $this->savePage($input);
     }
 }

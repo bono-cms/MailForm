@@ -14,7 +14,7 @@ namespace MailForm\Service;
 use Krystal\Application\View\ViewManagerInterface;
 use RuntimeException;
 
-final class SiteService implements SiteServiceInterface
+final class SiteService
 {
     /**
      * View manager
@@ -26,7 +26,7 @@ final class SiteService implements SiteServiceInterface
     /**
      * Form manager service
      * 
-     * @var \MailForm\Service\FormManagerInterface
+     * @var \MailForm\Service\FormManager
      */
     private $formManager;
 
@@ -47,12 +47,12 @@ final class SiteService implements SiteServiceInterface
     /**
      * State initialization
      * 
-     * @param \MailForm\Service\FormManagerInterface $formManager
+     * @param \MailForm\Service\FormManager $formManager
      * @param \MailForm\Service\FieldService $fieldService
      * @param \MailForm\Service\FieldValueService $fieldValueService
      * @return void
      */
-    public function __construct(FormManagerInterface $formManager, FieldService $fieldService, FieldValueService $fieldValueService)
+    public function __construct(FormManager $formManager, FieldService $fieldService, FieldValueService $fieldValueService)
     {
         $this->formManager = $formManager;
         $this->fieldService = $fieldService;
