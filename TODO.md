@@ -13,3 +13,4 @@ TODO List
  * Ability to get Geolocation, IP data and other related information from submissions
  * Form templates
  * Limitations by date or number of submits
+ * New conception of Payment forms (to be integrated with Payment module)
