@@ -103,6 +103,8 @@ final class FormManager extends AbstractManager implements FormManagerInterface
                 ->setSeo($form['seo'], FormEntity::FILTER_BOOL)
                 ->setSlug($form['slug'])
                 ->setUrl($this->webPageManager->surround($entity->getSlug(), $entity->getLangId()))
+                ->setPriority($form['priority'])
+                ->setChangeFreq($form['changefreq'])
                 ->setPermanentUrl('/module/mail-form/'.$entity->getId())
                 ->setTemplate($form['template'], FormEntity::FILTER_HTML)
                 ->setKeywords($form['keywords'], FormEntity::FILTER_HTML)

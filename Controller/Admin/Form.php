@@ -81,6 +81,14 @@ final class Form extends AbstractController
              ->setType($type)
              ->setSubject($this->translator->translate('You have received a new message'));
 
+        if ($type === FormTypeCollection::TYPE_REGULAR) {
+            // CMS configuration object
+            $config = $this->getService('Cms', 'configManager')->getEntity();
+
+            $form->setChangeFreq($config->getSitemapFrequency())
+                 ->setPriority($config->getSitemapPriority());
+        }
+
         return $this->createForm($form, 'Add a form');
     }
 
