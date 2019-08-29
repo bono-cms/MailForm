@@ -11,13 +11,11 @@
 
 namespace MailForm\Service;
 
-use Cms\Service\HistoryManagerInterface;
 use Cms\Service\AbstractManager;
 use Cms\Service\WebPageManagerInterface;
 use MailForm\Storage\FormMapperInterface;
 use MailForm\Collection\FormTypeCollection;
 use Krystal\Stdlib\ArrayUtils;
-use Krystal\Security\Filter;
 
 final class FormManager extends AbstractManager implements FormManagerInterface
 {
@@ -36,28 +34,16 @@ final class FormManager extends AbstractManager implements FormManagerInterface
     private $webPageManager;
 
     /**
-     * History manager to keep track of latest actions
-     * 
-     * @var \Cms\Service\HistoryManagerInterface
-     */
-    private $historyManager;
-
-    /**
      * State initialization
      * 
      * @param \MailForm\Storage\FormMapperInterface $formMapper
      * @param \Cms\Service\WebPageManagerInterface $webPageManager
-     * @param \Cms\Service\HistoryManagerInterface $historyManager
      * @return void
      */
-    public function __construct(
-        FormMapperInterface $formMapper,
-        WebPageManagerInterface $webPageManager,
-        HistoryManagerInterface $historyManager
-    ){
+    public function __construct(FormMapperInterface $formMapper, WebPageManagerInterface $webPageManager)
+    {
         $this->formMapper = $formMapper;
         $this->webPageManager = $webPageManager;
-        $this->historyManager = $historyManager;
     }
 
     /**
@@ -142,10 +128,7 @@ final class FormManager extends AbstractManager implements FormManagerInterface
      */
     public function deleteByIds(array $ids)
     {
-        $this->formMapper->deletePage($ids);
-        $this->track('Batch removal of %s mail forms', count($ids));
-
-        return true;
+        return $this->formMapper->deletePage($ids);
     }
 
     /**
@@ -156,14 +139,7 @@ final class FormManager extends AbstractManager implements FormManagerInterface
      */
     public function deleteById($id)
     {
-        #$name = $this->formMapper->fetchNameById($id);
-
-        if ($this->formMapper->deletePage($id)) {
-            #$this->track('Mail form "%s" has been removed', $name);
-            return true;
-        } else {
-            return false;
-        }
+        return $this->formMapper->deletePage($id);
     }
 
     /**
@@ -218,7 +194,6 @@ final class FormManager extends AbstractManager implements FormManagerInterface
      */
     public function add(array $input)
     {
-        #$this->track('Mail form "%s" has been created', $form['name']);
         return $this->savePage($input);
     }
 
@@ -230,19 +205,6 @@ final class FormManager extends AbstractManager implements FormManagerInterface
      */
     public function update(array $input)
     {
-        #$this->track('Mail form "%s" has been updated', $form['name']);
         return $this->savePage($input);
-    }
-
-    /**
-     * Tracks activity
-     * 
-     * @param string $message
-     * @param string $placeholder
-     * @return boolean
-     */
-    private function track($message, $placeholder = '')
-    {
-        return $this->historyManager->write('MailForm', $message, $placeholder);
     }
 }

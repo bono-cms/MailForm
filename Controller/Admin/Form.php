@@ -139,6 +139,7 @@ final class Form extends AbstractController
      */
     public function deleteAction($id)
     {
+        $historyService = $this->getService('Cms', 'historyManager');
         $service = $this->getModuleService('formManager');
 
         // Batch removal
@@ -148,14 +149,22 @@ final class Form extends AbstractController
             $service->deleteByIds($ids);
             $this->flashBag->set('success', 'Selected elements have been removed successfully');
 
+            // Save in the history
+            $historyService->write('MailForm', 'Batch removal of %s mail forms', count($ids));
+
         } else {
             $this->flashBag->set('warning', 'You should select at least one element to remove');
         }
 
         // Single removal
         if (!empty($id)) {
+            $form = $this->getModuleService('formManager')->fetchById($id, false);
+
             $service->deleteById($id);
             $this->flashBag->set('success', 'Selected element has been removed successfully');
+
+            // Save in the history
+            $historyService->write('MailForm', 'Mail form "%s" has been removed', $form->getName());
         }
 
         return '1';
@@ -213,17 +222,25 @@ final class Form extends AbstractController
         ));
 
         if (1) {
+            // Current page name
+            $name = $this->getCurrentProperty($this->request->getPost('translation'), 'name');
+
             $service = $this->getModuleService('formManager');
+            $historyService = $this->getService('Cms', 'historyManager');
 
             if (!empty($input['id'])) {
                 if ($service->update($this->request->getPost())) {
                     $this->flashBag->set('success', 'The element has been updated successfully');
+                    
+                    $historyService->write('MailForm', 'Mail form "%s" has been updated', $name);
                     return '1';
                 }
 
             } else {
                 if ($service->add($this->request->getPost())) {
                     $this->flashBag->set('success', 'The element has been created successfully');
+
+                    $historyService->write('MailForm', 'Mail form "%s" has been created', $name);
                     return $service->getLastId();
                 }
             }
