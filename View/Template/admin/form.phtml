@@ -12,7 +12,7 @@ defined('KRYSTAL') or die;
 
 <form class="card" data-group="form" autocomplete="off">
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="nav-item active"><a class="nav-link" href="#page" role="tab" data-toggle="tab"><i class="far fa-file"></i> <?php $this->show('Form'); ?></a></li>
+        <li role="presentation" class="nav-item active"><a class="nav-link" href="#page" role="tab" data-toggle="tab"><i class="fas fa-envelope-open-text"></i> <?php $this->show('Form'); ?></a></li>
 		<li role="presentation" class="nav-item"><a class="nav-link" href="#message" role="tab" data-toggle="tab"><i class="fas fa-grip-horizontal"></i> <?php $this->show('Configuration'); ?></a></li>
         <?php if (!$new): ?>
         <li role="presentation" class="nav-item"><a class="nav-link" href="#fields" role="tab" data-toggle="tab"><i class="fas fa-clipboard-list"></i> <?php $this->show('Form fields'); ?> <small class="text-muted">(<?= count($extraFields); ?>)</small></a></li>
@@ -139,14 +139,12 @@ defined('KRYSTAL') or die;
 
             <!--Subject-->
             <div class="row">
-                <div class="col-lg-7">
+                <div class="col-lg-12">
                     <div class="form-group">
                         <label class="col-lg-7 control-label"><?php $this->show('Template'); ?></label>
-                        <div class="col-lg-5">
-                        <div class="input-group">
+                        <div class="col-lg-10">
                             <?php echo Element::text('form[template]', $entity->getTemplate(), array('class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file inside current site theme directory'))); ?>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-                        </div>
                         </div>
                     </div>
 
@@ -159,35 +157,37 @@ defined('KRYSTAL') or die;
 
                     <div class="form-group">
                         <label class="col-lg-7 control-label"><?php $this->show('Enable CAPTCHA'); ?></label>
-                        <div class="col-lg-5">
-                            <?php echo Element::checkbox('form[captcha]', $entity->getCaptcha(), array('class' => 'form-control')); ?>
+                        <div class="col-lg-12">
+                            <?php echo Element::checkbox('form[captcha]', $entity->getCaptcha()); ?>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-lg-7 control-label"><?php $this->show('Enable auto complete on site'); ?></label>
-                        <div class="col-lg-5">
-                            <?php echo Element::checkbox('form[autocomplete]', $entity->getAutocomplete(), array('class' => 'form-control')); ?>
+                        <div class="col-lg-12">
+                            <?php echo Element::checkbox('form[autocomplete]', $entity->getAutocomplete()); ?>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-lg-7 control-label"><?php $this->show('Enable SEO'); ?></label>
-                        <div class="col-lg-5">
-                            <?php echo Element::checkbox('form[seo]', $entity->getSeo(), array('class' => 'form-control')); ?>
+                        <div class="col-lg-12">
+                            <?php echo Element::checkbox('form[seo]', $entity->getSeo()); ?>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label"><?php $this->show('Subject'); ?></label>
-                        <div class="input-group">
+                        <label class="col-lg-7 control-label"><?php $this->show('Subject'); ?></label>
+                        <div class="col-lg-12">
                             <?php echo Element::text('form[subject]', $entity->getSubject(), array('class' => 'form-control', 'placeholder' => $this->translate('Message subject. It may contain variables as well'))); ?>
                             <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <?php echo Element::textarea('form[message]', $entity->getMessage(), array('id' => 'message-input', 'rows' => '13', 'class' => 'form-control', 'placeholder' => $this->translate('Target message'))); ?>
+                        <div class="col-lg-12">
+                            <?php echo Element::textarea('form[message]', $entity->getMessage(), array('id' => 'message-input', 'rows' => '13', 'class' => 'form-control', 'placeholder' => $this->translate('Target message'))); ?>
+                        </div>
 
                         <?php if ($entity->getId()): ?>
                         <br />
