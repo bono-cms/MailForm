@@ -4,6 +4,7 @@ CHANGELOG
 1.2
 ---
 
+ * Connected Block module to handle dynamic fields
  * Moved history tracker of out main service into the main controller
  * Added missing values in breadcrumbs
  * Disabled autocomplete in forms
