@@ -36,7 +36,8 @@ final class Module extends AbstractCmsModule
             'fieldValueService' => $fieldValueService,
             'fieldService' => $fieldService,
             'formManager' => $formManager,
-            'siteService' => new SiteService($formManager, $fieldService, $fieldValueService)
+            'siteService' => new SiteService($formManager, $fieldService, $fieldValueService),
+            'blockFieldService' => $this->createFieldService('\MailForm\Storage\MySQL\MfExtraFieldMapper')
         );
     }
 }

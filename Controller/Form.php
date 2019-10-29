@@ -75,6 +75,10 @@ final class Form extends AbstractController
         $this->view->getBreadcrumbBag()
                    ->addOne($form->getName());
 
+        // Append fields on demand (Not to be confused with dynamic input fields of current module)
+        // These ones come from Block module
+        $this->appendFieldsIfPossible($form);
+
         return $this->view->render($form->getTemplate(), array(
             'page' => $form,
             'action' => $this->request->getCurrentUrl(),

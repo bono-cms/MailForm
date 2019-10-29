@@ -16,6 +16,7 @@ defined('KRYSTAL') or die;
 		<li role="presentation" class="nav-item"><a class="nav-link" href="#message" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-envelope"></i> <?php $this->show('Configuration'); ?></a></li>
         <?php if (!$new): ?>
         <li role="presentation" class="nav-item"><a class="nav-link" href="#fields" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-tasks"></i> <?php $this->show('Fields'); ?></a></li>
+        <?php $this->loadPartialIfPossible('block-tab'); ?>
         <?php endif; ?>
 	</ul>
 
@@ -134,6 +135,8 @@ defined('KRYSTAL') or die;
             <?php echo Element::hidden('form[id]', $entity->getId()); ?>
             <?php echo Element::hidden('form[type]', $entity->getType()); ?>
 
+            <?php $this->loadPartialIfPossible('block-field'); ?>
+
             <!--Subject-->
             <div class="row">
                 <div class="col-lg-7">
@@ -214,7 +217,7 @@ defined('KRYSTAL') or die;
         </div>
 
         <div class="tab-pane fade" id="fields" role="tabpanel">
-            <h3><i class="glyphicon glyphicon-tasks"></i> <?php $this->show('Form fields'); ?> <small>(<?= count($fields); ?>)</small></h3>
+            <h3><i class="glyphicon glyphicon-tasks"></i> <?php $this->show('Form fields'); ?> <small>(<?= count($extraFields); ?>)</small></h3>
 
             <br />
 
@@ -222,7 +225,7 @@ defined('KRYSTAL') or die;
                 <a class="btn btn-primary" href="<?= $this->url('MailForm:Admin:Field@addAction', $entity->getId()); ?>"><?php $this->show('Add new field'); ?></a>
             </p>
 
-            <?= $this->widget(new GridViewWidget($fields, array(
+            <?= $this->widget(new GridViewWidget($extraFields, array(
                 // A column to be considered as a primary key
                 'pk' => 'id',
                 'tableClass' => 'table table-hover table-bordered table-striped',
@@ -279,5 +282,7 @@ defined('KRYSTAL') or die;
                 )
             ))); ?>
         </div>
+
+        <?php $this->loadPartialIfPossible('block-content'); ?>
 	</div>
 </form>

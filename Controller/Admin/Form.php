@@ -54,15 +54,18 @@ final class Form extends AbstractController
         $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
                                        ->addOne($title);
 
-        $fields = $this->getModuleService('fieldService')->fetchAll($id, false);
+        $extraFields = $this->getModuleService('fieldService')->fetchAll($id, false);
 
         $flashPolCol = new FlashPositionCollection();
+
+        // Load fields, if possible
+        $this->loadFields($id);
 
         return $this->view->render('form', array(
             'new' => $new,
             'form' => $form,
-            'fields' => $fields,
-            'subjectVars' => FieldService::createSubjectVars($fields),
+            'extraFields' => $extraFields,
+            'subjectVars' => FieldService::createSubjectVars($extraFields),
             'flashPositions' => $flashPolCol->getAll()
         ));
     }
@@ -211,6 +214,9 @@ final class Form extends AbstractController
     public function saveAction()
     {
         $input = $this->request->getPost('form');
+
+        // Save dynamic fields, if present
+        $this->saveFields('form');
 
         $formValidator = $this->createValidator(array(
             'input' => array(
