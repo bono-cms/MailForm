@@ -8,9 +8,11 @@ defined('KRYSTAL') or die;
 
 ?>
 
+<?php if (!empty($logs)): ?>
 <div class="btn-toolbar">
     <a data-button="delete" data-message="<?php $this->show('Do you really want to clear all message logs?'); ?>" class="btn btn-primary" href="<?= $this->url('MailForm:Admin:SubmitLog@clearAction'); ?>"><?php $this->show('Clear all'); ?></a>
 </div>
+<?php endif; ?>
 
 <div class="card">
     <?php $this->loadPartial('card-header', array(
