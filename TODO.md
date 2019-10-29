@@ -14,3 +14,8 @@ TODO List
  * Form templates
  * Limitations by date or number of submits
  * New conception of Payment forms (to be integrated with Payment module)
+ * Add rating field
+ * Add survey field
+ * Add options on what to do after submissions
+ * Select field should be able to select multiple values
+ * Checkboxes should support trees
