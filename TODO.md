@@ -2,6 +2,7 @@
 TODO List
 =========
 
+ * Add an option to render text before submission button
  * Shared fields for forms. For example - different forms might require one shared dropdown
  * Conditional logic for fields. Right now conditionals handled manually
  * Add options to override form-group items such as "col-lg-10" and "label"
