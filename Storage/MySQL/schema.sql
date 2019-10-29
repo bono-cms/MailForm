@@ -90,3 +90,34 @@ CREATE TABLE `bono_module_mailform_submits` (
     `subject` varchar(255) NOT NULL COMMENT 'Message subject',
     `attachments` INT NOT NULL COMMENT 'Attachments count'
 ) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
+
+/* Extra fields */
+DROP TABLE IF EXISTS `bono_module_mailform_extra_fields_cat_rel`;
+CREATE TABLE `bono_module_mailform_extra_fields_cat_rel` (
+    `master_id` INT NOT NULL COMMENT 'MF ID',
+    `slave_id` INT NOT NULL COMMENT 'Category ID',
+
+    FOREIGN KEY (master_id) REFERENCES bono_module_mailform(id) ON DELETE CASCADE,
+    FOREIGN KEY (slave_id) REFERENCES bono_module_block_categories(id) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
+
+DROP TABLE IF EXISTS `bono_module_mailform_extra_fields`;
+CREATE TABLE `bono_module_mailform_extra_fields` (
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `entity_id` INT NOT NULL COMMENT 'MF ID',
+    `field_id` INT NOT NULL COMMENT 'Related field_id in block module',
+    `value` varchar(255) NOT NULL COMMENT 'Non-translateable value',
+
+    FOREIGN KEY (entity_id) REFERENCES bono_module_mailform(id) ON DELETE CASCADE,
+    FOREIGN KEY (field_id) REFERENCES bono_module_block_category_fields(id) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
+
+DROP TABLE IF EXISTS `bono_module_mailform_extra_fields_translations`;
+CREATE TABLE `bono_module_mailform_extra_fields_translations` (
+    `id` INT NOT NULL,
+    `lang_id` INT NOT NULL COMMENT 'Language identificator',
+    `value` varchar(255) NOT NULL,
+
+    FOREIGN KEY (id) REFERENCES bono_module_mailform_extra_fields(id) ON DELETE CASCADE,
+    FOREIGN KEY (lang_id) REFERENCES bono_module_cms_languages(id) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
