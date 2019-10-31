@@ -66,6 +66,7 @@ final class FormManager extends AbstractManager
                 ->setTemplate($form['template'], FormEntity::FILTER_HTML)
                 ->setKeywords($form['keywords'], FormEntity::FILTER_HTML)
                 ->setFlash($form['flash'], FormEntity::FILTER_HTML)
+                ->setTerms($form['terms'])
                 ->setMetaDescription($form['meta_description'], FormEntity::FILTER_HTML)
                 ->setMessage($form['message'])
                 ->setSubject($form['subject'], FormEntity::FILTER_HTML)

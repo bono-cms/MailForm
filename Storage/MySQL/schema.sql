@@ -24,6 +24,7 @@ CREATE TABLE `bono_module_mailform_translations` (
     `keywords` TEXT DEFAULT NULL,
     `meta_description` TEXT DEFAULT NULL,
     `flash` TEXT NOT NULL COMMENT 'Optional flash message',
+    `terms` TEXT NOT NULL COMMENT 'Optional terms text',
 
     FOREIGN KEY (id) REFERENCES bono_module_mailform(id) ON DELETE CASCADE,
     FOREIGN KEY (lang_id) REFERENCES bono_module_cms_languages(id) ON DELETE CASCADE,
