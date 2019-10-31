@@ -35,9 +35,9 @@ final class FormEntity extends VirtualEntity
      * @param int $id Field id
      * @return string
      */
-    public function getField($id)
+    public function getDynamicField($id)
     {
-        $fields = $this->getFields();
+        $fields = $this->getDynamicFields();
 
         return isset($fields[$id]) ? $fields[$id] : null;
     }
