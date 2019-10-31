@@ -65,6 +65,12 @@ $formClass = isset($formClass) ? $formClass : 'form-horizontal';
     </div>
     <?php endif; ?>
 
+    <?php if ($page->hasTerms()): ?>
+    <div class="form-group">
+        <?= $page->getTerms(); ?>
+    </div>
+    <?php endif; ?>
+
     <?php if (!empty($fields)): ?>
     <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
