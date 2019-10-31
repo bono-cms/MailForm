@@ -8,7 +8,7 @@ use Krystal\Form\Element;
 use MailForm\Service\FieldService;
 use MailForm\Collection\FlashPositionCollection;
 
-$fields = $page->getFields();
+$fields = $page->getDynamicFields();
 
 // View configuration parameters
 $resetButton = isset($resetButton) && $resetButton == true;

@@ -279,7 +279,7 @@ final class FieldService extends AbstractManager
         }
 
         // Finally, append prepared fields with their values
-        $form->setExtraFields($fields);
+        $form->setDynamicFields($fields);
     }
 
     /**
