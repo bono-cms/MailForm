@@ -17,6 +17,19 @@ use MailForm\Collection\FormTypeCollection;
 final class FormEntity extends VirtualEntity
 {
     /**
+     * Returns a single value of a field by its id
+     * 
+     * @param int $id Field id
+     * @return string
+     */
+    public function getField($id)
+    {
+        $fields = $this->getFields();
+
+        return isset($fields[$id]) ? $fields[$id] : null;
+    }
+
+    /**
      * Checks whether current form has terms filled in
      * 
      * @return boolean
