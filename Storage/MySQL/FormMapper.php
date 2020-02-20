@@ -100,7 +100,7 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
     public function fetchAll()
     {
         $columns = $this->getColumns();
-        $columns[] = new RawSqlFragment(sprintf('COUNT(%s) AS field_count', FieldMapper::column('id')));
+        $columns[] = new RawSqlFragment(sprintf('COUNT(DISTINCT %s) AS field_count', FieldMapper::column('id')));
 
         $db = $this->createWebPageSelect($columns)
                     // Field relation
