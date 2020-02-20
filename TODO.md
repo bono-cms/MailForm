@@ -2,6 +2,10 @@
 TODO List
 =========
 
+ * Write docs about available options when rendering a form
+ * Ability to override email
+ * Add optional back button in forms
+ * Add default cover attribute
  * Shared fields for forms. For example - different forms might require one shared dropdown
  * Conditional logic for fields. Right now conditionals handled manually
  * Add options to override form-group items such as "col-lg-10" and "label"
@@ -18,3 +22,4 @@ TODO List
  * Add options on what to do after submissions
  * Select field should be able to select multiple values
  * Checkboxes should support trees
+ * When adding new language from the system - it's not being saved in forms. Fix this bug.
