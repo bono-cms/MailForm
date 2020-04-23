@@ -2,6 +2,7 @@
 TODO List
 =========
 
+ * Dynamic fields don't work on AJAX-forms
  * Write docs about available options when rendering a form
  * Ability to override email
  * Add optional back button in forms
