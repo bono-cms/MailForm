@@ -15,76 +15,74 @@ $default = $field->getDefault();
 
 ?>
 
-<div class="form-group">
+<div class="form-group mb-4">
     <?php if ($field->isHidden()): ?>
     <?= Element::hidden($name, $default); ?>
     <?php else: ?>
 
     <?php if ($field->getName()): ?>
-    <label for="<?php echo $field->getId(); ?>" class="col-lg-2 control-label"><?= $field->getName(); ?></label>
+    <label for="<?php echo $field->getId(); ?>" class="control-label"><?= $field->getName(); ?></label>
     <?php endif; ?>
 
-    <div class="col-lg-10">
-        <?php if ($field->isFile()): ?>
-        <?= Element::file($name, null, array('class' => 'form-control', 'id' => $field->getId(), 'title' => $field->getHint(), 'accept' => $field->getExtensionHints())); ?>
-        <?php endif; ?>
+    <?php if ($field->isFile()): ?>
+    <?= Element::file($name, null, array('class' => 'form-control', 'id' => $field->getId(), 'title' => $field->getHint(), 'accept' => $field->getExtensionHints())); ?>
+    <?php endif; ?>
 
-        <?php if ($field->isText()): ?>
-        <?= Element::text($name, $default, $attrs); ?>
-        <?php endif; ?>
+    <?php if ($field->isText()): ?>
+    <?= Element::text($name, $default, $attrs); ?>
+    <?php endif; ?>
 
-        <?php if ($field->isPassword()): ?>
-        <?= Element::password($name, $default, $attrs); ?>
-        <?php endif; ?>
+    <?php if ($field->isPassword()): ?>
+    <?= Element::password($name, $default, $attrs); ?>
+    <?php endif; ?>
 
-        <?php if ($field->isNumber()): ?>
-        <?= Element::number($name, $default, $attrs); ?>
-        <?php endif; ?>
+    <?php if ($field->isNumber()): ?>
+    <?= Element::number($name, $default, $attrs); ?>
+    <?php endif; ?>
 
-        <?php if ($field->isEmail()): ?>
-        <?= Element::email($name, $default, $attrs); ?>
-        <?php endif; ?>
+    <?php if ($field->isEmail()): ?>
+    <?= Element::email($name, $default, $attrs); ?>
+    <?php endif; ?>
 
-        <?php if ($field->isDate()): ?>
-        <?= Element::date($name, $default, $attrs); ?>
-        <?php endif; ?>
+    <?php if ($field->isDate()): ?>
+    <?= Element::date($name, $default, $attrs); ?>
+    <?php endif; ?>
 
-        <?php if ($field->isDatetime()): ?>
-        <?= Element::date($name, $default, $attrs); ?>
-        <?php endif; ?>
+    <?php if ($field->isDatetime()): ?>
+    <?= Element::date($name, $default, $attrs); ?>
+    <?php endif; ?>
 
-        <?php if ($field->isTextarea()): ?>
-        <?= Element::textarea($name, $default, $attrs); ?>
-        <?php endif; ?>
+    <?php if ($field->isTextarea()): ?>
+    <?= Element::textarea($name, $default, $attrs); ?>
+    <?php endif; ?>
 
-        <?php if ($field->isSelect()): ?>
-        <?= Element::select($name, $field->getValuesList(), $default, $attrs); ?>
-        <?php endif; ?>
+    <?php if ($field->isSelect()): ?>
+    <?= Element::select($name, $field->getValuesList(), $default, $attrs); ?>
+    <?php endif; ?>
 
-        <?php if ($field->isBoolean()): ?>
-        <?= Element::checkbox($name, (bool) $default, array('id' => $field->getId(), 'title' => $field->getHint())); ?>
-        <?php endif; ?>
-        <?php if ($field->isCheckboxList()): ?>
-        <?php foreach ($field->getValues() as $value): ?>
-        <div class="checkbox">
-          <label>
-            <?= Element::checkbox($name.'[]', $value->isChecked(), array('value' => $value->getValue()), false); ?>
-            <?= $value->getValue(); ?>
-          </label>
-        </div>
-        <?php endforeach; ?>
-        <?php endif; ?>
-
-        <?php if ($field->isRadioList()): ?>
-        <?php foreach ($field->getValues() as $value): ?>
-        <div class="radio">
-          <label>
-            <?= Element::radio($name, $value->getValue(), $default); ?>
-            <?= $value->getValue(); ?>
-          </label>
-        </div>
-        <?php endforeach; ?>
-        <?php endif; ?>
+    <?php if ($field->isBoolean()): ?>
+    <?= Element::checkbox($name, (bool) $default, array('id' => $field->getId(), 'title' => $field->getHint())); ?>
+    <?php endif; ?>
+    <?php if ($field->isCheckboxList()): ?>
+    <?php foreach ($field->getValues() as $value): ?>
+    <div class="checkbox">
+      <label>
+        <?= Element::checkbox($name.'[]', $value->isChecked(), array('value' => $value->getValue()), false); ?>
+        <?= $value->getValue(); ?>
+      </label>
     </div>
+    <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php if ($field->isRadioList()): ?>
+    <?php foreach ($field->getValues() as $value): ?>
+    <div class="radio">
+      <label>
+        <?= Element::radio($name, $value->getValue(), $default); ?>
+        <?= $value->getValue(); ?>
+      </label>
+    </div>
+    <?php endforeach; ?>
+    <?php endif; ?>
     <?php endif; ?>
 </div>
