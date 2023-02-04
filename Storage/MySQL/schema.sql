@@ -27,8 +27,7 @@ CREATE TABLE `bono_module_mailform_translations` (
     `terms` TEXT NOT NULL COMMENT 'Optional terms text',
 
     FOREIGN KEY (id) REFERENCES bono_module_mailform(id) ON DELETE CASCADE,
-    FOREIGN KEY (lang_id) REFERENCES bono_module_cms_languages(id) ON DELETE CASCADE,
-    FOREIGN KEY (web_page_id) REFERENCES bono_module_cms_webpages(id) ON DELETE CASCADE
+    FOREIGN KEY (lang_id) REFERENCES bono_module_cms_languages(id) ON DELETE CASCADE
 
 ) ENGINE = InnoDB DEFAULT CHARSET = UTF8;
 
