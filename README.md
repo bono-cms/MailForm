@@ -1,80 +1,70 @@
+Form module
+=====
 
-# Mail Form module
+The Form module lets you create pages on your website that send emails directly to your inbox. It's ideal for contact forms and application forms, making it easy for users to get in touch or submit documents such as resumes.
 
-Mail form is the **ultimate FREE** form creation tool for Bono CMS. Build various forms and surveys within minutes using a simple interface with no code.
+## Features
 
-# Features
+-   **Simple and intuitive interface** – Easy to configure and user-friendly.
+-   **Built-in internationalization support** – Fully compatible with multilingual websites.
+    
+-   **Support for common dynamic fields** – Includes text inputs, checkboxes, radio buttons, and more.
+    
+-   **Advanced field types** – Includes checkbox lists and radio button lists.
+    
+-   **File upload support** – Uploaded files are automatically attached to the email on form submission.
+    
+-   **Flexible validation rules** – Define required or optional fields with support for custom error messages.
+    
+-   **Custom field order** – Easily control the display order of form fields.
+    
+-   **Support for both regular and AJAX-based submissions** – Improve user experience with seamless form handling.
+    
+-   **Input placeholders and default values** – Provide helpful context or pre-fill fields as needed.
+    
+-   **Optional column-based layout** – Render form fields in separate blocks or columns for better organization.
+    
+-   **Customizable flash messages** – Display user-friendly success messages after submission.
+    
+-   **Flash message positioning** – Choose to display messages at the top or bottom of the form.
+    
+-   **Robust security** – Includes CAPTCHA (optional) and CSRF protection by default.
+    
+-   **Customizable email content** – Use variable placeholders to personalize subjects and messages.
+    
+-   **Template support** – Create and apply custom form templates for full design flexibility.
+    
+-   **Form submission logging** – Track and store form submissions for auditing or record-keeping.
 
-- Simple and intuitive interface
-- Built-in internalization support
-- Common dynamic fields support plus extras (checkbox list, radio list)
-- File input support. On submit, uploaded files are sent as mail attachments
-- Required and non-required validation rule with custom message support
-- Sorting order for fields to be rendered
-- Regular and AJAX forms
-- Input placeholders
-- Default values for inputs
-- Separation by columns. This optional feature makes it possible to render fields in different blocks on your page.
-- Custom flash messages on successful sending
-- Flash message positions (up or down)
-- Protection with CAPTCHA (can be enabled or disabled) and CSRF by default.
-- Customizeable subjects and messages with variable placeholders
-- Custom templates support
-- Form submission logger
+## How to use it?
 
-# Installation
-
-Nothing extra to do. Can be installed just like any other Bono module. Please refer to [documentation](https://bono-docs.readthedocs.io/en/latest/Modules/Mail%20forms/).
-
-# How to use it?
-
-Well, really it's insanely simply. Just create a form in administration panel with fields, then just render it in template with one line of code!
-
-## In simple forms
-
-Inside a simple form, just include a partial:
+Simply create a form in the administration panel by adding the desired fields—then render it in your template with a single line of code:
 
     <div>
         <?php $this->loadPartial('mf-form'); ?>
     </div>
 
-Done! Now when you open this page, your form will be rendered for you!
+That's it! Now, when you open the page, your form will be automatically rendered.
 
-## In AJAX forms
-
-Unlike regular forms, AJAX-forms are forms have no dedicated page. They might be globally located in your layout.
-
-Anywhere in your template, just call `<?= $form->render($id); ?>` where `$id` is the ID of the form.
+## AJAX forms
 
 
-# Styling forms
+AJAX forms can be placed anywhere within your template.
+To render the AJAX form, simply call it like this providing form id:
 
-By default all inputs are styled according to Twitter Bootstrap.
-
-However, you are completely free to design forms and fields they way you want. No tightly-coupled CSS classes and bad things like that.
-
-# Where does it send messages from filled forms?
-
-When sending, it uses global email and its configuration that you've set in system configuration.
+    <?= $form->render($id); ?>
 
 
-# What about conditional logic?
+## Styling forms
 
-That will be implemented in future versions.
+However, you're free to customize the design as you see fit—there are no restrictive styles. You have full control over the form's appearance through your own CSS.
 
-If you need to show/hide some field based on value of another field, then write several lines of JavaScript code using jquery. Come on man, Its really that simple!
+## Where are submissions sent?
 
+When sending, it uses the global email and its configuration as defined in the system settings.
 
-# Bug reports
+## Conditional logic
 
-If you encounter a bug, please report an issue here, providing as much as possible information on how to reproduce that bug. 
+This feature will be available in future versions soon.
 
-Please don't open an issue if that bug related to security. Instead send an email directly to developer.
-
-# License
-
-Licensed under the same license as Bono CMS
-
-# Credits
-
-Icons made by [Freepik](https://www.freepik.com/ "Freepik") from [www.flaticon.com](https://www.flaticon.com/ "Flaticon") is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/ "Creative Commons BY 3.0")
+In the meantime, if you need to show or hide fields based on the value of another, simply add a few lines of JavaScript using jQuery. It's that easy!
