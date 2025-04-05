@@ -73,7 +73,7 @@ DROP TABLE IF EXISTS `bono_module_mailform_fields_values_translations`;
 CREATE TABLE `bono_module_mailform_fields_values_translations` (
     `id` INT NOT NULL COMMENT 'Value ID',
     `lang_id` INT NOT NULL COMMENT 'Attached lang ID',
-    `value` varchar(255) COMMENT 'Value',
+    `value` TEXT COMMENT 'Value',
     `default` varchar(255) COMMENT 'Default state',
 
     FOREIGN KEY (id) REFERENCES bono_module_mailform_fields_values(id) ON DELETE CASCADE,
