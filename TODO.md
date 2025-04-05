@@ -1,7 +1,9 @@
-
 TODO List
 =========
 
+ * Individual field render to avoid loop
+ * User analytic fields (IP, Browser, Device, Country) in logger
+ * Add support optgroup for select inputs
  * Dynamic fields don't work on AJAX-forms
  * Write docs about available options when rendering a form
  * Ability to override email
