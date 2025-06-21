@@ -46,6 +46,12 @@ Simply create a form in the administration panel by adding the desired fields—
 
 That's it! Now, when you open the page, your form will be automatically rendered.
 
+## URL Generation
+
+To generate a URL for a form by its ID (assuming the form ID is 1), use:
+
+    <a href="<?= $cms->createUrl(1, 'MailForm'); ?>">View form</a>
+
 ## AJAX forms
 
 
