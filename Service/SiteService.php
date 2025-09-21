@@ -78,7 +78,7 @@ final class SiteService
      * @throws \RuntimeException If trying to render non-AJAX form
      * @return string
      */
-    public function render($id)
+    public function render($id, array $vars = array())
     {
         $page = $this->formManager->fetchById($id, false);
 
@@ -96,10 +96,10 @@ final class SiteService
             // Save initial page entity
             $originalPage = $this->view->getVariable('page');
 
-            $response = $this->view->render($page->getTemplate(), array(
+            $response = $this->view->render($page->getTemplate(), array_merge($vars, array(
                 'action' => '/module/mail-form/partial/'. $id,
                 'page' => $page
-            ));
+            )));
 
             // Restore initial page entity
             $this->view->addVariable('page', $originalPage);
