@@ -215,9 +215,6 @@ final class Form extends AbstractController
     {
         $input = $this->request->getPost('form');
 
-        // Save dynamic fields, if present
-        $this->saveFields('form');
-
         $formValidator = $this->createValidator(array(
             'input' => array(
                 'source' => $input,
@@ -241,13 +238,21 @@ final class Form extends AbstractController
                 $this->flashBag->set('success', 'The element has been updated successfully');
 
                 $historyService->write('MailForm', 'Mail form "%s" has been updated', $name);
+
+                // Update dynamic fields, if present
+                $this->updateFields('form');
                 return '1';
 
             } else {
                 $this->flashBag->set('success', 'The element has been created successfully');
 
                 $historyService->write('MailForm', 'Mail form "%s" has been created', $name);
-                return $service->getLastId();
+                $lastId = $service->getLastId();
+
+                // Insert dynamic fields, if present
+                $this->insertFields('form', $lastId);
+
+                return $lastId;
             }
 
         } else {
