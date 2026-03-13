@@ -260,12 +260,16 @@ defined('KRYSTAL') or die;
         </div>
 
         <div class="tab-pane fade" id="fields" role="tabpanel">
-            <h3><i class="bi bi-list-task"></i> <?php $this->show('Form fields'); ?> <small>(<?= count($extraFields); ?>)</small></h3>
+            <div class="row py-4">
+                <div class="col-lg-6">
+                    <h3><i class="bi bi-list-task"></i> <?php $this->show('Form fields'); ?> <small>(<?= count($extraFields); ?>)</small></h3>
+                </div>
 
-            <div class="my-3">
-                <a class="btn btn-primary" href="<?= $this->url('MailForm:Admin:Field@addAction', $entity->getId()); ?>">
-                    <?php $this->show('Add new field'); ?>
-                </a>
+                <div class="col-lg-6 text-lg-right">
+                    <a class="btn btn-primary" href="<?= $this->url('MailForm:Admin:Field@addAction', $entity->getId()); ?>">
+                        <?php $this->show('Add new field'); ?>
+                    </a>
+                </div>
             </div>
 
             <?= $this->widget(new GridViewWidget($extraFields, [
