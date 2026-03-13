@@ -9,52 +9,54 @@ defined('KRYSTAL') or die;
 
 ?>
 
-<div class="btn-toolbar">
-    <?php $this->loadPartial('menu', array(
-        'items' => array(
+<div class="btn-toolbar mb-3">
+    <?php $this->loadPartial('menu', [
+        'items' => [
             'MailForm:Admin:Form@addAction' => 'Add new form',
             'MailForm:Admin:Form@addAjaxAction' => 'Add new AJAX form',
             'MailForm:Admin:SubmitLog@indexAction' => 'Submit logs'
-        ),
-        'actions' => array(
+        ],
+        'actions' => [
             'data' => $forms,
             'save' => 'MailForm:Admin:Form@tweakAction',
             'delete' => 'MailForm:Admin:Form@deleteAction'
-        )
-    )); ?>
+        ]
+    ]); ?>
 </div>
 
-<div class="card">
-    <h4 class="inline"><i class="fas fa-envelope-open-text"></i> <?php $this->show('Mail forms'); ?> <small class="text-muted">(<?= count($forms); ?>)</small></h4>
-    <br />
+<div class="card card-body">
+    <h4 class="card-title mb-4">
+        <i class="fas fa-envelope-open-text"></i> <?php $this->show('Mail forms'); ?> 
+        <small class="text-muted">(<?= count($forms); ?>)</small>
+    </h4>
 
     <form autocomplete="off">
         <div class="table-responsive">
-            <?= $this->widget(new GridViewWidget($forms, array(
+            <?= $this->widget(new GridViewWidget($forms, [
                 // A column to be considered as a primary key
                 'pk' => 'id',
                 'batch' => true,
                 'tableClass' => 'table table-hover table-bordered table-striped',
-                'columns' => array(
-                    array(
+                'columns' => [
+                    [
                         'column' => 'id',
                         'label' => '#'
-                    ),
+                    ],
 
-                    array(
+                    [
                         'column' => 'name'
-                    ),
+                    ],
 
-                    array(
+                    [
                         'column' => 'type',
                         'translateable' => true,
                         'value' => function($row){
                             $typeCol = new FormTypeCollection();
                             return $typeCol->findByKey($row['type']);
                         }
-                    ),
+                    ],
 
-                    array(
+                    [
                         'column' => 'seo',
                         'label' => 'SEO',
                         'value' => function($form){
@@ -64,15 +66,15 @@ defined('KRYSTAL') or die;
                                 return null;
                             }
                         }
-                    ),
+                    ],
 
-                    array(
+                    [
                         'column' => 'field_count',
                         'label' => 'Field count'
-                    )
-                ),
+                    ]
+                ],
 
-                'actions' => array(
+                'actions' => [
                     'view' => function($form){
                         if ($form->isRegularForm()) {
                             return Icon::view($form->getUrl(), $this->translate('View this page on site'));
@@ -94,12 +96,14 @@ defined('KRYSTAL') or die;
                             $this->translate('Remove this page')
                         );
                     }
-                )
-            ))); ?>    
+                ]
+            ])); ?>    
 
             <?php if (empty($forms)): ?>
-            <div class="center-block">
-                <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No forms'); ?></h2>
+            <div class="d-flex justify-content-center my-5">
+                <div class="text-center text-muted">
+                    <h2><i class="bi bi-x-circle"></i> <?php $this->show('No forms'); ?></h2>
+                </div>
             </div>
             <?php endif; ?>
         </div>

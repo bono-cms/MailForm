@@ -9,39 +9,50 @@ defined('KRYSTAL') or die;
 
 <form class="card" data-group="value" autocomplete="off">
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="nav-item active"><a class="nav-link" href="#value" role="tab" data-toggle="tab"><i class="fas fa-align-left"></i> <?php $this->show('Value'); ?></a></li>
-        <li role="presentation" class="nav-item"><a class="nav-link" href="#configuration" role="tab" data-toggle="tab"><i class="fas fa-grip-horizontal"></i> <?php $this->show('Configuration'); ?></a></li>
-	</ul>
+        <li role="presentation" class="nav-item">
+            <a class="nav-link active" href="#value" role="tab" data-toggle="tab">
+                <i class="fas fa-align-left"></i> <?php $this->show('Value'); ?>
+            </a>
+        </li>
+
+        <li role="presentation" class="nav-item">
+            <a class="nav-link" href="#configuration" role="tab" data-toggle="tab">
+                <i class="fas fa-grip-horizontal"></i> <?php $this->show('Configuration'); ?>
+            </a>
+        </li>
+    </ul>
 
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="value" role="tabpanel">
+        <div class="tab-pane fade show active" id="value" role="tabpanel">
             <?php $this->loadPartial('language-tabs'); ?>
 
             <div class="tab-content">
                 <?php foreach ($languages as $index => $language): ?>
-                <div class="tab-pane fade in <?php echo $index == 0 ? 'active show' : null; ?>" id="<?php printf('language-%s', $language->getId()); ?>" role="tabpanel">
+                <div class="tab-pane fade <?= $index == 0 ? 'show active' : null; ?>" id="<?php printf('language-%s', $language->getId()); ?>" role="tabpanel">
                     <?php $entity = LanguageManager::findByLangId($language->getId(), $value); ?>
 
-                    <?php echo Element::hidden(sprintf('translation[%s][id]', $language->getId()), $entity->getId()); ?>
-                    <?php echo Element::hidden(sprintf('translation[%s][lang_id]', $language->getId()), $language->getId()); ?>
+                    <?= Element::hidden(sprintf('translation[%s][id]', $language->getId()), $entity->getId()); ?>
+                    <?= Element::hidden(sprintf('translation[%s][lang_id]', $language->getId()), $language->getId()); ?>
 
-                    <?php $this->loadPartial('language-name', array('language' => $language)); ?>
+                    <?php $this->loadPartial('language-name', ['language' => $language]); ?>
 
-                    <div class="form-group">
-                        <label class="col-lg-2 control-label"><?php $this->show('Value'); ?></label>
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label"><?php $this->show('Value'); ?></label>
                         <div class="col-lg-10">
                             <div class="input-group">
-                                <?php echo Element::textarea(sprintf('translation[%s][value]', $language->getId()), $entity->getValue(), array('class' => 'form-control', 'placeholder' => $this->translate('Name'))); ?>
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                <?= Element::textarea(sprintf('translation[%s][value]', $language->getId()), $entity->getValue(), ['class' => 'form-control', 'placeholder' => $this->translate('Name')]); ?>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="bi bi-pencil"></i></span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <?php if ($entity->isCheckboxList()): ?>
-                    <div class="form-group">
-                        <label class="col-lg-2 control-label"><?php $this->show('Default'); ?></label>
+                    <div class="form-group row">
+                        <label class="col-lg-2 col-form-label"><?php $this->show('Default'); ?></label>
                         <div class="col-lg-10">
-                            <?php echo Element::select(sprintf('translation[%s][default]', $language->getId()), $this->translateArray($states), $entity->getDefault(), array('class' => 'form-control')); ?>
+                            <?= Element::select(sprintf('translation[%s][default]', $language->getId()), $this->translateArray($states), $entity->getDefault(), ['class' => 'form-control']); ?>
                         </div>
                     </div>
                     <?php endif; ?>
@@ -51,24 +62,24 @@ defined('KRYSTAL') or die;
         </div>
 
         <div class="tab-pane fade" id="configuration" role="tabpanel">
-            <?php echo Element::hidden('value[id]', $entity->getId()); ?>
-            <?php echo Element::hidden('value[field_id]', $entity->getFieldId()); ?>
+            <?= Element::hidden('value[id]', $entity->getId()); ?>
+            <?= Element::hidden('value[field_id]', $entity->getFieldId()); ?>
 
-            <div class="form-group">
-                <label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
+            <div class="form-group row">
+                <label class="col-lg-2 col-form-label"><?php $this->show('Order'); ?></label>
                 <div class="col-lg-10">
-                    <?php echo Element::number('value[order]', $entity->getOrder(), array('class' => 'form-control')); ?>
+                    <?= Element::number('value[order]', $entity->getOrder(), ['class' => 'form-control']); ?>
                 </div>
             </div>
         </div>
     </div>
 
-    <?php $this->loadPartial('actions', array(
+    <?php $this->loadPartial('actions', [
         'new' => $new,
-        'add' => $this->createQueryUrl('MailForm:Admin:FieldValue@addAction', array('form_id' => $entity->getFormId(), 'field_id' => $entity->getFieldId())),
+        'add' => $this->createQueryUrl('MailForm:Admin:FieldValue@addAction', ['form_id' => $entity->getFormId(), 'field_id' => $entity->getFieldId()]),
         'edit' => 'MailForm:Admin:FieldValue@editAction',
         'save' => 'MailForm:Admin:FieldValue@saveAction',
-        'cancel' => array('MailForm:Admin:Field@editAction', $entity->getFieldId()),
-    )); ?>
+        'cancel' => ['MailForm:Admin:Field@editAction', $entity->getFieldId()],
+    ]); ?>
     
 </form>
