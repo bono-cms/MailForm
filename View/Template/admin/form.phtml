@@ -163,67 +163,67 @@ defined('KRYSTAL') or die;
 
             <?php $this->loadPartialIfPossible('block-field'); ?>
 
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label"><?php $this->show('Template'); ?></label>
-                        <div class="col-lg-10">
-                            <div class="input-group">
-                                <?= Element::text('form[template]', $entity->getTemplate(), ['class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file')]); ?>
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="bi bi-pencil"></i></span>
-                                </div>
-                            </div>
+            <div class="form-group row">
+                <label class="col-lg-2 col-form-label"><?php $this->show('Template'); ?></label>
+                <div class="col-lg-10">
+                    <div class="input-group">
+                        <?= Element::text('form[template]', $entity->getTemplate(), ['class' => 'form-control', 'placeholder' => $this->translate('Framework-compliant template file')]); ?>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="bi bi-pencil"></i></span>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label"><?php $this->show('Flash message position'); ?></label>
-                        <div class="col-lg-10">
-                            <?= Element::select('form[flash_position]', $this->translateArray($flashPositions), $entity->getFlashPosition(), ['class' => 'form-control']); ?>
+            <div class="form-group row">
+                <label class="col-lg-2 col-form-label"><?php $this->show('Flash message position'); ?></label>
+                <div class="col-lg-10">
+                    <?= Element::select('form[flash_position]', $this->translateArray($flashPositions), $entity->getFlashPosition(), ['class' => 'form-control']); ?>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-2 col-form-label"><?php $this->show('Enable CAPTCHA'); ?></label>
+                <div class="col-lg-10">
+                    <div class="form-check">
+                        <?= Element::checkbox('form[captcha]', $entity->getCaptcha(), ['class' => 'form-check-input']); ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-2 col-form-label"><?php $this->show('Enable auto complete on site'); ?></label>
+                <div class="col-lg-10">
+                    <div class="form-check">
+                        <?= Element::checkbox('form[autocomplete]', $entity->getAutocomplete(), ['class' => 'form-check-input']); ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-2 col-form-label"><?php $this->show('Enable SEO'); ?></label>
+                <div class="col-lg-10">
+                    <div class="form-check">
+                        <?= Element::checkbox('form[seo]', $entity->getSeo(), ['class' => 'form-check-input']); ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-lg-2 col-form-label"><?php $this->show('Subject'); ?></label>
+                <div class="col-lg-10">
+                    <div class="input-group">
+                        <?= Element::text('form[subject]', $entity->getSubject(), ['class' => 'form-control', 'placeholder' => $this->translate('Message subject')]); ?>
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="bi bi-pencil"></i></span>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label"><?php $this->show('Enable CAPTCHA'); ?></label>
-                        <div class="col-lg-10">
-                            <div class="form-check">
-                                <?= Element::checkbox('form[captcha]', $entity->getCaptcha(), ['class' => 'form-check-input']); ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label"><?php $this->show('Enable auto complete on site'); ?></label>
-                        <div class="col-lg-10">
-                            <div class="form-check">
-                                <?= Element::checkbox('form[autocomplete]', $entity->getAutocomplete(), ['class' => 'form-check-input']); ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label"><?php $this->show('Enable SEO'); ?></label>
-                        <div class="col-lg-10">
-                            <div class="form-check">
-                                <?= Element::checkbox('form[seo]', $entity->getSeo(), ['class' => 'form-check-input']); ?>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label"><?php $this->show('Subject'); ?></label>
-                        <div class="col-lg-10">
-                            <div class="input-group">
-                                <?= Element::text('form[subject]', $entity->getSubject(), ['class' => 'form-control', 'placeholder' => $this->translate('Message subject')]); ?>
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="bi bi-pencil"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-8">
                         <?= Element::textarea('form[message]', $entity->getMessage(), ['id' => 'message-input', 'rows' => '13', 'class' => 'form-control', 'placeholder' => $this->translate('Target message')]); ?>
 
                         <?php if ($entity->getId()): ?>
@@ -234,26 +234,26 @@ defined('KRYSTAL') or die;
                         </div>
                         <?php endif; ?>
                     </div>
-                </div>
-
-                <div class="col-lg-5">
-                    <div class="alert alert-danger">
-                        <?php if (!empty($subjectVars)): ?>
-                        <p><?php $this->show('You can use the following subject variables'); ?>: </p>
-                        <br />
-                        <ul class="list-unstyled">
-                            <?php foreach ($subjectVars as $subjectVar => $varName): ?>
-                            <li>
-                                <span class="badge badge-light border" style="cursor: pointer;" data-toggle="tooltip" data-placement="left" title="<?php $this->show('Click to copy'); ?>" data-button="clipboard" data-value="<?= $subjectVar; ?>">
-                                    <?= $subjectVar; ?>
-                                </span> 
-                                <small>- <?= $varName; ?></small>
-                            </li>
-                            <?php endforeach; ?>
-                        </ul>
-                        <?php else: ?>
-                        <p><?php $this->show('There must be at lease one text field created to make use of variables in the subject'); ?></p>
-                        <?php endif; ?>
+                    
+                    <div class="col-lg-4">
+                        <div class="alert alert-danger">
+                            <?php if (!empty($subjectVars)): ?>
+                            <p><?php $this->show('You can use the following subject variables'); ?>: </p>
+                            <br />
+                            <ul class="list-unstyled">
+                                <?php foreach ($subjectVars as $subjectVar => $varName): ?>
+                                <li>
+                                    <span class="badge badge-light border" style="cursor: pointer;" data-toggle="tooltip" data-placement="left" title="<?php $this->show('Click to copy'); ?>" data-button="clipboard" data-value="<?= $subjectVar; ?>">
+                                        <?= $subjectVar; ?>
+                                    </span> 
+                                    <small>- <?= $varName; ?></small>
+                                </li>
+                                <?php endforeach; ?>
+                            </ul>
+                            <?php else: ?>
+                            <p><?php $this->show('There must be at lease one text field created to make use of variables in the subject'); ?></p>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </div>
