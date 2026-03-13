@@ -1,6 +1,8 @@
 TODO List
 =========
 
+ * Column rows handle automatically
+ * What to do after form submit (Refresh the page showing flash message, perform a GET/POST redirect)
  * Individual field render to avoid loop
  * User analytic fields (IP, Browser, Device, Country) in logger
  * Add support optgroup for select inputs
@@ -26,3 +28,8 @@ TODO List
  * Select field should be able to select multiple values
  * Checkboxes should support trees
  * When adding new language from the system - it's not being saved in forms. Fix this bug.
+
+Bugs:
+ 
+ * Validation on checkbox not working
+ * Checkboxes's value not being sorted by their order
