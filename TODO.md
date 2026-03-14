@@ -6,10 +6,8 @@ TODO List
  * User analytic fields (IP, Browser, Device, Country) in logger
  * Add support optgroup for select inputs
  * Dynamic fields don't work on AJAX-forms
- * Write docs about available options when rendering a form
  * Ability to override email
  * Add optional back button in forms
- * Add default cover attribute
  * Shared fields for forms. For example - different forms might require one shared dropdown
  * Conditional logic for fields. Right now conditionals handled manually
  * Add new type - text batch inputs
