@@ -199,6 +199,59 @@ final class FieldService extends AbstractManager
     }
 
     /**
+     * Groups raw items into rows preserving the absolute original order.
+     * A new row is created whenever the grouping column value changes.
+     *
+     * @param array $raw The input collection from the source.
+     * @param string $column The name of the column to group by (default is 'row').
+     * @return array Returns an array with 'grid' (bool) and either 'data' (grouped) or 'items' (flat).
+     */
+    public static function groupRows(array $raw, $column = 'row')
+    {
+        $hasRows = false;
+
+        foreach ($raw as $item) {
+            if (isset($item[$column]) && (int) $item[$column] > 0) {
+                $hasRows = true;
+                break;
+            }
+        }
+
+        if (!$hasRows) {
+            return [
+                'grid' => false,
+                'items' => $raw
+            ];
+        }
+
+        $rows = [];
+        $currentRowValue = null;
+        $currentRowIndex = -1;
+
+        foreach ($raw as $item) {
+            $val = $item[$column] ?? 0;
+
+            // Start a new row on value change or first iteration
+            if ($val !== $currentRowValue) {
+                $currentRowIndex++;
+                $currentRowValue = $val;
+                $rows[$currentRowIndex] = [
+                    'total' => 0,
+                    'items' => []
+                ];
+            }
+
+            $rows[$currentRowIndex]['items'][] = $item;
+            $rows[$currentRowIndex]['total']++;
+        }
+
+        return [
+            'grid' => true,
+            'data' => $rows
+        ];
+    }
+
+    /**
      * Group fields entities by their column values
      * 
      * @param array $fields Field entities
