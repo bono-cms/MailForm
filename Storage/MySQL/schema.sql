@@ -38,7 +38,6 @@ CREATE TABLE `bono_module_mailform_fields` (
     `type` SMALLINT NOT NULL COMMENT 'Type constant',
     `order` INT NOT NULL COMMENT 'Sorting order',
     `required` BOOLEAN NOT NULL COMMENT 'Whether this field can be empty',
-    `column` SMALLINT COMMENT 'Optional filtering column for rendering',
     `row` SMALLINT DEFAULT 0 COMMENT 'Optional row number',
 
     FOREIGN KEY (form_id) REFERENCES bono_module_mailform(id) ON DELETE CASCADE
