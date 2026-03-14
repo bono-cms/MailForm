@@ -292,9 +292,11 @@ defined('KRYSTAL') or die;
                             return $typeCol->findByKey($row['type']);
                         }
                     ],
+                    
                     [
                         'column' => 'order',
                     ],
+
                     [
                         'column' => 'required',
                         'label' => 'Required to be filled in',
@@ -302,6 +304,10 @@ defined('KRYSTAL') or die;
                         'value' => function($entity) {
                             return $entity->getRequired() ? 'Yes' : 'No';
                         }
+                    ],
+
+                    [
+                        'column' => 'row'
                     ]
                 ],
                 'actions' => [
