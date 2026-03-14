@@ -16,28 +16,38 @@ $resetButtonText = isset($resetButtonText) ? $resetButtonText : 'Reset';
 $submitButtonText = isset($submitButtonText) ? $submitButtonText : 'Submit';
 $submitButtonClass = isset($submitButtonClass) ? $submitButtonClass : 'btn btn-primary';
 
+// Groupped rows
+$groups = FieldService::groupRows($fields);
+
 ?>
 
 <?php if ($page->getFlashPosition() == FlashPositionCollection::POS_UP): ?>
-    <?php $this->loadPartial('mf-flash'); ?>
+<?php $this->loadPartial('mf-flash'); ?>
 <?php endif; ?>
 
 <form action="<?= $action; ?>" autocomplete="<?= $page->getAutocomplete() ? 'on' : 'off'; ?>">
     <fieldset>
-    <?php if (FieldService::hasColumns($fields)): ?>
-        <div class="row">
-            <?php foreach (FieldService::groupFields($fields) as $column => $collection): ?>
-            <div data-column="<?= $column; ?>" class="<?= isset($classes[$column]) ? $classes[$column] : 'col-md-6'; ?>">
+
+    <?php if ($groups['grid'] === true): ?>
+    <?php foreach ($groups['data'] as $row): ?>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-<?= $row['total']; ?> g-4 mb-4">
+            <?php foreach ($row['items'] as $item): ?>
+            <div class="col">
                 <?php $this->loadPartial('mf-fields', [
-                    'fields' => $collection
+                    'fields' => [
+                        $item
+                    ]
                 ]); ?>
             </div>
             <?php endforeach; ?>
         </div>
+    <?php endforeach; ?>
+
     <?php else: ?>
-        <?php $this->loadPartial('mf-fields', [
-            'fields' => $fields
-        ]); ?>
+
+    <?php $this->loadPartial('mf-fields', [
+        'fields' => $groups['items']
+    ]); ?>
     <?php endif; ?>
 
     <?php if ($page->getCaptcha()): ?>
