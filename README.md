@@ -72,6 +72,12 @@ You can easily override default classes and button text. For instance, to use la
     ]); ?>
 
 
+## Rows and columns
+
+The module supports a dynamic grid system. If you want to render inputs in columns (side-by-side), simply define a Row number for each field in the administration panel.
+
+Fields with the same row number will be automatically grouped into a single Bootstrap row. For example, assigning "1" to three different fields will render them in a 3-column layout.
+
 ## URL Generation
 
 To generate a URL for a form by its ID (assuming the form ID is 1), use:
