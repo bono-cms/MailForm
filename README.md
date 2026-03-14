@@ -86,23 +86,18 @@ To generate a URL for a form by its ID (assuming the form ID is 1), use:
 
 ## AJAX forms
 
-
-AJAX forms can be placed anywhere within your template.
-To render the AJAX form, simply call it like this providing form id:
+The module supports asynchronous submissions, allowing you to place forms anywhere in your layout without triggering a page reload. To render an AJAX-enabled form, use the render method and provide the specific form ID:
 
     <?= $form->render($id); ?>
 
+This method automatically initializes the necessary JavaScript handlers to process the submission in the background and display success or error messages inline.
 
-## Styling forms
+## Form submissions
 
-However, you're free to customize the design as you see fit—there are no restrictive styles. You have full control over the form's appearance through your own CSS.
-
-## Where are submissions sent?
-
-When sending, it uses the global email and its configuration as defined in the system settings.
+Form submissions are routed to the global system email address. The module uses the SMTP or mail configuration defined in your core system settings to ensure reliable delivery.
 
 ## Conditional logic
 
-This feature will be available in future versions soon.
+Dynamic field visibility (showing or hiding fields based on user input) is planned for a future release.
 
-In the meantime, if you need to show or hide fields based on the value of another, simply add a few lines of JavaScript using jQuery. It's that easy!
+In the meantime, you can easily implement this functionality manually. Since the form is rendered with standard IDs and classes, a few lines of jQuery or Vanilla JavaScript will allow you to toggle field visibility based on your specific requirements.
