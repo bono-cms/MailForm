@@ -10,6 +10,7 @@ CREATE TABLE `bono_module_mailform` (
     `subject` varchar(255) NOT NULL COMMENT 'Subject with opt.variables',
     `type` SMALLINT NOT NULL COMMENT 'Form type constant',
     `autocomplete` BOOLEAN NOT NULL COMMENT 'Whether autocomplete enabled',
+    `labeled` BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Whether to render labels',
     `flash_position` INT NOT NULL COMMENT 'Flash message position'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4_unicode_ci;
 
