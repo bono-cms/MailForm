@@ -11,7 +11,7 @@ use Krystal\Stdlib\ArrayUtils;
 // Defaults
 $name = sprintf('field[%s]', $field->getId());
 $attrs = [
-    'class' => 'form-control', 
+    'class' => $options['input']['class'], 
     'id' => $field->getId(), 
     'placeholder' => $field->getHint()
 ];
@@ -29,7 +29,7 @@ $default = $field->getDefault();
     <?php endif; ?>
 
     <?php if ($field->isFile()): ?>
-        <?= Element::file($name, null, ['class' => 'form-control', 'id' => $field->getId(), 'title' => $field->getHint(), 'accept' => $field->getExtensionHints()]); ?>
+        <?= Element::file($name, null, ['class' => $options['input']['class'], 'id' => $field->getId(), 'title' => $field->getHint(), 'accept' => $field->getExtensionHints()]); ?>
     <?php endif; ?>
 
     <?php if ($field->isText()): ?>

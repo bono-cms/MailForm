@@ -6,6 +6,7 @@
 
 <?php foreach ($fields as $field): ?>
 <?php $this->loadPartial('mf-field', [
+    'options' => $options,
     'labeled' => $labeled,
     'field' => $field
 ]); ?>

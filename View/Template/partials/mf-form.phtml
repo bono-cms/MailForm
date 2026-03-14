@@ -8,15 +8,25 @@ use Krystal\Form\Element;
 use MailForm\Service\FieldService;
 use MailForm\Collection\FlashPositionCollection;
 
-$fields = $page->getDynamicFields();
-
-// View configuration parameters
-$resetButton = isset($resetButton) && $resetButton == true;
-$resetButtonText = isset($resetButtonText) ? $resetButtonText : 'Reset';
-$submitButtonText = isset($submitButtonText) ? $submitButtonText : 'Submit';
-$submitButtonClass = isset($submitButtonClass) ? $submitButtonClass : 'btn btn-primary';
+// Default options
+$options = array_replace_recursive([
+    'input' => [
+        'class' => 'form-control'
+    ],
+    'submit' => [
+        'enabled' => true,
+        'text' => 'Submit',
+        'class' => 'btn btn-primary'
+    ],
+    'reset' => [
+        'enabled' => false,
+        'text' => 'Reset',
+        'class' => 'btn btn-secondary'
+    ]
+], (isset($options) && is_array($options)) ? $options : []);
 
 // Groupped rows
+$fields = $page->getDynamicFields();
 $groups = FieldService::groupRows($fields);
 $labeled = $page->getLabeled();
 
@@ -35,6 +45,7 @@ $labeled = $page->getLabeled();
             <?php foreach ($row['items'] as $item): ?>
             <div class="col">
                 <?php $this->loadPartial('mf-fields', [
+                    'options' => $options,
                     'labeled' => $labeled,
                     'fields' => [
                         $item
@@ -48,6 +59,7 @@ $labeled = $page->getLabeled();
     <?php else: ?>
 
     <?php $this->loadPartial('mf-fields', [
+        'options' => $options,
         'labeled' => $labeled,
         'fields' => $groups['items']
     ]); ?>
@@ -57,7 +69,7 @@ $labeled = $page->getLabeled();
     <div class="form-group row mb-3">
         <div class="col-lg-10 offset-lg-2">
             <a href="#" title="<?php $this->show('Click to refresh'); ?>" data-captcha="button-refresh" class="d-inline-block mb-2">
-                <img data-captcha="image" src="<?php echo $this->url('Site:Main@captchaAction', null); ?>" class="img-fluid rounded" />
+                <img data-captcha="image" src="<?= $this->url('Site:Main@captchaAction', null); ?>" class="img-fluid rounded" />
             </a>
             <?= Element::text('captcha', null, [
                 'autocomplete' => 'off', 
@@ -78,9 +90,9 @@ $labeled = $page->getLabeled();
 
     <?php if (!empty($fields)): ?>
     <div class="form-group mt-4">
-        <button type="submit" data-button="submit" class="<?= $submitButtonClass; ?>"><?php $this->show($submitButtonText); ?></button>
-        <?php if ($resetButton): ?>
-        <button type="reset" class="btn btn-secondary"><?php $this->show($resetButtonText); ?></button>
+        <button type="submit" data-button="submit" class="<?= $options['submit']['class']; ?>"><?php $this->show($options['submit']['text']); ?></button>
+        <?php if ($options['reset']['enabled']): ?>
+        <button type="reset" class="<?= $options['reset']['class']; ?>"><?php $this->show($options['reset']['text']); ?></button>
         <?php endif; ?>
     </div>
     <?php endif; ?>
