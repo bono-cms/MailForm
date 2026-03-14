@@ -92,6 +92,20 @@ The module supports asynchronous submissions, allowing you to place forms anywhe
 
 This method automatically initializes the necessary JavaScript handlers to process the submission in the background and display success or error messages inline.
 
+**Passing variables and options**
+
+The `render()` method also accepts a second optional argument: an array of variables. This allows you to pass custom data or override form options (like button classes) directly from your template:
+
+    <?= $form->render($id, [
+        'options' => [
+            'submit' => [
+                'class' => 'btn w-lg-fit-content btn-light btn-sm px-5 py-2 me-xxl-4'
+            ]
+        ]
+    ]); ?>
+
+This approach is highly flexible, as any key passed in this array becomes available within the main form template, enabling on-the-fly customization for specific pages.
+
 ## Form submissions
 
 Form submissions are routed to the global system email address. The module uses the SMTP or mail configuration defined in your core system settings to ensure reliable delivery.
