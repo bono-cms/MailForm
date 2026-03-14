@@ -252,49 +252,6 @@ final class FieldService extends AbstractManager
     }
 
     /**
-     * Group fields entities by their column values
-     * 
-     * @param array $fields Field entities
-     * @return array
-     */
-    public static function groupFields(array $fields)
-    {
-        return ArrayUtils::arrayPartition($fields, 'column');
-    }
-
-    /**
-     * Extract column numbers from field entities
-     * 
-     * @param array $fields Field entities
-     * @return array
-     */
-    private static function extractColumns(array $fields)
-    {
-        $columns = array();
-
-        foreach ($fields as $field) {
-            // Don't append duplicate values
-            if (!in_array($field->getColumn(), $columns)) {
-                $columns[] = $field->getColumn();
-            }
-        }
-
-        return $columns;
-    }
-
-    /**
-     * Checks whether fields have at lease two distinct columns
-     * 
-     * @param array $fields Field entities
-     * @return boolean
-     */
-    public static function hasColumns(array $fields)
-    {
-        $columns = self::extractColumns($fields);
-        return count($columns) > 1;
-    }
-
-    /**
      * Extract value list
      * 
      * @param array $values
