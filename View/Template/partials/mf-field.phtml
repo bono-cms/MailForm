@@ -24,7 +24,7 @@ $default = $field->getDefault();
         <?= Element::hidden($name, $default); ?>
     <?php else: ?>
 
-    <?php if ($field->getName()): ?>
+    <?php if ($labeled && $field->getName()): ?>
         <label for="<?= $field->getId(); ?>" class="form-label"><?= $field->getName(); ?></label>
     <?php endif; ?>
 
