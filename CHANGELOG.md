@@ -4,6 +4,7 @@ CHANGELOG
 1.2
 ---
 
+ * Implemented groupRows helper for sequential grid grouping. Supports dynamic row-cols-lg-N classes in templates and maintains absolute item positioning from the data source.
  * Connected Block module to handle dynamic fields
  * Moved history tracker of out main service into the main controller
  * Added missing values in breadcrumbs

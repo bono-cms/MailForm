@@ -1,7 +1,6 @@
 TODO List
 =========
 
- * Column rows handle automatically
  * What to do after form submit (Refresh the page showing flash message, perform a GET/POST redirect)
  * Individual field render to avoid loop
  * User analytic fields (IP, Browser, Device, Country) in logger
