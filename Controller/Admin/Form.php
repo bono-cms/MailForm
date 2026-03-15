@@ -82,6 +82,7 @@ final class Form extends AbstractController
         $form = new FormEntity();
         $form->setSeo($seo)
              ->setType($type)
+             ->setLabeled(true)
              ->setSubject($this->translator->translate('You have received a new message'));
 
         if ($type === FormTypeCollection::TYPE_REGULAR) {
