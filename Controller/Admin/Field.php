@@ -45,7 +45,7 @@ final class Field extends AbstractController
             $fStateCol = new FieldStateCollection;
 
             $fieldValueService = $this->getModuleService('fieldValueService');
-            
+
             return $this->view->render('field.form', array(
                 'canHaveValue' => $entity->canHaveValue(),
                 'field' => $field,
