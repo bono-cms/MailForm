@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -69,14 +67,14 @@ final class SubmitLogService extends AbstractManager
      * @param array $files Request files
      * @return boolean
      */
-    public function log($subject, $message, array $files = array())
+    public function log($subject, $message, array $files = [])
     {
-        $data = array(
+        $data = [
             'datetime' => TimeHelper::getNow(),
             'message' => $message,
             'subject' => $subject,
             'attachments' => count($files)
-        );
+        ];
 
         return $this->submitLogMapper->persist($data);
     }

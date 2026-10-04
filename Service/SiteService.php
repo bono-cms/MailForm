@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -78,7 +76,7 @@ final class SiteService
      * @throws \RuntimeException If trying to render non-AJAX form
      * @return string
      */
-    public function render($id, array $vars = array())
+    public function render($id, array $vars = [])
     {
         $page = $this->formManager->fetchById($id, false);
 
@@ -96,10 +94,10 @@ final class SiteService
             // Save initial page entity
             $originalPage = $this->view->getVariable('page');
 
-            $response = $this->view->render($page->getTemplate(), array_merge($vars, array(
+            $response = $this->view->render($page->getTemplate(), array_merge($vars, [
                 'action' => '/module/mail-form/partial/'. $id,
                 'page' => $page
-            )));
+            ]));
 
             // Restore initial page entity
             $this->view->addVariable('page', $originalPage);

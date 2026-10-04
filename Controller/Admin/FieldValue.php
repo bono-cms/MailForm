@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -38,17 +36,17 @@ final class FieldValue extends AbstractController
         if ($form !== false && $field !== false) {
             // Append breadcrumbs
             $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
-                                           ->addOne($this->translator->translate('Edit the form "%s"', $form->getName()), $this->createUrl('MailForm:Admin:Form@editAction', array($entity->getFormId())))
-                                           ->addOne($this->translator->translate('Edit the field "%s"', $field->getName()), $this->createUrl('MailForm:Admin:Field@editAction', array($entity->getFieldId())))
+                                           ->addOne($this->translator->translate('Edit the form "%s"', $form->getName()), $this->createUrl('MailForm:Admin:Form@editAction', [$entity->getFormId()]))
+                                           ->addOne($this->translator->translate('Edit the field "%s"', $field->getName()), $this->createUrl('MailForm:Admin:Field@editAction', [$entity->getFieldId()]))
                                            ->addOne($title);
 
             $fStateCol = new FieldStateCollection;
 
-            return $this->view->render('value.form', array(
+            return $this->view->render('value.form', [
                 'value' => $value,
                 'new' => $new,
                 'states' => $fStateCol->getAll()
-            ));
+            ]);
         } else {
             return false;
         }
@@ -116,7 +114,9 @@ final class FieldValue extends AbstractController
         $this->getModuleService('fieldValueService')->deleteById($id);
 
         $this->flashBag->set('success', 'Selected element has been removed successfully');
-        return 1;
+        return $this->json([
+            'refresh' => true
+        ]);
     }
 
     /**
@@ -126,18 +126,35 @@ final class FieldValue extends AbstractController
      */
     public function saveAction()
     {
-        $input = $this->request->getPost();
-        $new = (bool) !$input['value']['id'];
+        $validator = $this->createValidation();
 
-        $fieldValueService = $this->getModuleService('fieldValueService');
-        $fieldValueService->save($input);
+        $validator->field('translation.*.value')
+                  ->required()
+                  ->addRule('minlength', null, ['min' => 2]);
 
-        if (!$new) {
-            $this->flashBag->set('success', 'The element has been updated successfully');
-            return 1;
+        if ($validator->isPassed()) {
+            $input = $this->request->getPost();
+            $new = (bool) !$input['value']['id'];
+
+            $fieldValueService = $this->getModuleService('fieldValueService');
+            $fieldValueService->save($input);
+
+            if (!$new) {
+                $this->flashBag->set('success', 'The element has been updated successfully');
+                return $this->json([
+                    'refresh' => true
+                ]);
+            } else {
+                $this->flashBag->set('success', 'The element has been created successfully');
+                return $this->json([
+                    'redirect' => $this->createUrl('MailForm:Admin:FieldValue@editAction', [$fieldValueService->getLastId()]),
+                ]);
+            }
+
         } else {
-            $this->flashBag->set('success', 'The element has been created successfully');
-            return $fieldValueService->getLastId();
+            return $this->json([
+                'errors' => $validator->getErrors()
+            ]);
         }
     }
 }

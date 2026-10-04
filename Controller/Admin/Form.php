@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -12,7 +10,6 @@
 namespace MailForm\Controller\Admin;
 
 use Krystal\Stdlib\VirtualEntity;
-use Krystal\Validate\Pattern;
 use Cms\Controller\Admin\AbstractController;
 use MailForm\Service\FieldService;
 use MailForm\Service\FormEntity;
@@ -61,13 +58,13 @@ final class Form extends AbstractController
         // Load fields, if possible
         $this->loadFields($id);
 
-        return $this->view->render('form', array(
+        return $this->view->render('form', [
             'new' => $new,
             'form' => $form,
             'extraFields' => $extraFields,
             'subjectVars' => FieldService::createSubjectVars($extraFields),
             'flashPositions' => $flashPolCol->getAll()
-        ));
+        ]);
     }
 
     /**
@@ -171,7 +168,9 @@ final class Form extends AbstractController
             $historyService->write('MailForm', 'Mail form "%s" has been removed', $form->getName());
         }
 
-        return '1';
+        return $this->json([
+            'refresh' => true
+        ]);
     }
 
     /**
@@ -185,9 +184,9 @@ final class Form extends AbstractController
         $this->view->getBreadcrumbBag()
                    ->addOne('Mail forms');
 
-        return $this->view->render('index', array(
+        return $this->view->render('index', [
             'forms' => $this->getModuleService('formManager')->fetchAll()
-        ));
+        ]);
     }
 
     /**
@@ -202,7 +201,9 @@ final class Form extends AbstractController
 
             if ($this->getModuleService('formManager')->updateSeo($seo)) {
                 $this->flashBag->set('success', 'Settings have been updated successfully');
-                return '1';
+                return $this->json([
+                    'refresh' => true
+                ]);
             }
         }
     }
@@ -214,18 +215,18 @@ final class Form extends AbstractController
      */
     public function saveAction()
     {
-        $input = $this->request->getPost('form');
+        $validator = $this->createValidation();
 
-        $formValidator = $this->createValidator(array(
-            'input' => array(
-                'source' => $input,
-                'definition' => array(
-                    'name' => new Pattern\Name()
-                )
-            )
-        ));
+        $validator->field('translation.*.name')
+                  ->required()
+                  ->addRule('minlength', null, ['min' => 2]);
 
-        if (1) {
+        $validator->field('form.template')
+                  ->required();
+
+        if ($validator->isPassed()) {
+            $input = $this->request->getPost('form');
+
             // Current page name
             $name = $this->getCurrentProperty($this->request->getPost('translation'), 'name');
 
@@ -242,7 +243,9 @@ final class Form extends AbstractController
 
                 // Update dynamic fields, if present
                 $this->updateFields('form');
-                return '1';
+                return $this->json([
+                    'refresh' => true
+                ]);
 
             } else {
                 $this->flashBag->set('success', 'The element has been created successfully');
@@ -253,11 +256,15 @@ final class Form extends AbstractController
                 // Insert dynamic fields, if present
                 $this->insertFields('form', $lastId);
 
-                return $lastId;
+                return $this->json([
+                    'redirect' => $this->createUrl('MailForm:Admin:Form@editAction', [$lastId]),
+                ]);
             }
 
         } else {
-            return $formValidator->getErrors();
+            return $this->json([
+                'errors' => $validator->getErrors()
+            ]);
         }
     }
 }

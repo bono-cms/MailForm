@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -26,9 +24,9 @@ final class SubmitLog extends AbstractController
         $this->view->getBreadcrumbBag()->addOne('Mail forms', 'MailForm:Admin:Form@gridAction')
                                        ->addOne('Submit logs');
 
-        return $this->view->render('submit-logs', array(
+        return $this->view->render('submit-logs', [
             'logs' => $this->getModuleService('submitLogService')->fetchAll()
-        ));
+        ]);
     }
 
     /**
@@ -41,7 +39,9 @@ final class SubmitLog extends AbstractController
         $this->getModuleService('submitLogService')->clearAll();
 
         $this->flashBag->set('success', 'All message logs have been cleared successfully');
-        return 1;
+        return $this->json([
+            'refresh' => true
+        ]);
     }
 
     /**
@@ -55,7 +55,9 @@ final class SubmitLog extends AbstractController
         $this->getModuleService('submitLogService')->deleteById($id);
 
         $this->flashBag->set('success', 'Selected element has been removed successfully');
-        return 1;
+        return $this->json([
+            'refresh' => true
+        ]);
     }
 
     /**

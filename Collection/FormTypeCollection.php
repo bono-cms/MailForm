@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -22,8 +20,8 @@ final class FormTypeCollection extends ArrayCollection
     /**
      * {@inheritDoc}
      */
-    protected $collection = array(
+    protected $collection = [
         self::TYPE_REGULAR => 'Regular form',
         self::TYPE_AJAX => 'Ajax form'
-    );
+    ];
 }

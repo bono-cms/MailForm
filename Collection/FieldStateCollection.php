@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -21,8 +19,8 @@ final class FieldStateCollection extends ArrayCollection
     /**
      * {@inheritDoc}
      */
-    protected $collection = array(
+    protected $collection = [
         self::STATE_UNCHECKED => 'Unchecked',
         self::STATE_CHECKED => 'Checked'
-    );
+    ];
 }

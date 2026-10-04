@@ -31,10 +31,3 @@ Bugs:
  
  * Validation on checkbox not working
  * Checkboxes's value not being sorted by their order
- 
-
-Migration from legacy to newer:
-
-    ALTER TABLE bono_module_mailform ADD COLUMN `labeled` BOOLEAN NOT NULL DEFAULT 1 COMMENT 'Whether to render labels';
-    ALTER TABLE bono_module_mailform_fields ADD COLUMN `row` SMALLINT DEFAULT 0 COMMENT 'Optional row number';
-    ALTER TABLE bono_module_mailform_fields DROP COLUMN `column`;

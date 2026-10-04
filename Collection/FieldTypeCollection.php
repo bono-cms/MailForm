@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -42,29 +40,29 @@ final class FieldTypeCollection extends ArrayGroupCollection
     /**
      * {@inheritDoc}
      */
-    protected $collection = array(
-        'Select' => array(
+    protected $collection = [
+        'Select' => [
             self::TYPE_SELECT => 'Dropdown',
             self::TYPE_CHECKBOX_LIST => 'Checkbox list',
             self::TYPE_RADIO_LIST => 'Radio list',
             self::TYPE_BOOLEAN => 'Boolean',
-        ),
+        ],
 
-        'Date' => array(
+        'Date' => [
             self::TYPE_DATE => 'Date',
             self::TYPE_DATETIME => 'Date and time',
-        ),
+        ],
 
-        'Text' => array(
+        'Text' => [
             self::TYPE_HIDDEN => 'Hidden field',
             self::TYPE_TEXT => 'Text',
             self::TYPE_NUMBER => 'Number',
             self::TYPE_EMAIL => 'Email',
             self::TYPE_TEXTAREA => 'Textarea',
             self::TYPE_PASSWORD => 'Password'
-        ),
+        ],
 
-        'Files' => array(
+        'Files' => [
             self::TYPE_FILE => 'File selection',
             self::TYPE_FILE_WORD => 'Word file selection',
             self::TYPE_FILE_EXCEL => 'Excel file selection',
@@ -72,45 +70,45 @@ final class FieldTypeCollection extends ArrayGroupCollection
             self::TYPE_FILE_TEXT => 'Text file selection',
             self::TYPE_FILE_PDF => 'PDF file selection',
             self::TYPE_FILE_IMAGE => 'Image file selection'
-        )
-    );
+        ]
+    ];
 
     /**
      * Constant type map with its extensions
      * 
      * @var array
      */
-    private static $extensions = array(
-        self::TYPE_FILE_WORD => array(
+    private static $extensions = [
+        self::TYPE_FILE_WORD => [
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'application/msword'
-        ),
+        ],
 
-        self::TYPE_FILE_EXCEL => array(
+        self::TYPE_FILE_EXCEL => [
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'application/vnd.ms-excel',
             'application/vnd.msexcel',
             'application/excel'
-        ),
+        ],
 
-        self::TYPE_FILE_POWER_POINT => array(
+        self::TYPE_FILE_POWER_POINT => [
             'application/vnd.ms-powerpoint', 
             'application/vnd.openxmlformats-officedocument.presentationml.slideshow', 
             'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-        ),
+        ],
 
-        self::TYPE_FILE_TEXT => array(
+        self::TYPE_FILE_TEXT => [
             'text/plain'
-        ),
+        ],
 
-        self::TYPE_FILE_PDF => array(
+        self::TYPE_FILE_PDF => [
             'application/pdf'
-        ),
+        ],
 
-        self::TYPE_FILE_IMAGE => array(
+        self::TYPE_FILE_IMAGE => [
             'image/*'
-        )
-    );
+        ]
+    ];
 
     /**
      * Guess MIME-type by constant
@@ -145,7 +143,7 @@ final class FieldTypeCollection extends ArrayGroupCollection
      */
     public static function getFileTypes()
     {
-        return array(
+        return [
             self::TYPE_FILE,
             self::TYPE_FILE_WORD,
             self::TYPE_FILE_EXCEL,
@@ -153,7 +151,7 @@ final class FieldTypeCollection extends ArrayGroupCollection
             self::TYPE_FILE_TEXT,
             self::TYPE_FILE_PDF,
             self::TYPE_FILE_IMAGE
-        );
+        ];
     }
 
     /**
@@ -163,13 +161,13 @@ final class FieldTypeCollection extends ArrayGroupCollection
      */
     public static function getSimpleTypes()
     {
-        return array(
+        return [
             self::TYPE_TEXT,
             self::TYPE_NUMBER,
             self::TYPE_EMAIL,
             self::TYPE_DATE,
             self::TYPE_DATETIME,
             self::TYPE_PASSWORD
-        );
+        ];
     }
 }

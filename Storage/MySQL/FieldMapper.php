@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -40,7 +38,7 @@ final class FieldMapper extends AbstractMapper implements FieldMapperInterface
      */
     private function getColumns()
     {
-        return array(
+        return [
             self::column('id'),
             self::column('form_id'),
             self::column('type'),
@@ -52,7 +50,7 @@ final class FieldMapper extends AbstractMapper implements FieldMapperInterface
             FieldTranslationMapper::column('hint'),
             FieldTranslationMapper::column('default'),
             FieldTranslationMapper::column('error')
-        );
+        ];
     }
 
     /**
@@ -64,10 +62,10 @@ final class FieldMapper extends AbstractMapper implements FieldMapperInterface
     public function fetchByFormId($formId)
     {
         // To be selected
-        $columns = array(
+        $columns = [
             'id', // Field ID
             'type' // Field type constant
-        );
+        ];
 
         $db = $this->db->select($columns)
                        ->from(self::getTableName())
@@ -112,7 +110,7 @@ final class FieldMapper extends AbstractMapper implements FieldMapperInterface
      * @param array $ignoreTypes Optional array of ignored type constants
      * @return array
      */
-    public function fetchAll($formId, $sort, $ignoreTypes = array())
+    public function fetchAll($formId, $sort, $ignoreTypes = [])
     {
         $db = $this->createEntitySelect($this->getColumns())
                    ->whereEquals(self::column('form_id'), $formId)
@@ -127,10 +125,10 @@ final class FieldMapper extends AbstractMapper implements FieldMapperInterface
             $db->orderBy(self::column('id'))
                ->desc();
         } else {
-            $db->orderBy(array(
+            $db->orderBy([
                 self::column('order'),
                 new RawSqlFragment(sprintf('CASE WHEN %s = 0 THEN %s END DESC', self::column('order'), self::column('id')))
-            ));
+            ]);
         }
 
         return $db->queryAll();

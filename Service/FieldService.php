@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -47,8 +45,8 @@ final class FieldService extends AbstractManager
      */
     public function parseInput($formId, array $input)
     {
-        $fields = isset($input['data']['field']) ? $input['data']['field'] : array();
-        $files = isset($input['files']['field']) ? $input['files']['field'] : array();
+        $fields = isset($input['data']['field']) ? $input['data']['field'] : [];
+        $files = isset($input['files']['field']) ? $input['files']['field'] : [];
 
         // Normalize raw input it
         $data = $this->normalizeInput($formId, $fields, $files);
@@ -68,10 +66,10 @@ final class FieldService extends AbstractManager
     private function normalizeInput($formId, array $fields, array $files)
     {
         // To be returned
-        $output = array(
-            'data' => array(),
-            'files' => array()
-        );
+        $output = [
+            'data' => [],
+            'files' => []
+        ];
 
         // Field IDs that belong to that form
         $rows = $this->fieldMapper->fetchByFormId($formId);
@@ -95,7 +93,7 @@ final class FieldService extends AbstractManager
             // File
             if (FieldTypeCollection::isFileType($type)) {
                 // Append file
-                $output['files'][$id] = isset($files[$id]) ? $files[$id] : array();
+                $output['files'][$id] = isset($files[$id]) ? $files[$id] : [];
             }
         }
 
@@ -110,7 +108,7 @@ final class FieldService extends AbstractManager
      * @param array $files Files if present
      * @return array
      */
-    private function createParams(array $fields, array $files = array())
+    private function createParams(array $fields, array $files = [])
     {
         // Get IDs from text and file inputs
         $ids = array_merge(array_keys($fields), array_keys($files));
@@ -118,20 +116,20 @@ final class FieldService extends AbstractManager
         $entities = $this->fetchByIds($ids);
 
         // To be returned
-        $output = array();
+        $output = [];
 
         foreach ($entities as $entity) {
             // Current input value
             $value = isset($fields[$entity->getId()]) ? $fields[$entity->getId()] : null;
 
-            $output[] = array(
+            $output[] = [
                 'name' => $entity->getName(), // Field name
                 'value' => is_array($value) ? implode(', ', $value) : $value, // Always convert to readable string
                 'id' => $entity->getId(), // Field ID
                 'type' => $entity->getType(), // Type constant
                 'required' => $entity->getRequired(), // Whether this field is a must
                 'error' => $entity->getError() // Error message, not error itself
-            );
+            ];
         }
 
         return $output;
@@ -163,7 +161,7 @@ final class FieldService extends AbstractManager
      */
     private static function extractValues($params)
     {
-        $output = array();
+        $output = [];
 
         foreach ($params as $param) {
             $output[$param['id']] = $param['value'];
@@ -259,7 +257,7 @@ final class FieldService extends AbstractManager
      */
     private static function createValuesList(array $values)
     {
-        $output = array();
+        $output = [];
 
         foreach ($values as $value) {
             $output[$value->getValue()] = $value->getValue();
@@ -300,7 +298,7 @@ final class FieldService extends AbstractManager
      */
     public static function createSubjectVars(array $fields)
     {
-        $output = array();
+        $output = [];
 
         foreach ($fields as $field) {
             if ($field->isSimple()) {
@@ -321,7 +319,7 @@ final class FieldService extends AbstractManager
      */
     public static function createSubject(array $params, $rawSubject)
     {
-        $vars = array(); // Variables to be used
+        $vars = []; // Variables to be used
 
         foreach ($params as $field) {
             // Filter by simple types
@@ -400,7 +398,7 @@ final class FieldService extends AbstractManager
      * @param array $ignoreTypes Optional array of ignored type constants
      * @return array
      */
-    public function fetchList($formId, array $ignoreTypes = array())
+    public function fetchList($formId, array $ignoreTypes = [])
     {
         return ArrayUtils::arrayList($this->fieldMapper->fetchAll($formId, true, $ignoreTypes), 'id', 'name');
     }

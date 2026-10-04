@@ -4,36 +4,36 @@
  * Module configuration container
  */
 
-return array(
+return [
     'name' => 'MailForm',
     'description' => 'Mail forms module allows you to manager forms that send data from your site to your email',
-    'bookmarks' => array(
-        array(
+    'bookmarks' => [
+        [
             'name' => 'Email logs',
             'controller' => 'MailForm:Admin:SubmitLog@indexAction',
             'icon' => 'fas fa-envelope'
-        )
-    ),
-    'menu' => array(
+        ]
+    ],
+    'menu' => [
         'name' => 'Mail forms',
         'icon' => 'fas fa-envelope',
-        'items' => array(
-            array(
+        'items' => [
+            [
                 'route' => 'MailForm:Admin:Form@gridAction',
                 'name' => 'View all forms'
-            ),
-            array(
+            ],
+            [
                 'route' => 'MailForm:Admin:Form@addAction',
                 'name' => 'Add new form'
-            ),
-            array(
+            ],
+            [
                 'route' => 'MailForm:Admin:Form@addAjaxAction',
                 'name' => 'Add new AJAX form'
-            ),
-            array(
+            ],
+            [
                 'route' => 'MailForm:Admin:SubmitLog@indexAction',
                 'name' => 'Submit logs'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];

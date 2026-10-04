@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -41,7 +39,7 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
      */
     private function getColumns()
     {
-        return array(
+        return [
             self::column('id'),
             self::column('template'),
             self::column('message'),
@@ -66,7 +64,7 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
             WebPageMapper::column('slug'),
             WebPageMapper::column('changefreq'),
             WebPageMapper::column('priority')
-        );
+        ];
     }
 
     /**
@@ -105,9 +103,9 @@ final class FormMapper extends AbstractMapper implements FormMapperInterface
 
         $db = $this->createWebPageSelect($columns)
                     // Field relation
-                    ->leftJoin(FieldMapper::getTableName(), array(
+                    ->leftJoin(FieldMapper::getTableName(), [
                         FieldMapper::column('form_id') => self::getRawColumn('id')
-                    ))
+                    ])
                     // Constraints
                     ->whereEquals(FormTranslationMapper::column('lang_id'), $this->getLangId())
                     ->groupBy($this->getColumns())

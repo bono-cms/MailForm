@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -79,11 +77,11 @@ final class Form extends AbstractController
         // These ones come from Block module
         $this->appendFieldsIfPossible($form);
 
-        return $this->view->render($form->getTemplate(), array(
+        return $this->view->render($form->getTemplate(), [
             'page' => $form,
             'action' => $this->request->getCurrentUrl(),
             'languages' => $this->getModuleService('formManager')->getSwitchUrls($form->getId())
-        ));
+        ]);
     }
 
     /**
@@ -103,10 +101,14 @@ final class Form extends AbstractController
 
             // Use explicit flash message if provided, otherwise fallback to default one
             $this->flashBag->set('success', $form->getFlash() ? $form->getFlash() : 'Your message has been sent!');
-            return 1;
+            return $this->json([
+                'refresh' => true
+            ]);
         } else if ($result === false) {
             $this->flashBag->set('warning', 'Could not send your message. Please again try later');
-            return 1;
+            return $this->json([
+                'refresh' => true
+            ]);
         } else {
             // Error messages
             return $result;
@@ -147,7 +149,7 @@ final class Form extends AbstractController
             $body = $fieldService->createMessage($form->getMessage(), $fields);
 
             // Request files if available
-            $files = isset($input['files']['field']) ? $input['files']['field'] : array();
+            $files = isset($input['files']['field']) ? $input['files']['field'] : [];
 
             // It's time to send a message
             if ($this->getService('Cms', 'mailer')->send($subject, $body, null, $files)) {

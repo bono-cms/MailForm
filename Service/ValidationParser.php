@@ -3,8 +3,6 @@
 /**
  * This file is part of the Bono CMS
  * 
- * Copyright (c) No Global State Lab
- * 
  * For the full copyright and license information, please view
  * the license file that was distributed with this source code.
  */
@@ -77,26 +75,26 @@ final class ValidationParser
             $input = array_replace($input, $inputCallback($input));
         }
 
-        $files = isset($this->request['files']['field']) ? $this->request['files']['field'] : array();
+        $files = isset($this->request['files']['field']) ? $this->request['files']['field'] : [];
 
         // Fix missing keys
         foreach ($fields as $field) {
             if (!isset($files[$field['id']]) && FieldTypeCollection::isFileType($field['type'])) {
-                $files[$field['id']] = array();
+                $files[$field['id']] = [];
             }
         }
 
         // Initial rules
-        $rules = array(
-            'input' => array(
+        $rules = [
+            'input' => [
                 'source' => $input,
-                'definition' => array()
-            ),
-            'file' => array(
+                'definition' => []
+            ],
+            'file' => [
                 'source' => $files,
-                'definition' => array()
-            )
-        );
+                'definition' => []
+            ]
+        ];
 
         // Append field validation rules
         foreach ($fields as $field) {
@@ -104,26 +102,26 @@ final class ValidationParser
             if ($field['required']) {
                 // Check if file by type
                 if (FieldTypeCollection::isFileType($field['type'])) {
-                    $rules['file']['definition'][$field['id']] = array(
+                    $rules['file']['definition'][$field['id']] = [
                         'required' => true,
-                        'rules' => array(
-                            'NotEmpty' => array(
+                        'rules' => [
+                            'NotEmpty' => [
                                 // If no explicit error message provided, then use default one
                                 'message' => !empty($field['error']) ? $field['error'] : 'Please select a file'
-                            )
-                        )
-                    );
+                            ]
+                        ]
+                    ];
                 } else {
                     // Append rule for current text-like field
-                    $rules['input']['definition'][$field['id']] = array(
+                    $rules['input']['definition'][$field['id']] = [
                         'required' => true,
-                        'rules' => array(
-                            'NotEmpty' => array(
+                        'rules' => [
+                            'NotEmpty' => [
                                 // If no explicit error message provided, then use default one
                                 'message' => !empty($field['error']) ? $field['error'] : 'This field is required'
-                            )
-                        )
-                    );
+                            ]
+                        ]
+                    ];
                 }
             }
         }
@@ -161,13 +159,13 @@ final class ValidationParser
 
         return self::createRules($fields, function($input) use ($data){
             // To be appended
-            return array(
+            return [
                 'captcha' => isset($data['captcha']) ? $data['captcha'] : null
-            );
+            ];
         }, function() use ($captcha){
-            return array(
+            return [
                 'captcha' => new Pattern\Captcha($captcha)
-            );
+            ];
         });
     }
 }
