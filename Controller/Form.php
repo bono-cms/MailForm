@@ -53,7 +53,9 @@ final class Form extends AbstractController
         if ($form && $this->request->isPost()) {
             return $this->submitAction($form);
         } else {
-            return 'Invalid request';
+            return $this->json([
+                'errors' => 'Invalid request'
+            ]);
         }
     }
 
@@ -95,75 +97,62 @@ final class Form extends AbstractController
         $result = $this->processForm($form);
 
         if ($result === true) {
-
             // Here you can add some logic to alter default behavior after successful form submission
-            // By default 1 is returned and page gets refreshed showing flash message
 
-            // Use explicit flash message if provided, otherwise fallback to default one
             $this->flashBag->set('success', $form->getFlash() ? $form->getFlash() : 'Your message has been sent!');
-            return $this->json([
-                'refresh' => true
-            ]);
-        } else if ($result === false) {
-            $this->flashBag->set('warning', 'Could not send your message. Please again try later');
-            return $this->json([
-                'refresh' => true
-            ]);
-        } else {
-            // Error messages
-            return $result;
+            return $this->json(['refresh' => true]);
         }
+
+        if ($result === false) {
+            $this->flashBag->set('warning', 'Could not send your message. Please again try later');
+            return $this->json(['refresh' => true]);
+        }
+
+        return $this->json($result);
     }
 
     /**
      * Submits a form and sends a message
      * 
      * @param \Krystal\Stdlib\VirtualEntity $form
-     * @return boolean|string
+     * @return boolean|array
      */
     private function processForm(VirtualEntity $form)
     {
-        // Get input data and files
         $input = $this->request->getAll();
 
         $fieldService = $this->getModuleService('fieldService');
-
-        // Get all request data (POST data and files if present)
         $fields = $fieldService->parseInput($form->getId(), $input);
 
-        $validationParser = new ValidationParser($input);
+        // Framework-provided validator (translator + payload already wired up)
+        $validator = $this->createValidation();
 
-        // Generate rules depending on CAPTCHA requirement
+        $parser = new ValidationParser($validator);
+
         if ($form->getCaptcha()) {
-            $rules = $validationParser->createProtected($fields, $this->captcha);
+            $parser->createProtected($fields, $this->captcha);
         } else {
-            $rules = $validationParser->createStandart($fields);
+            $parser->createStandart($fields);
         }
 
-        $formValidator = $this->createValidator($rules);
+        // Both methods return the same decorated validator, so no reassignment needed.
+        // $validator is now fully populated.
 
-        if ($formValidator->isValid()) {
-            // Prepare subject
+        if ($validator->isPassed()) {
             $subject = FieldService::createSubject($fields, $form->getSubject());
-            // Create body
-            $body = $fieldService->createMessage($form->getMessage(), $fields);
+            $body    = $fieldService->createMessage($form->getMessage(), $fields);
+            $files   = isset($input['files']['field']) ? $input['files']['field'] : [];
 
-            // Request files if available
-            $files = isset($input['files']['field']) ? $input['files']['field'] : [];
-
-            // It's time to send a message
             if ($this->getService('Cms', 'mailer')->send($subject, $body, null, $files)) {
-                // Log current message
                 $this->getModuleService('submitLogService')->log($subject, $body, $files);
-
-                // Success
                 return true;
-            } else {
-                // Error
-                return false;
             }
-        } else {
-            return ValidationParser::normalizeErrors($formValidator->getErrors());
+
+            return false;
         }
+
+        return [
+            'errors' => $validator->getErrors()
+        ];
     }
 }

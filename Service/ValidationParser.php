@@ -9,163 +9,87 @@
 
 namespace MailForm\Service;
 
-use Closure;
-use Krystal\Http\RequestInterface;
+use Krystal\Validation\Validator;
 use Krystal\Captcha\CaptchaInterface;
-use Krystal\Validate\Pattern;
 use MailForm\Collection\FieldTypeCollection;
 
+/**
+ * The validator is injected by the controller (typically via $this->createValidation()),
+ * so translator wiring, locale, and data/files binding are handled by the framework.
+ * This parser only attaches field and CAPTCHA definitions.
+ */
 final class ValidationParser
 {
     /**
-     * All request data (POST and Files)
-     * 
-     * @var array
+     * Validator instance prepared by the controller
+     *
+     * @var \Krystal\Validation\Validator
      */
-    private $request;
+    private $validator;
 
     /**
      * State initialization
      * 
-     * @param array $request All request data
-     * @return void
+     * @param \Krystal\Validation\Validator $validator Pre-built validator to decorate
      */
-    public function __construct(array $request)
+    public function __construct(Validator $validator)
     {
-        $this->request = $request;
+        $this->validator = $validator;
     }
 
     /**
-     * Normalize error messages
-     * 
-     * @param $string Error JSON string
-     * @return array
+     * Applies dynamic field definitions without CAPTCHA protection
+     *
+     * @param array $fields Field metadata produced by FieldService::parseInput()
+     * @return \Krystal\Validation\Validator
      */
-    public static function normalizeErrors($string)
+    public function createStandart(array $fields): Validator
     {
-        $errors = json_decode($string, true);
-
-        foreach ($errors as $key => $message) {
-            if (is_numeric($key)) {
-                $errors[sprintf('field[%s]', $key)] = $message;
-                unset($errors[$key]);
-            }
-        }
-
-        return json_encode($errors);
+        return $this->apply($fields, null);
     }
 
     /**
-     * Create validation rules depending on columns
-     * 
-     * @param array $fields
-     * @param \Closure $input Callback for input
-     * @param \Closure $definitionCallback Callback
-     * @return array
-     */
-    private function createRules(array $fields, Closure $inputCallback = null, $definitionCallback = null)
-    {
-        $values = array_column($fields, 'value');
-        $ids = array_column($fields, 'id');
-
-        $input = array_combine($ids, $values);
-
-        // Apply input callback if defined
-        if ($inputCallback instanceof Closure) {
-            $input = array_replace($input, $inputCallback($input));
-        }
-
-        $files = isset($this->request['files']['field']) ? $this->request['files']['field'] : [];
-
-        // Fix missing keys
-        foreach ($fields as $field) {
-            if (!isset($files[$field['id']]) && FieldTypeCollection::isFileType($field['type'])) {
-                $files[$field['id']] = [];
-            }
-        }
-
-        // Initial rules
-        $rules = [
-            'input' => [
-                'source' => $input,
-                'definition' => []
-            ],
-            'file' => [
-                'source' => $files,
-                'definition' => []
-            ]
-        ];
-
-        // Append field validation rules
-        foreach ($fields as $field) {
-            // If rule needs to be appended
-            if ($field['required']) {
-                // Check if file by type
-                if (FieldTypeCollection::isFileType($field['type'])) {
-                    $rules['file']['definition'][$field['id']] = [
-                        'required' => true,
-                        'rules' => [
-                            'NotEmpty' => [
-                                // If no explicit error message provided, then use default one
-                                'message' => !empty($field['error']) ? $field['error'] : 'Please select a file'
-                            ]
-                        ]
-                    ];
-                } else {
-                    // Append rule for current text-like field
-                    $rules['input']['definition'][$field['id']] = [
-                        'required' => true,
-                        'rules' => [
-                            'NotEmpty' => [
-                                // If no explicit error message provided, then use default one
-                                'message' => !empty($field['error']) ? $field['error'] : 'This field is required'
-                            ]
-                        ]
-                    ];
-                }
-            }
-        }
-
-        // Apply input callback if defined
-        if ($definitionCallback instanceof Closure) {
-            $rules['input']['definition'] = array_replace($rules['input']['definition'], $definitionCallback());
-        }
-
-        // Prepared and populated validation rules to be passed to validator component
-        return $rules;
-    }
-
-    /**
-     * Create validation rules depending without CAPTCHA 
-     * 
-     * @param array $fields
-     * @return array
-     */
-    public function createStandart(array $fields)
-    {
-        return self::createRules($fields);
-    }
-
-    /**
-     * Create validation rules depending on columns
-     * 
+     * Applies dynamic field definitions with CAPTCHA protection
+     *
      * @param array $fields
      * @param \Krystal\Captcha\CaptchaInterface $captcha
-     * @return array
+     * @return \Krystal\Validation\Validator
      */
-    public function createProtected(array $fields, CaptchaInterface $captcha)
+    public function createProtected(array $fields, CaptchaInterface $captcha): Validator
     {
-        $data = $this->request['data'];
+        return $this->apply($fields, $captcha);
+    }
 
-        return self::createRules($fields, function($input) use ($data){
-            // To be appended
-            return [
-                'captcha' => isset($data['captcha']) ? $data['captcha'] : null
-            ];
-        }, function() use ($captcha){
-            return [
-                'captcha' => new Pattern\Captcha($captcha)
-            ];
-        });
+    /**
+     * Attaches field and (optionally) CAPTCHA rules to the injected validator
+     *
+     * @param array $fields
+     * @param \Krystal\Captcha\CaptchaInterface|null $captcha
+     * @return \Krystal\Validation\Validator
+     */
+    private function apply(array $fields, CaptchaInterface $captcha = null): Validator
+    {
+        if ($captcha !== null) {
+            $this->validator->field('captcha', 'CAPTCHA')
+                            ->required()
+                            ->addRule('captcha', null, ['expected' => (string) $captcha->getAnswer()]);
+        }
+
+        // Register dynamic field definitions
+        foreach ($fields as $field) {
+            $id       = $field['id'];
+            $label    = isset($field['name']) && $field['name'] !== '' ? $field['name'] : null;
+            $error    = !empty($field['error']) ? $field['error'] : null;
+            $required = !empty($field['required']);
+            $path     = 'field.' . $id;
+
+            $definition = FieldTypeCollection::isFileType($field['type']) ? $this->validator->file($path, $label) : $this->validator->field($path, $label);
+
+            if ($required) {
+                $definition->required($error);
+            }
+        }
+
+        return $this->validator;
     }
 }
