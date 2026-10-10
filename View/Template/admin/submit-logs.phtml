@@ -4,13 +4,11 @@ use Krystal\Form\Element;
 use Krystal\Widget\GridView\GridViewWidget;
 use Cms\View\Icon;
 
-defined('KRYSTAL') or die;
-
 ?>
 
 <?php if (!empty($logs)): ?>
 <div class="btn-toolbar mb-3">
-    <a data-button="delete" data-message="<?php $this->show('Do you really want to clear all message logs?'); ?>" class="btn btn-primary" href="<?= $this->url('MailForm:Admin:SubmitLog@clearAction'); ?>"><?php $this->show('Clear all'); ?></a>
+    <a data-button="delete" data-message="<?= $this->translate('Do you really want to clear all message logs?'); ?>" class="btn btn-primary" href="<?= $this->url('MailForm:Admin:SubmitLog@clearAction'); ?>"><?= $this->translate('Clear all'); ?></a>
 </div>
 <?php endif; ?>
 
@@ -52,7 +50,7 @@ defined('KRYSTAL') or die;
             ],
 
             'actions' => [
-                'view' => function($form){
+                function($form){
                     return Icon::details(
                         $this->url('MailForm:Admin:SubmitLog@viewAction', $form->getId()), 
                         $this->translate('View this message'),
@@ -60,7 +58,7 @@ defined('KRYSTAL') or die;
                     );
                 },
 
-                'remove' => function($form){
+                function($form){
                     return Icon::remove(
                         $this->url('MailForm:Admin:SubmitLog@deleteAction', $form->getId()),
                         $this->translate('Remove this log')
@@ -72,7 +70,7 @@ defined('KRYSTAL') or die;
         <?php if (empty($logs)): ?>
         <div class="d-flex justify-content-center my-5">
             <div class="text-center text-muted">
-                <h2><i class="bi bi-x-circle"></i> <?php $this->show('No logs'); ?></h2>
+                <h2><i class="bi bi-x-circle"></i> <?= $this->translate('No logs'); ?></h2>
             </div>
         </div>
         <?php endif; ?>

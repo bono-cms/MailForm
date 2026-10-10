@@ -66,9 +66,9 @@ $labeled = $page->getLabeled();
     <?php endif; ?>
 
     <?php if ($page->getCaptcha()): ?>
-    <div class="form-group row mb-3">
+    <div class="row mb-3">
         <div class="col-lg-10 offset-lg-2">
-            <a href="#" title="<?php $this->show('Click to refresh'); ?>" data-captcha="button-refresh" class="d-inline-block mb-2">
+            <a href="#" title="<?= $this->translate('Click to refresh'); ?>" data-captcha="button-refresh" class="d-inline-block mb-2">
                 <img data-captcha="image" src="<?= $this->url('Site:Main@captchaAction', null); ?>" class="img-fluid rounded" />
             </a>
             <?= Element::text('captcha', null, [
@@ -81,7 +81,7 @@ $labeled = $page->getLabeled();
     <?php endif; ?>
 
     <?php if ($page->hasTerms()): ?>
-    <div class="form-group mb-3">
+    <div class="mb-3">
         <div class="card card-body bg-light">
             <?= $page->getTerms(); ?>
         </div>
@@ -89,10 +89,10 @@ $labeled = $page->getLabeled();
     <?php endif; ?>
 
     <?php if (!empty($fields)): ?>
-    <div class="form-group mt-4">
-        <button type="submit" data-button="submit" class="<?= $options['submit']['class']; ?>"><?php $this->show($options['submit']['text']); ?></button>
+    <div class="mt-4">
+        <button type="submit" data-button="submit" class="<?= $options['submit']['class']; ?>"><?= $this->translate($options['submit']['text']); ?></button>
         <?php if ($options['reset']['enabled']): ?>
-        <button type="reset" class="<?= $options['reset']['class']; ?>"><?php $this->show($options['reset']['text']); ?></button>
+        <button type="reset" class="<?= $options['reset']['class']; ?>"><?= $this->translate($options['reset']['text']); ?></button>
         <?php endif; ?>
     </div>
     <?php endif; ?>

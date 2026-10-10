@@ -5,38 +5,36 @@ use Krystal\Form\Element;
 use Cms\Service\LanguageManager;
 use Cms\View\Icon;
 
-defined('KRYSTAL') or die;
-
 ?>
 
-<form class="card" data-group="field" autocomplete="off">
+<form class="card" autocomplete="off">
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="nav-item">
-            <a class="nav-link active" href="#field" role="tab" data-toggle="tab">
-                <i class="fas fa-clipboard-list"></i> <?php $this->show('Field'); ?>
+            <a class="nav-link active" href="#field" role="tab" data-bs-toggle="tab">
+                <i class="fas fa-clipboard-list"></i> <?= $this->translate('Field'); ?>
             </a>
         </li>
         <?php if ($canHaveValue): ?>
         <li role="presentation" class="nav-item">
-            <a class="nav-link" href="#values" role="tab" data-toggle="tab">
-                <i class="fas fa-align-left"></i> <?php $this->show('Values'); ?>
+            <a class="nav-link" href="#values" role="tab" data-bs-toggle="tab">
+                <i class="fas fa-align-left"></i> <?= $this->translate('Values'); ?>
             </a>
         </li>
         <?php endif; ?>
         <li role="presentation" class="nav-item">
-            <a class="nav-link" href="#configuration" role="tab" data-toggle="tab">
-                <i class="fas fa-grip-horizontal"></i> <?php $this->show('Configuration'); ?>
+            <a class="nav-link" href="#configuration" role="tab" data-bs-toggle="tab">
+                <i class="fas fa-grip-horizontal"></i> <?= $this->translate('Configuration'); ?>
             </a>
         </li>
     </ul>
 
-    <div class="tab-content">
+    <div class="tab-content pt-3">
         <div class="tab-pane fade show active" id="field" role="tabpanel">
             <?php $this->loadPartial('language-tabs'); ?>
 
             <div class="tab-content">
                 <?php foreach ($languages as $index => $language): ?>
-                <div class="tab-pane fade <?= $index == 0 ? 'show active' : null; ?>" id="<?php printf('language-%s', $language->getId()); ?>" role="tabpanel">
+                <div class="tab-pane fade <?= $index == 0 ? 'show active' : null; ?>" id="<?= sprintf('language-%s', $language->getId()); ?>" role="tabpanel">
                     <?php $entity = LanguageManager::findByLangId($language->getId(), $field); ?>
 
                     <?= Element::hidden(sprintf('translation[%s][id]', $language->getId()), $entity->getId()); ?>
@@ -44,58 +42,50 @@ defined('KRYSTAL') or die;
 
                     <?php $this->loadPartial('language-name', ['language' => $language]); ?>
 
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label"><?php $this->show('Name'); ?></label>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-form-label"><?= $this->translate('Name'); ?></label>
                         <div class="col-lg-10">
                             <div class="input-group">
                                 <?= Element::text(sprintf('translation[%s][name]', $language->getId()), $entity->getName(), ['class' => 'form-control', 'placeholder' => $this->translate('Name')]); ?>
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="bi bi-pencil"></i></span>
-                                </div>
+                                <span class="input-group-text"><i class="bi bi-pencil"></i></span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label"><?php $this->show('Hint'); ?></label>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-form-label"><?= $this->translate('Hint'); ?></label>
                         <div class="col-lg-10">
                             <div class="input-group">
                                 <?= Element::textarea(sprintf('translation[%s][hint]', $language->getId()), $entity->getHint(), ['class' => 'form-control', 'placeholder' => $this->translate('Hint or placeholder')]); ?>
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="bi bi-pencil"></i></span>
-                                </div>
+                                <span class="input-group-text"><i class="bi bi-pencil"></i></span>
                             </div>
                         </div>
                     </div>
 
                     <?php if ((!$entity->isFile() || $entity->isBoolean()) && !$entity->isCheckboxList()): ?>
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label"><?php $this->show('Default value'); ?></label>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-form-label"><?= $this->translate('Default value'); ?></label>
                         <div class="col-lg-10">
                             <?php if ($entity->isBoolean()): ?>
-                            <?= Element::select(sprintf('translation[%s][default]', $language->getId()), $this->translateArray($states), $entity->getDefault(), ['class' => 'form-control']); ?>
+                            <?= Element::select(sprintf('translation[%s][default]', $language->getId()), $this->translateArray($states), $entity->getDefault(), ['class' => 'form-select']); ?>
                             <?php elseif ($entity->isSelect() || $entity->isRadioList()): ?>
-                            <?= Element::select(sprintf('translation[%s][default]', $language->getId()), isset($grouped[$language->getId()]) ? $grouped[$language->getId()] : [], $entity->getDefault(), ['class' => 'form-control']); ?>
+                            <?= Element::select(sprintf('translation[%s][default]', $language->getId()), isset($grouped[$language->getId()]) ? $grouped[$language->getId()] : [], $entity->getDefault(), ['class' => 'form-select']); ?>
                             <?php else: ?>
                             <div class="input-group">
                                 <?= Element::textarea(sprintf('translation[%s][default]', $language->getId()), $entity->getDefault(), ['class' => 'form-control', 'placeholder' => $this->translate('Value to be assigned on page load')]); ?>
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="bi bi-pencil"></i></span>
-                                </div>
+                                <span class="input-group-text"><i class="bi bi-pencil"></i></span>
                             </div>
                             <?php endif; ?>
                         </div>
                     </div>
                     <?php endif; ?>
 
-                    <div class="form-group row">
-                        <label class="col-lg-2 col-form-label"><?php $this->show('On error'); ?></label>
+                    <div class="row mb-3">
+                        <label class="col-lg-2 col-form-label"><?= $this->translate('On error'); ?></label>
                         <div class="col-lg-10">
                             <div class="input-group">
                                 <?= Element::textarea(sprintf('translation[%s][error]', $language->getId()), $entity->getError(), ['class' => 'form-control', 'placeholder' => $this->translate('Error message')]); ?>
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="bi bi-pencil"></i></span>
-                                </div>
+                                <span class="input-group-text"><i class="bi bi-pencil"></i></span>
                             </div>
                         </div>
                     </div>
@@ -116,16 +106,15 @@ defined('KRYSTAL') or die;
         <div class="tab-pane fade" id="values" role="tabpanel">
             <div class="row py-4">
                 <div class="col-lg-6">
-                    <h2 class="page-header"><i class="bi bi-check-square"></i> <?php $this->show('Values'); ?> <small>(<?= count($values); ?>)</small></h2>
+                    <h2 class="page-header"><i class="bi bi-check-square"></i> <?= $this->translate('Values'); ?> <small>(<?= count($values); ?>)</small></h2>
                 </div>
                 
-                <div class="col-lg-6 text-lg-right">
-                    <a class="btn btn-primary" href="<?= $this->createQueryUrl('MailForm:Admin:FieldValue@addAction', ['form_id' => $entity->getFormId(), 'field_id' => $entity->getId()]); ?>"><?php $this->show('Add new value'); ?></a>
+                <div class="col-lg-6 text-lg-end">
+                    <a class="btn btn-primary" href="<?= $this->createQueryUrl('MailForm:Admin:FieldValue@addAction', ['form_id' => $entity->getFormId(), 'field_id' => $entity->getId()]); ?>"><?= $this->translate('Add new value'); ?></a>
                 </div>
             </div>
 
             <?= $this->widget(new GridViewWidget($values, [
-                // A column to be considered as a primary key
                 'pk' => 'id',
                 'tableClass' => 'table table-hover table-bordered table-striped table-sm',
                 'columns' => [
@@ -147,14 +136,14 @@ defined('KRYSTAL') or die;
                 ],
 
                 'actions' => [
-                    'edit' => function($row){
+                    function($row){
                         return Icon::edit(
                             $this->url('MailForm:Admin:FieldValue@editAction', $row['id']),
                             $this->translate('Edit this value')
                         );
                     },
 
-                    'remove' => function($row){
+                    function($row){
                         return Icon::remove(
                             $this->url('MailForm:Admin:FieldValue@deleteAction', $row['id']),
                             $this->translate('Remove this value')
@@ -168,31 +157,31 @@ defined('KRYSTAL') or die;
             <?= Element::hidden('field[id]', $entity->getId()); ?>
             <?= Element::hidden('field[form_id]', $entity->getFormId()); ?>
 
-            <div class="form-group row">
-                <label class="col-lg-2 col-form-label"><?php $this->show('Required to be filled in'); ?></label>
+            <div class="row mb-3">
+                <label class="col-lg-2 col-form-label"><?= $this->translate('Required to be filled in'); ?></label>
                 <div class="col-lg-10">
                     <div class="form-check">
-                         <?= Element::checkbox('field[required]', $entity->getRequired(), ['class' => 'form-check-input', 'disabled' => $entity->isButton()]); ?>
+                         <?= Element::checkbox('field[required]', $entity->getRequired(), ['class' => 'form-check-input']); ?>
                     </div>
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label class="col-lg-2 col-form-label"><?php $this->show('Order'); ?></label>
+            <div class="row mb-3">
+                <label class="col-lg-2 col-form-label"><?= $this->translate('Order'); ?></label>
                 <div class="col-lg-10">
                     <?= Element::number('field[order]', $entity->getOrder(), ['class' => 'form-control', 'min' => 0]); ?>
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label class="col-lg-2 col-form-label"><?php $this->show('Type'); ?></label>
+            <div class="row mb-3">
+                <label class="col-lg-2 col-form-label"><?= $this->translate('Type'); ?></label>
                 <div class="col-lg-10">
-                    <?= Element::select('field[type]', $this->translateArray($types), $entity->getType(), ['class' => 'form-control']); ?>
+                    <?= Element::select('field[type]', $this->translateArray($types), $entity->getType(), ['class' => 'form-select']); ?>
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label class="col-lg-2 col-form-label"><?php $this->show('Row'); ?></label>
+            <div class="row mb-3">
+                <label class="col-lg-2 col-form-label"><?= $this->translate('Row'); ?></label>
                 <div class="col-lg-10">
                     <?= Element::number('field[row]', $entity->getRow(), ['class' => 'form-control', 'min' => 0, 'placeholder' => $this->translate('The row number this item belongs to')]); ?>
                 </div>
