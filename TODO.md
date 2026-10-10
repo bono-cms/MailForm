@@ -1,6 +1,9 @@
 TODO List
 =========
 
+ * Rename the module MailForm to something else
+ * Input type=hidden should not allocate divs
+ * Add GET param trackers (input type=hidden) that reads from GET
  * Sorting order must be auto-incrementing when adding fields by default
  * Add client-side events (on form submited, etc)
  * What to do after form submit (Refresh the page showing flash message, perform a GET/POST redirect)
